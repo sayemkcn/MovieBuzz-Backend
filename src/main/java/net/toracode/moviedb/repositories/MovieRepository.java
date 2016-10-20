@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import net.toracode.moviedb.entities.Movie;
 
 @Repository
-public interface MovieRepository extends JpaRepository<Movie, Long>{
-	
+public interface MovieRepository extends JpaRepository<Movie, Long> {
+//	public Page<Movie> findAll(Pageable pagable);
 }

@@ -17,7 +17,7 @@ import org.springframework.hateoas.ResourceSupport;
 public abstract class BaseEntity extends ResourceSupport{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private Long userId;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastUpdated;
 	@Temporal(TemporalType.TIMESTAMP)
@@ -42,11 +42,18 @@ public abstract class BaseEntity extends ResourceSupport{
 		this.created = new Date();
 	}
 
-	public Long getPrimaryId() {
-		return id;
+	public Long getUserId() {
+		return userId;
 	}
 
-	public void setPrimaryId(Long id) {
-		this.id = id;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
+
+	@Override
+	public String toString() {
+		return "BaseEntity [userId=" + userId + ", lastUpdated=" + lastUpdated + ", created=" + created + "]";
+	}
+
+	
 }
