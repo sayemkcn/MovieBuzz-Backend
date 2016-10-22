@@ -29,15 +29,15 @@
 			<option value="g">G</option>
 			<option value="r">R</option>
 			<option value="a">A</option>
-		</select>
+		</select><br></br>
 		<input type="text" name="productionHouse" placeholder="Production House"></input><br></br>
 		<div>
 			Cast and Crew list:<br></br>
-			<select multiple="multiple">
-				<option value="Test 1">Test 1</option>
-				<option value="Test 2">Test 2</option>
-				<option value="Test 3">Test 3</option>
-			</select>
+			<select name="personIds" th:if="${personList != null}" multiple="multiple">
+				<option th:each="person : ${personList}" th:value="${person.getUserId()}">
+					<span th:text="${person.getName()}"></span>
+				</option>
+			</select><a th:href="@{/person/create}">Create New Cast/Crew</a>
 		</div>
 		
 		<button type="submit">Submit</button>

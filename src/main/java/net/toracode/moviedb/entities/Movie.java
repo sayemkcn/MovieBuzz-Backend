@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
@@ -14,6 +15,7 @@ public class Movie extends BaseEntity {
 	private String name;
 	private String storyLine;
 	private String language;
+	@Lob
 	private byte[] image;
 	private String industry;
 	private String genere;
