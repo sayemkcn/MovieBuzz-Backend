@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -41,6 +43,12 @@ public class MovieController {
 		reviewList.add(review);
 		movie.setReviewList(reviewList);
 		movieService.save(movie);
+		return "movie/create";
+	}
+	
+	@RequestMapping(value="/create",method=RequestMethod.POST)
+	public String addMovie(@ModelAttribute("movie") Movie movie,BindingResult bindingResult){
+		System.out.println(movie.toString());
 		return "movie/create";
 	}
 }

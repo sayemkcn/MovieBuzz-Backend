@@ -5,6 +5,45 @@
 <title>Add New Movie</title>
 </head>
 <body>
-	Add New Movie
+	<form th:action="@{/movie/create}" method="post">
+		<input type="text" name="name" placeholder="Movie Name"></input><br></br>
+		<textarea cols="50" rows="20" name="storyLine" placeholder="Storyline"></textarea><br></br>
+		<input type="text" name="language" placeholder="Language"></input><br></br>
+		Image:<br></br>
+		<input type="file" name="image"></input><br></br>
+		Movie Industry:<br></br>
+		<select name="industry">
+			<option value="hollywood">Hollywood</option>
+			<option value="bollywood">Bollywood</option>
+			<option value="dhallywood">Dhallywood</option>
+			<option value="tallywood">Tallywood</option>
+		</select><br></br>
+		<input type="text" name="genere" placeholder="Genere"></input><br></br>
+		<input type="text" name="trailerUrl" placeholder="Trailer Url"></input><br></br>
+		Release Date:<br></br>
+		<input type="date" name="releaseDate"></input><br></br>
+		<input type="text" name="duration" placeholder="Movie Duration"></input><br></br>
+		<input type="text" name="budget" placeholder="Budget"></input><br></br>
+		Rated:<br></br>
+		<select name="rated">
+			<option value="g">G</option>
+			<option value="r">R</option>
+			<option value="a">A</option>
+		</select>
+		<input type="text" name="productionHouse" placeholder="Production House"></input><br></br>
+		<div>
+			Cast and Crew list:<br></br>
+			<select multiple="multiple">
+				<option value="Test 1">Test 1</option>
+				<option value="Test 2">Test 2</option>
+				<option value="Test 3">Test 3</option>
+			</select>
+		</div>
+		
+		<button type="submit">Submit</button>
+	</form>
+	
+	<br></br>
+	<span th:if="${movie != null}" th:text="${movie.toString()}"></span>
 </body>
 </html>
