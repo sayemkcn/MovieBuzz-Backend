@@ -25,7 +25,7 @@ public class Movie extends BaseEntity {
 	private String budget;
 	private char rated;
 	private String productionHouse;
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.PERSIST)
 	private List<Person> castAndCrewList;
 	@OneToMany(cascade=CascadeType.ALL)
 	private List<Review> reviewList;
