@@ -31,12 +31,23 @@ public class MovieService {
 		Page<Movie> page = this.movieRepo.findAll(new PageRequest(pageNumber, size));
 		return page.getContent();
 	}
+	@Transactional(readOnly = true)
 	public List<Movie> getMovieByGenere(String genere,int pageNumber,int size){
 		Page<Movie> page = this.movieRepo.findByGenere(genere,new PageRequest(pageNumber,size));
 		return page.getContent();
 	}
+	@Transactional(readOnly = true)
 	public List<Movie> getMovieByIndustry(String industry,int pageNumber,int size){
 		Page<Movie> page = this.movieRepo.findByIndustry(industry,new PageRequest(pageNumber,size));
 		return page.getContent();
 	}
+	@Transactional(readOnly = true)
+	public List<Movie> getLatestMovies(int pageNumber,int size){
+		PageRequest pageRequest = new PageRequest(pageNumber,size, Sort.Direction.DESC,"uniqueId");
+		Page<Movie> page = this.movieRepo.findAll(pageRequest);
+		return page.getContent();
+	}
+
+
+
 }

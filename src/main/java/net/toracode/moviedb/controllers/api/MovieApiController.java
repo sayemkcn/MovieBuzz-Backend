@@ -32,4 +32,9 @@ public class MovieApiController {
 	public ResponseEntity<List<Movie>> moviesByIndustryPaginated(@PathVariable("industry") String industry,@RequestParam("page") int page,@RequestParam("size") int size){
 		return new ResponseEntity<List<Movie>>(this.movieService.getMovieByIndustry(industry,page,size),HttpStatus.OK);
 	}
+
+	@RequestMapping(value = "/latest",method = RequestMethod.GET)
+	public ResponseEntity<List<Movie>> latestAddedMovies(@RequestParam("page") int page,@RequestParam("size") int size){
+		return new ResponseEntity<List<Movie>>(this.movieService.getLatestMovies(page,size),HttpStatus.OK);
+	}
 }
