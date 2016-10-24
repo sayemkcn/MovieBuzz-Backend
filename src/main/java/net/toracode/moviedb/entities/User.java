@@ -19,8 +19,6 @@ public class User extends BaseEntity {
 	@Size(min = 6, max = 50)
 	private String accountId;
 
-	@OneToMany(cascade = CascadeType.ALL)
-	private List<Review> reviewList;
 	@OneToMany
 	private List<UserCustomList> userCustomList;
 
@@ -36,17 +34,14 @@ public class User extends BaseEntity {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public List<Review> getReviewList() {
-		return reviewList;
-	}
-	public void setReviewList(List<Review> reviewList) {
-		this.reviewList = reviewList;
-	}
 	public List<UserCustomList> getUserCustomList() {
 		return userCustomList;
 	}
 	public void setUserCustomList(List<UserCustomList> userCustomList) {
 		this.userCustomList = userCustomList;
+	}
+	public void setAccountId(String accountId) {
+		this.accountId = accountId;
 	}
 
 	@Override
@@ -55,12 +50,7 @@ public class User extends BaseEntity {
 				"name='" + name + '\'' +
 				", email='" + email + '\'' +
 				", accountId='" + accountId + '\'' +
-				", reviewList=" + reviewList +
 				", userCustomList=" + userCustomList +
 				'}';
-	}
-
-	public void setAccountId(String accountId) {
-		this.accountId = accountId;
 	}
 }

@@ -23,8 +23,6 @@ public class Movie extends BaseEntity {
     private String productionHouse;
     @ManyToMany(cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
     private List<Person> castAndCrewList;
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<Review> reviewList;
 
     public String getName() {
         return name;
@@ -130,29 +128,22 @@ public class Movie extends BaseEntity {
         this.castAndCrewList = castAndCrewList;
     }
 
-    public List<Review> getReviewList() {
-        return reviewList;
-    }
-
-    public void setReviewList(List<Review> reviewList) {
-        this.reviewList = reviewList;
-    }
-
-    public int getAverageRating() {
-        int ratingSum = 0;
-        for (Review review : reviewList) {
-            ratingSum += review.getRating();
-        }
-        return ratingSum / reviewList.size();
-    }
-
     @Override
     public String toString() {
-        return "Movie [name=" + name + ", storyLine=" + storyLine + ", language=" + language + ", image="
-                + Arrays.toString(image) + ", country=" + industry + ", genere=" + genere + ", trailerUrl=" + trailerUrl
-                + ", releaseDate=" + releaseDate + ", duration=" + duration + ", budget=" + budget + ", rated=" + rated
-                + ", productionHouse=" + productionHouse + ", castAndCrewList=" + castAndCrewList + ", reviewList="
-                + reviewList + "]";
+        return "Movie{" +
+                "name='" + name + '\'' +
+                ", storyLine='" + storyLine + '\'' +
+                ", language='" + language + '\'' +
+                ", image=" + Arrays.toString(image) +
+                ", industry='" + industry + '\'' +
+                ", genere='" + genere + '\'' +
+                ", trailerUrl='" + trailerUrl + '\'' +
+                ", releaseDate=" + releaseDate +
+                ", duration='" + duration + '\'' +
+                ", budget='" + budget + '\'' +
+                ", rated=" + rated +
+                ", productionHouse='" + productionHouse + '\'' +
+                ", castAndCrewList=" + castAndCrewList +
+                '}';
     }
-
 }
