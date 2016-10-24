@@ -11,7 +11,11 @@
 	<form th:action="@{/movie/create}" method="post">
 		<input type="text" name="name" placeholder="Movie Name"></input><br></br>
 		<textarea cols="50" rows="20" name="storyLine" placeholder="Storyline"></textarea><br></br>
-		<input type="text" name="language" placeholder="Language"></input><br></br>
+		<select name="language">
+			<option value="english">English</option>
+			<option value="bangla">Bangla</option>
+			<option value="hindi">Hindi</option>
+		</select><br></br>
 		Image:<br></br>
 		<input type="file" name="image"></input><br></br>
 		Movie Industry:<br></br>
@@ -21,7 +25,11 @@
 			<option value="dhallywood">Dhallywood</option>
 			<option value="tallywood">Tallywood</option>
 		</select><br></br>
-		<input type="text" name="genere" placeholder="Genere"></input><br></br>
+		<select name="genere">
+			<option value="action">Action</option>
+			<option value="romantic">Romantic</option>
+			<option value="drama">Drama</option>
+		</select><br></br>
 		<input type="text" name="trailerUrl" placeholder="Trailer Url"></input><br></br>
 		Release Date:<br></br>
 		<input type="date" name="releaseDate"></input><br></br>

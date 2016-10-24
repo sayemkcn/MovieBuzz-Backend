@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"></meta>
+    <title>Add New Movie</title>
+</head>
+<body>
+
+<span th:if="${param.message != null}" th:text="${param.message[0]}"></span>
+
+<form th:action="@{/movie/update/}+${movie.getUniqueId()}" method="post">
+    <input type="text" name="name" placeholder="Movie Name" th:value="${movie?.getName()}"></input><br></br>
+    <textarea cols="50" rows="20" name="storyLine" placeholder="Storyline" th:text="${movie?.getStoryLine()}"></textarea><br></br>
+    <select name="language">
+        <option value="english" th:selected="${movie?.getLanguage()?.equals('english')}">English</option>
+        <option value="bangla" th:selected="${movie?.getLanguage()?.equals('bangla')}">Bangla</option>
+        <option value="hindi" th:selected="${movie?.getLanguage()?.equals('hindi')}">Hindi</option>
+    </select><br></br>
+    Image:<br></br>
+    <input type="file" name="image"></input><br></br>
+    Movie Industry:<br></br>
+    <select name="industry">
+        <option th:selected="${movie?.getIndustry()?.equals('hollywood')}" value="hollywood">Hollywood</option>
+        <option th:selected="${movie?.getIndustry()?.equals('bollywood')}" value="bollywood">Bollywood</option>
+        <option th:selected="${movie?.getIndustry()?.equals('dhallywood')}" value="dhallywood">Dhallywood</option>
+        <option th:selected="${movie?.getIndustry()?.equals('tallywood')}" value="tallywood">Tallywood</option>
+    </select><br></br>
+    <select name="genere">
+        <option value="action" th:selected="${movie?.getGenere()?.equals('action')}">Action</option>
+        <option value="romantic" th:selected="${movie?.getGenere()?.equals('romantic')}">Romantic</option>
+        <option value="drama" th:selected="${movie?.getGenere()?.equals('drama')}">Drama</option>
+    </select><br></br>
+    <input type="text" name="trailerUrl" placeholder="Trailer Url" th:value="${movie?.getTrailerUrl()}"></input><br></br>
+    Release Date:<br></br>
+    <input type="date" name="releaseDate"></input><br></br>
+    <input type="text" name="duration" placeholder="Movie Duration" th:value="${movie?.getDuration()}"></input><br></br>
+    <input type="text" name="budget" placeholder="Budget" th:value="${movie?.getBudget()}"></input><br></br>
+    Rated:<br></br>
+    <select name="rated">
+        <option value="g" th:selected="${movie?.getRated()=='g'}">G</option>
+        <option value="r" th:selected="${movie?.getRated()=='r'}">R</option>
+        <option value="a" th:selected="${movie?.getRated()=='a'}">A</option>
+    </select><br></br>
+    <input type="text" name="productionHouse" placeholder="Production House" th:value="${movie?.getProductionHouse()}"></input><br></br>
+    <div>
+        Cast and Crew list:<br></br>
+        <select name="personIds" th:if="${personList != null}" multiple="multiple">
+            <option th:each="person : ${personList}" th:value="${person.getUniqueId()}">
+                <span th:text="${person.getName()}"></span>
+            </option>
+        </select><a th:href="@{/person/create}">Create New Cast/Crew</a>
+    </div>
+
+    <button type="submit">Submit</button>
+</form>
+
+<br></br>
+</body>
+</html>
