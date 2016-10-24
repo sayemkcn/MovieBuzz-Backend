@@ -18,8 +18,6 @@ public class Person extends BaseEntity {
 	private String bio;
 	private String[] awards;
 	private String[] socialLinks;
-	@ManyToMany(cascade=CascadeType.ALL)
-	private List<Movie> movieList;
 
 	public String getName() {
 		return name;
@@ -71,20 +69,15 @@ public class Person extends BaseEntity {
 		this.socialLinks = socialLinks;
 	}
 
-	public List<Movie> getMovieList() {
-		return movieList;
-	}
-
-	public void setMovieList(List<Movie> movieList) {
-		this.movieList = movieList;
-	}
-
-	@Override
-	public String toString() {
-		return "Person [name=" + name + ", designations=" + Arrays.toString(designations) + ", birthDate=" + birthDate
-				+ ", bio=" + bio + ", awards=" + Arrays.toString(awards) + ", socialLinks="
-				+ Arrays.toString(socialLinks) + ", movieList=" + movieList + "]";
-	}
-
-
+    @Override
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", designations=" + Arrays.toString(designations) +
+                ", birthDate=" + birthDate +
+                ", bio='" + bio + '\'' +
+                ", awards=" + Arrays.toString(awards) +
+                ", socialLinks=" + Arrays.toString(socialLinks) +
+                '}';
+    }
 }

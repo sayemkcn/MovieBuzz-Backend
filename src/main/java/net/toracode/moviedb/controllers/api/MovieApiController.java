@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,18 +24,37 @@ public class MovieApiController {
 		return new ResponseEntity<List<Movie>>(this.movieService.getMovieListPaginated(start, size), HttpStatus.OK);
 	}
 
+    @RequestMapping(value = "/{id}",method = RequestMethod.GET)
+    public ResponseEntity movieById(@PathVariable("id") Long id){
+        Movie movie = this.movieService.getMovie(id);
+        if (movie==null)
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity(movie,HttpStatus.OK);
+    }
+
 	@RequestMapping(value = "/genere/{genere}",method = RequestMethod.GET)
 	public ResponseEntity<List<Movie>> moviesByGenerePaginated(@PathVariable("genere") String genere,@RequestParam("page") int page, @RequestParam("size") int size){
-		return new ResponseEntity<List<Movie>>(this.movieService.getMovieByGenere(genere,page,size),HttpStatus.OK);
+		List<Movie> movieList = this.movieService.getMovieByGenere(genere,page,size);
+        if (movieList==null || movieList.isEmpty())
+            return new ResponseEntity<List<Movie>>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<List<Movie>>(movieList,HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/industry/{industry}",method = RequestMethod.GET)
 	public ResponseEntity<List<Movie>> moviesByIndustryPaginated(@PathVariable("industry") String industry,@RequestParam("page") int page,@RequestParam("size") int size){
-		return new ResponseEntity<List<Movie>>(this.movieService.getMovieByIndustry(industry,page,size),HttpStatus.OK);
+		List<Movie> movieList = this.movieService.getMovieByIndustry(industry,page,size);
+        if (movieList==null || movieList.isEmpty()){
+            return new ResponseEntity<List<Movie>>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<Movie>>(movieList,HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/latest",method = RequestMethod.GET)
 	public ResponseEntity<List<Movie>> latestAddedMovies(@RequestParam("page") int page,@RequestParam("size") int size){
-		return new ResponseEntity<List<Movie>>(this.movieService.getLatestMovies(page,size),HttpStatus.OK);
+		List<Movie> movieList = this.movieService.getLatestMovies(page,size);
+            if (movieList==null || movieList.isEmpty()){
+                return new ResponseEntity<List<Movie>>(HttpStatus.NO_CONTENT);
+            }
+        return new ResponseEntity<List<Movie>>(movieList,HttpStatus.OK);
 	}
 }
