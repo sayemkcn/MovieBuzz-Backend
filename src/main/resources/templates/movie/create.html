@@ -5,6 +5,9 @@
 <title>Add New Movie</title>
 </head>
 <body>
+
+	<span th:if="${param.message != null}" th:text="${param.message[0]}"></span>
+
 	<form th:action="@{/movie/create}" method="post">
 		<input type="text" name="name" placeholder="Movie Name"></input><br></br>
 		<textarea cols="50" rows="20" name="storyLine" placeholder="Storyline"></textarea><br></br>
@@ -34,7 +37,7 @@
 		<div>
 			Cast and Crew list:<br></br>
 			<select name="personIds" th:if="${personList != null}" multiple="multiple">
-				<option th:each="person : ${personList}" th:value="${person.getUserId()}">
+				<option th:each="person : ${personList}" th:value="${person.getUniqueId()}">
 					<span th:text="${person.getName()}"></span>
 				</option>
 			</select><a th:href="@{/person/create}">Create New Cast/Crew</a>
@@ -44,6 +47,5 @@
 	</form>
 	
 	<br></br>
-	<span th:if="${movie != null}" th:text="${movie.toString()}"></span>
 </body>
 </html>

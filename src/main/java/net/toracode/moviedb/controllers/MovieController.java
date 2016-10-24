@@ -39,6 +39,6 @@ public class MovieController {
 		movie.setCastAndCrewList(personList);
 		movie = movieService.save(movie);
 		System.out.println(movie.toString());
-		return "movie/create";
+		return "redirect:/movie/create?message=Successfully created movie!";
 	}
 }

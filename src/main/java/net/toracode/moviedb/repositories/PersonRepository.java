@@ -11,6 +11,6 @@ import net.toracode.moviedb.entities.Person;
 
 @Repository
 public interface PersonRepository extends JpaRepository<Person, Long> {
-	@Query("FROM Person P WHERE P.userId IN :ids")
+	@Query("FROM Person P WHERE P.uniqueId IN :ids")
 	List<Person> findByIdIn(@Param("ids") Long[] ids);
 }
