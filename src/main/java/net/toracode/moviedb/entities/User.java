@@ -2,6 +2,7 @@ package net.toracode.moviedb.entities;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -16,11 +17,13 @@ public class User extends BaseEntity {
 	@Email
 	private String email;
 	@Size(min = 6, max = 50)
-	private String password;
-	@OneToMany
+	private String accountId;
+
+	@OneToMany(cascade = CascadeType.ALL)
 	private List<Review> reviewList;
 	@OneToMany
 	private List<UserCustomList> userCustomList;
+
 	public String getName() {
 		return name;
 	}
@@ -32,12 +35,6 @@ public class User extends BaseEntity {
 	}
 	public void setEmail(String email) {
 		this.email = email;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
 	}
 	public List<Review> getReviewList() {
 		return reviewList;
@@ -51,11 +48,19 @@ public class User extends BaseEntity {
 	public void setUserCustomList(List<UserCustomList> userCustomList) {
 		this.userCustomList = userCustomList;
 	}
+
 	@Override
 	public String toString() {
-		return "User [name=" + name + ", email=" + email + ", password=" + password + ", reviewList=" + reviewList
-				+ ", userCustomList=" + userCustomList + "]";
+		return "User{" +
+				"name='" + name + '\'' +
+				", email='" + email + '\'' +
+				", accountId='" + accountId + '\'' +
+				", reviewList=" + reviewList +
+				", userCustomList=" + userCustomList +
+				'}';
 	}
-	
-	
+
+	public void setAccountId(String accountId) {
+		this.accountId = accountId;
+	}
 }
