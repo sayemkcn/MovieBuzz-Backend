@@ -28,7 +28,15 @@ public class MovieService {
 
 	@Transactional(readOnly=true)
 	public List<Movie> getMovieListPaginated(int pageNumber, int size) {
-		Page<Movie> page = movieRepo.findAll(new PageRequest(pageNumber, size));
+		Page<Movie> page = this.movieRepo.findAll(new PageRequest(pageNumber, size));
+		return page.getContent();
+	}
+	public List<Movie> getMovieByGenere(String genere,int pageNumber,int size){
+		Page<Movie> page = this.movieRepo.findByGenere(genere,new PageRequest(pageNumber,size));
+		return page.getContent();
+	}
+	public List<Movie> getMovieByIndustry(String industry,int pageNumber,int size){
+		Page<Movie> page = this.movieRepo.findByIndustry(industry,new PageRequest(pageNumber,size));
 		return page.getContent();
 	}
 }
