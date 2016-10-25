@@ -6,6 +6,7 @@ import net.toracode.moviedb.entities.User;
 import net.toracode.moviedb.services.MovieService;
 import net.toracode.moviedb.services.ReviewService;
 import net.toracode.moviedb.services.UserService;
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,8 +35,8 @@ public class ReviewApiController {
         // check if this fucking user has already a review in this movie
         // if true then restrict the fuck him from submitting another fucking review
         List<Review> reviewList = this.reviewService.getReviewByMovie(movie);
-        if (reviewList!= null){
-            for (Review r : reviewList){
+        if (reviewList != null) {
+            for (Review r : reviewList) {
                 if (r.getUser().getAccountId().equals(accountId))
                     return new ResponseEntity<Review>(HttpStatus.LOCKED);
             }
@@ -47,7 +48,26 @@ public class ReviewApiController {
         review.setUser(user);
         review.setMovie(movie);
         review = this.reviewService.saveReview(review);
-        return new ResponseEntity<Review>(review,HttpStatus.CREATED);
+        return new ResponseEntity<Review>(review, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/update/{reviewId}", method = RequestMethod.POST)
+    public ResponseEntity<Review> updateReview(@ModelAttribute Review review, BindingResult bindingResult, @PathVariable("reviewId") Long reviewId, @RequestParam("accountId") String accountId, @RequestParam("movieId") Long movieId) {
+        if (bindingResult.hasErrors())
+            return new ResponseEntity<Review>(HttpStatus.BAD_REQUEST);
+        review.setUniqueId(reviewId);
+        User user = this.userService.getUserByAccountId(accountId);
+        if (user == null) {
+            return new ResponseEntity<Review>(HttpStatus.FORBIDDEN);
+        }
+        review.setUser(user);
+        Movie movie = this.movieService.getMovie(movieId);
+        if (movie == null) {
+            return new ResponseEntity<Review>(HttpStatus.NOT_ACCEPTABLE);
+        }
+        review.setMovie(movie);
+        review = this.reviewService.saveReview(review);
+        return new ResponseEntity<Review>(review, HttpStatus.CREATED);
     }
 
 }
