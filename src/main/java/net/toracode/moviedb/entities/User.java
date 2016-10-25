@@ -43,6 +43,9 @@ public class User extends BaseEntity {
 	public void setAccountId(String accountId) {
 		this.accountId = accountId;
 	}
+	public String getAccountId() {
+		return accountId;
+	}
 
 	@Override
 	public String toString() {

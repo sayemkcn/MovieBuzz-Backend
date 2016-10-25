@@ -22,12 +22,34 @@ public class UserApiController {
         if (user == null) {
             user = new User();
             user.setAccountId(accountId);
-            user.setName(name);
-            user.setEmail(email);
+            // check if params aren't passed for first time reg
+            if (name == null)
+                user.setName("Anonymous");
+            else
+                user.setName(name);
+            if (email == null)
+                user.setEmail("anonymous@toracode.net");
+            else
+                user.setEmail(email);
             this.userService.saveUser(user);
             return new ResponseEntity<User>(user, HttpStatus.CREATED);
-        }else {
-            return new ResponseEntity<User>(user,HttpStatus.FOUND);
+        } else {
+            return new ResponseEntity<User>(user, HttpStatus.FOUND);
         }
+    }
+
+    @RequestMapping(value = "/update/{accountId}", method = RequestMethod.POST)
+    public ResponseEntity<User> updateUser(@PathVariable("accountId") String accountId, @RequestParam("name") String name, @RequestParam("email") String email) {
+        if (name == null || name.length() < 3)
+            return new ResponseEntity<User>(HttpStatus.NOT_ACCEPTABLE);
+        User user = this.userService.getUserByAccountId(accountId);
+        if (user == null)
+            return new ResponseEntity<User>(HttpStatus.NOT_MODIFIED);
+        else {
+            user.setName(name);
+            user.setEmail(email);
+            user = this.userService.saveUser(user);
+        }
+        return new ResponseEntity<User>(user, HttpStatus.ACCEPTED);
     }
 }

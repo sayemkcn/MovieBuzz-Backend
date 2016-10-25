@@ -3,13 +3,14 @@ package net.toracode.moviedb.entities;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Review extends BaseEntity {
     private String title;
     private String message;
     private int rating;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @OneToOne
     private User user;
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Movie movie;

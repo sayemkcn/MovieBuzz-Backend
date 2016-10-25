@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * Created by sayemkcn on 10/25/16.
  */
@@ -29,6 +31,17 @@ public class ReviewApiController {
     public ResponseEntity<Review> createReview(@ModelAttribute Review review, BindingResult bindingResult, @RequestParam("accountId") String accountId, @RequestParam("movieId") Long movieId) {
         User user = this.userService.getUserByAccountId(accountId);
         Movie movie = this.movieService.getMovie(movieId);
+        // check if this fucking user has already a review in this movie
+        // if true then restrict the fuck him from submitting another fucking review
+        List<Review> reviewList = this.reviewService.getReviewByMovie(movie);
+        if (reviewList!= null){
+            for (Review r : reviewList){
+                if (r.getUser().getAccountId().equals(accountId))
+                    return new ResponseEntity<Review>(HttpStatus.LOCKED);
+            }
+        }
+
+        // end
         if (user == null || movie == null)
             return new ResponseEntity<Review>(HttpStatus.NOT_ACCEPTABLE);
         review.setUser(user);
