@@ -25,11 +25,11 @@ public class MovieApiController {
 	}
 
     @RequestMapping(value = "/{id}",method = RequestMethod.GET)
-    public ResponseEntity movieById(@PathVariable("id") Long id){
+    public ResponseEntity<Movie> movieById(@PathVariable("id") Long id){
         Movie movie = this.movieService.getMovie(id);
         if (movie==null)
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
-        return new ResponseEntity(movie,HttpStatus.OK);
+            return new ResponseEntity<Movie>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<Movie>(movie,HttpStatus.OK);
     }
 
 	@RequestMapping(value = "/genere/{genere}",method = RequestMethod.GET)
