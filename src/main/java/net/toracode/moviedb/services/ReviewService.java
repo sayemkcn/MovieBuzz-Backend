@@ -2,8 +2,11 @@ package net.toracode.moviedb.services;
 
 import net.toracode.moviedb.entities.Movie;
 import net.toracode.moviedb.entities.Review;
+import net.toracode.moviedb.entities.User;
 import net.toracode.moviedb.repositories.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +28,12 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public List<Review> getReviewByMovie(Movie movie){
+    public List<Review> getReviewListByMovie(Movie movie){
         return this.reviewRepo.findByMovie(movie);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Review> getReviewListByUserPaginated(User user,int page,int size) {
+        return this.reviewRepo.findByUser(user,new PageRequest(page,size, Sort.Direction.DESC,"uniqueId"));
     }
 }

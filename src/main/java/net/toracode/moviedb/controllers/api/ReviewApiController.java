@@ -34,7 +34,7 @@ public class ReviewApiController {
         Movie movie = this.movieService.getMovie(movieId);
         // check if this fucking user has already a review in this movie
         // if true then restrict the fuck him from submitting another fucking review
-        List<Review> reviewList = this.reviewService.getReviewByMovie(movie);
+        List<Review> reviewList = this.reviewService.getReviewListByMovie(movie);
         if (reviewList != null) {
             for (Review r : reviewList) {
                 if (r.getUser().getAccountId().equals(accountId))
@@ -68,6 +68,17 @@ public class ReviewApiController {
         review.setMovie(movie);
         review = this.reviewService.saveReview(review);
         return new ResponseEntity<Review>(review, HttpStatus.CREATED);
+    }
+
+    // MAKE PAGINATED
+    @RequestMapping(value = "/user/{accountId}", method = RequestMethod.GET)
+    public ResponseEntity<List<Review>> reviewListByUserPaginated(
+            @PathVariable("accountId") String accountId,
+            @RequestParam("page") int page,
+            @RequestParam("size") int size) {
+        User user = this.userService.getUserByAccountId(accountId);
+        List<Review> reviewList = this.reviewService.getReviewListByUserPaginated(user,page,size);
+        return new ResponseEntity<List<Review>>(reviewList, HttpStatus.OK);
     }
 
 }
