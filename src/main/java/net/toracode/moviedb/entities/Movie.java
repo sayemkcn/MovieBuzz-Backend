@@ -10,6 +10,7 @@ import javax.persistence.*;
 public class Movie extends BaseEntity {
     private String name;
     private String storyLine;
+    private String type;
     private String language;
     @Lob
     private byte[] image;
@@ -128,11 +129,20 @@ public class Movie extends BaseEntity {
         this.castAndCrewList = castAndCrewList;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "Movie{" +
                 "name='" + name + '\'' +
                 ", storyLine='" + storyLine + '\'' +
+                ", type='" + type + '\'' +
                 ", language='" + language + '\'' +
                 ", image=" + Arrays.toString(image) +
                 ", industry='" + industry + '\'' +

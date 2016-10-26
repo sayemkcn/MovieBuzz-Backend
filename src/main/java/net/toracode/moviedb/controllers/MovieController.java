@@ -29,7 +29,7 @@ public class MovieController {
             page = 0;
             size = 10;
         }
-        model.addAttribute("movieList", this.movieService.getLatestMovies(page, size));
+        model.addAttribute("movieList", this.movieService.getMovieListPaginated(page, size));
         return "movie/all";
     }
 
@@ -47,7 +47,7 @@ public class MovieController {
         movie.setCastAndCrewList(personList);
         movie = this.movieService.save(movie);
         System.out.println(movie.toString());
-        return "redirect:/movie/create?message=Successfully created movie!";
+        return "redirect:/movie?message=Successfully created movie!";
     }
 
     @RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
@@ -66,7 +66,7 @@ public class MovieController {
         List<Person> personList = this.personService.personListByIds(personIds);
         movie.setCastAndCrewList(personList);
         this.movieService.save(movie);
-        return "redirect:/movie/create?message=Successfully updated " + movie.getName();
+        return "redirect:/movie?message=Successfully updated " + movie.getName();
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)

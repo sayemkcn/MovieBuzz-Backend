@@ -6,10 +6,12 @@
 </head>
 <body>
 
-	<span th:if="${param.message != null}" th:text="${param.message[0]}"></span>
-
 	<form th:action="@{/movie/create}" method="post">
 		<input type="text" name="name" placeholder="Movie Name"></input><br></br>
+		<select name="type">
+			<option value="movie">Movie</option>
+			<option value="tvseries">Tv Series</option>
+		</select><br></br>
 		<textarea cols="50" rows="20" name="storyLine" placeholder="Storyline"></textarea><br></br>
 		<select name="language">
 			<option value="english">English</option>

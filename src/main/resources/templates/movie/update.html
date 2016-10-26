@@ -10,6 +10,10 @@
 
 <form th:action="@{/movie/update/}+${movie.getUniqueId()}" method="post">
     <input type="text" name="name" placeholder="Movie Name" th:value="${movie?.getName()}"></input><br></br>
+    <select name="type">
+        <option th:selected="${movie?.getType()?.equals('movie')}" value="movie">Movie</option>
+        <option th:selected="${movie?.getType()?.equals('tvseries')}" value="tvseries">Tv Series</option>
+    </select><br></br>
     <textarea cols="50" rows="20" name="storyLine" placeholder="Storyline" th:text="${movie?.getStoryLine()}"></textarea><br></br>
     <select name="language">
         <option value="english" th:selected="${movie?.getLanguage()?.equals('english')}">English</option>
@@ -37,9 +41,9 @@
     <input type="text" name="budget" placeholder="Budget" th:value="${movie?.getBudget()}"></input><br></br>
     Rated:<br></br>
     <select name="rated">
-        <option value="g" th:selected="${movie?.getRated()=='g'}">G</option>
-        <option value="r" th:selected="${movie?.getRated()=='r'}">R</option>
-        <option value="a" th:selected="${movie?.getRated()=='a'}">A</option>
+        <option value="g" th:selected="${new String().valueOf(movie?.getRated()).equals('g')}">G</option>
+        <option value="r" th:selected="${new String().valueOf(movie?.getRated()).equals('r')}">R</option>
+        <option value="a" th:selected="${new String().valueOf(movie?.getRated()).equals('a')}">A</option>
     </select><br></br>
     <input type="text" name="productionHouse" placeholder="Production House" th:value="${movie?.getProductionHouse()}"></input><br></br>
     <div>

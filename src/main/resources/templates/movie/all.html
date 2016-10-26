@@ -6,6 +6,8 @@
 </head>
 <body>
 
+    <span th:if="${param.message != null}" th:text="${param.message[0]}"></span>
+
     <div th:if="${movieList != null}">
 
         <table>
