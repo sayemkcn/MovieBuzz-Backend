@@ -8,7 +8,7 @@
 
     <span th:if="${param.message != null}" th:text="${param.message[0]}"></span>
 
-    <div th:if="${movieList != null}">
+    <div th:if="${movieList != null}" >
 
         <table>
             <th>
@@ -20,6 +20,7 @@
                 <td>Delete</td>
             </th>
             <tr th:each="movie : ${movieList}">
+                <td></td>
                 <td th:text="${movie.getUniqueId()}"></td>
                 <td>
                     <a th:href="@{/movie/}+${movie.getUniqueId()}">

@@ -13,4 +13,5 @@ import net.toracode.moviedb.entities.Person;
 public interface PersonRepository extends JpaRepository<Person, Long> {
 	@Query("FROM Person P WHERE P.uniqueId IN :ids")
 	List<Person> findByIdIn(@Param("ids") Long[] ids);
+
 }

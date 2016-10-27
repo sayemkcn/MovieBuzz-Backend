@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8"></meta>
+	<title>All Movies</title>
+</head>
+<body>
+
+<span th:if="${param.message != null}" th:text="${param.message[0]}"></span>
+
+<div th:if="${personList != null}">
+
+	<table >
+		<th>
+			<td>ID</td>
+			<td>Name</td>
+			<td>Birth Date</td>
+			<td>Desigations</td>
+			<td>Edit</td>
+			<td>Delete</td>
+		</th>
+		<tr th:each="person : ${personList}">
+			<td></td>
+			<td th:text="${person.getUniqueId()}"></td>
+			<td>
+				<a th:href="@{/person/}+${person.getUniqueId()}">
+					<span th:text="${person.getName()}"></span>
+				</a>
+			</td>
+			<td th:text="${person.getBirthDate()}"></td>
+			<td th:text="${person.commaSeperatedArrayElements(person.getDesignations())}"></td>
+			<td>
+				<a th:href="@{/person/update/}+${person.getUniqueId()}">Edit</a>
+			</td>
+			<td>
+				<form th:action="@{/person/delete/}+${person.getUniqueId()}" method="post">
+					<button type="submit">Delete</button>
+				</form>
+			</td>
+		</tr>
+	</table>
+
+</div>
+
+</body>
+</html>

@@ -69,6 +69,10 @@ public class Person extends BaseEntity {
 		this.socialLinks = socialLinks;
 	}
 
+	public String commaSeperatedArrayElements(String[] array){
+		return String.join(",",array);
+	}
+
     @Override
     public String toString() {
         return "Person{" +

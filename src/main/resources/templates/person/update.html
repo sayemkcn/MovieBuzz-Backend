@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<title>Create cast and crews</title>
+</head>
+<body>
+	<div>
+		<span th:if="${message != null}" th:text="${message}"></span>
+	</div>
+	<form th:action="@{/person/update/}+${person.getUniqueId()}" method="post">
+		<input type="text" name="name" placeholder="Name" th:value="${person?.getName()}"></input><br></br>
+		Designation:<br></br>
+		<input type="text" name="designations" th:value="${person?.commaSeperatedArrayElements((person?.getDesignations()))}" placeholder="Designations(Seperated by commas)"></input><br></br>
+		Birth Date:<br></br>
+		<input type="date" name="birthDate" placeholder="Birth Date"></input><br></br>
+		<textarea rows="20" cols="50" name="bio" placeholder="Bio" th:text="${person?.getBio()}"></textarea><br></br>
+		<input type="text" name="awards" placeholder="Awards (Seperated by commas)" th:value="${person?.commaSeperatedArrayElements(person?.getAwards())}"></input><br></br>
+		<input type="text" name="socialLinks" placeholder="Social Links(Seperated by commas)" th:value="${person?.commaSeperatedArrayElements(person?.getSocialLinks())}"></input><br></br>
+		
+		<button type="submit">Create</button>
+	</form>
+
+</body>
+</html>
