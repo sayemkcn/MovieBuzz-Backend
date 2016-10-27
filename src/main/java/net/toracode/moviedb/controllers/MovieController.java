@@ -24,13 +24,23 @@ public class MovieController {
     private PersonService personService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public String allMovies(@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model model) {
+    public String allMovies(@RequestParam(value = "page", required = false) Integer page,
+                            @RequestParam(value = "size", required = false) Integer size,
+                            Model model) {
         if (page == null || size == null) {
             page = 0;
             size = 10;
         }
         model.addAttribute("movieList", this.movieService.getMovieListPaginated(page, size));
+        model.addAttribute("page",page);
         return "movie/all";
+    }
+
+    @RequestMapping(value = "/{id}",method = RequestMethod.GET)
+    public String movieDetails(@PathVariable("id") Long id,Model model){
+        Movie movie = this.movieService.getMovie(id);
+        model.addAttribute("movie",movie);
+        return "movie/view";
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
@@ -40,7 +50,8 @@ public class MovieController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String addMovie(@ModelAttribute("movie") Movie movie, BindingResult bindingResult, @RequestParam("personIds") Long[] personIds) {
+    public String addMovie(@ModelAttribute("movie") Movie movie, BindingResult bindingResult,
+                           @RequestParam("personIds") Long[] personIds) {
         if (bindingResult.hasErrors())
             System.out.print(bindingResult.toString());
         List<Person> personList = this.personService.personListByIds(personIds);
@@ -59,7 +70,9 @@ public class MovieController {
     }
 
     @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
-    public String updateMovie(@ModelAttribute("movie") Movie movie, BindingResult bindingResult, @PathVariable("id") Long id, @RequestParam(value = "personIds", required = false) Long[] personIds) {
+    public String updateMovie(@ModelAttribute("movie") Movie movie, BindingResult bindingResult,
+                              @PathVariable("id") Long id,
+                              @RequestParam(value = "personIds", required = false) Long[] personIds) {
         if (bindingResult.hasErrors())
             System.out.print(bindingResult.toString());
         movie.setUniqueId(id);

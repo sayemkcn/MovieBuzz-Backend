@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"></meta>
+    <title>Details</title>
+</head>
+<body>
+
+    <p>ডিটেইলস দেখানোর এত টাইম নাই। নিচের toString() দেইখাই খুশি থাকেন।</p>
+
+    <div th:if="${person != null}">
+        <span th:text="${person.toString()}"></span>
+    </div>
+
+</body>
+</html>

@@ -6,19 +6,22 @@
 </head>
 <body>
 
-    <span th:if="${param.message != null}" th:text="${param.message[0]}"></span>
+<span th:if="${param.message != null}" th:text="${param.message[0]}"></span>
 
-    <div th:if="${movieList != null}" >
+<div th:if="${movieList != null}">
 
-        <table>
+    <table>
+        <thead>
             <th>
-                <td>ID</td>
-                <td>Name</td>
-                <td>Genere</td>
-                <td>Rated</td>
-                <td>Edit</td>
-                <td>Delete</td>
+            <td>ID</td>
+            <td>Name</td>
+            <td>Genere</td>
+            <td>Rated</td>
+            <td>Edit</td>
+            <td>Delete</td>
             </th>
+        </thead>
+        <tbody>
             <tr th:each="movie : ${movieList}">
                 <td></td>
                 <td th:text="${movie.getUniqueId()}"></td>
@@ -38,9 +41,20 @@
                     </form>
                 </td>
             </tr>
-        </table>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td></td>
+                <td><a th:hidden="${page==0}" th:href="@{/movie(page=${page-1},size=10)}">Previous</a></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><a th:hidden="${movieList == null || movieList.isEmpty()}" th:href="@{/movie(page=${page+1},size=10)}">Next</a></td>
+            </tr>
+        </tfoot>
+    </table>
 
-    </div>
+</div>
 
 </body>
 </html>

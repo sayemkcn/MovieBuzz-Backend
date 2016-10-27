@@ -52,7 +52,9 @@ public class MovieApiController {
 
     // returns movie list by its genere paginated sort::desc
     @RequestMapping(value = "/genere/{genere}", method = RequestMethod.GET)
-    public ResponseEntity<List<Movie>> moviesByGenerePaginated(@PathVariable("genere") String genere, @RequestParam("page") int page, @RequestParam("size") int size) {
+    public ResponseEntity<List<Movie>> moviesByGenerePaginated(@PathVariable("genere") String genere,
+                                                               @RequestParam("page") int page,
+                                                               @RequestParam("size") int size) {
         List<Movie> movieList = this.movieService.getMovieByGenere(genere, page, size);
         if (movieList == null || movieList.isEmpty())
             return new ResponseEntity<List<Movie>>(HttpStatus.NO_CONTENT);
@@ -61,7 +63,9 @@ public class MovieApiController {
 
     // returns movie list by industry (ex. hollywood,bollywood..) paginated sort:desc
     @RequestMapping(value = "/industry/{industry}", method = RequestMethod.GET)
-    public ResponseEntity<List<Movie>> moviesByIndustryPaginated(@PathVariable("industry") String industry, @RequestParam("page") int page, @RequestParam("size") int size) {
+    public ResponseEntity<List<Movie>> moviesByIndustryPaginated(@PathVariable("industry") String industry,
+                                                                 @RequestParam("page") int page,
+                                                                 @RequestParam("size") int size) {
         List<Movie> movieList = this.movieService.getMovieByIndustry(industry, page, size);
         if (movieList == null || movieList.isEmpty()) {
             return new ResponseEntity<List<Movie>>(HttpStatus.NO_CONTENT);

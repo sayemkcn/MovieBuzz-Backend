@@ -26,7 +26,15 @@ public class PersonController {
         else  // else return paginated items
             personList = this.personService.getAllPersonsPaginated(page, size);
         model.addAttribute("personList", personList);
+        model.addAttribute("page", page);
         return "person/all";
+    }
+
+    @RequestMapping(value = "/{id}",method = RequestMethod.GET)
+    public String personDetails(@PathVariable("id") Long id,Model model){
+        Person person = this.personService.getPersonById(id);
+        model.addAttribute("person",person);
+        return "person/view";
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
