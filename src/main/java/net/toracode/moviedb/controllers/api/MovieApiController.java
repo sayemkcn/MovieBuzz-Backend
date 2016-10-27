@@ -32,6 +32,16 @@ public class MovieApiController {
         return new ResponseEntity<List<Movie>>(movieList, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/type/{type}",method = RequestMethod.GET)
+    public ResponseEntity<List<Movie>> movieByType(@PathVariable("type") String type,
+                                                   @RequestParam("page") int page,
+                                                   @RequestParam("size") int size){
+        List<Movie> movieList = this.movieService.getMovieByType(type,page,size);
+        if (movieList==null)
+            return new ResponseEntity<List<Movie>>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<List<Movie>>(movieList,HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Movie> movieById(@PathVariable("id") Long id) {
         Movie movie = this.movieService.getMovie(id);

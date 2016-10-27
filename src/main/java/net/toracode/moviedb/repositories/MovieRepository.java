@@ -9,6 +9,9 @@ import net.toracode.moviedb.entities.Movie;
 
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, Long> {
-	public Page<Movie> findByGenere(String genere,Pageable pagable);
-	public Page<Movie> findByIndustry(String genere,Pageable pagable);
+    Page<Movie> findByGenere(String genere, Pageable pagable);
+
+    Page<Movie> findByIndustry(String genere, Pageable pagable);
+
+    Page<Movie> findByType(String type, Pageable pageable);
 }

@@ -16,6 +16,7 @@ import net.toracode.moviedb.repositories.MovieRepository;
 @Service
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class MovieService {
+    private static final String FIELD_NAME = "uniqueId";
     @Autowired
     private MovieRepository movieRepo;
 
@@ -36,21 +37,25 @@ public class MovieService {
 
     @Transactional(readOnly = true)
     public List<Movie> getMovieListPaginated(int pageNumber, int size) {
-        Page<Movie> page = this.movieRepo.findAll(new PageRequest(pageNumber, size, Sort.Direction.DESC,"uniqueId"));
+        Page<Movie> page = this.movieRepo.findAll(new PageRequest(pageNumber, size, Sort.Direction.DESC, FIELD_NAME));
         return page.getContent();
     }
 
     @Transactional(readOnly = true)
     public List<Movie> getMovieByGenere(String genere, int pageNumber, int size) {
-        Page<Movie> page = this.movieRepo.findByGenere(genere, new PageRequest(pageNumber, size));
+        Page<Movie> page = this.movieRepo.findByGenere(genere, new PageRequest(pageNumber, size, Sort.Direction.DESC, FIELD_NAME));
         return page.getContent();
     }
 
     @Transactional(readOnly = true)
     public List<Movie> getMovieByIndustry(String industry, int pageNumber, int size) {
-        Page<Movie> page = this.movieRepo.findByIndustry(industry, new PageRequest(pageNumber, size));
+        Page<Movie> page = this.movieRepo.findByIndustry(industry, new PageRequest(pageNumber, size, Sort.Direction.DESC, FIELD_NAME));
         return page.getContent();
     }
 
-
+    @Transactional(readOnly = true)
+    public List<Movie> getMovieByType(String type, int pageNumber, int size) {
+        Page<Movie> page = this.movieRepo.findByType(type, new PageRequest(pageNumber, size, Sort.Direction.DESC, FIELD_NAME));
+        return page.getContent();
+    }
 }
