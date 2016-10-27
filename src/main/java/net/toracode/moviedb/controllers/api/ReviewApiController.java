@@ -29,7 +29,12 @@ public class ReviewApiController {
     private MovieService movieService;
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ResponseEntity<Review> createReview(@ModelAttribute Review review, BindingResult bindingResult, @RequestParam("accountId") String accountId, @RequestParam("movieId") Long movieId) {
+    public ResponseEntity<Review> createReview(@ModelAttribute Review review, BindingResult bindingResult,
+                                               @RequestParam("accountId") String accountId,
+                                               @RequestParam("movieId") Long movieId) {
+        if (bindingResult.hasErrors()){
+            return new ResponseEntity<Review>(HttpStatus.FORBIDDEN);
+        }
         User user = this.userService.getUserByAccountId(accountId);
         Movie movie = this.movieService.getMovie(movieId);
         // check if this fucking user has already a review in this movie
@@ -77,7 +82,7 @@ public class ReviewApiController {
             @RequestParam("page") int page,
             @RequestParam("size") int size) {
         User user = this.userService.getUserByAccountId(accountId);
-        List<Review> reviewList = this.reviewService.getReviewListByUserPaginated(user,page,size);
+        List<Review> reviewList = this.reviewService.getReviewListByUserPaginated(user, page, size);
         return new ResponseEntity<List<Review>>(reviewList, HttpStatus.OK);
     }
 

@@ -19,12 +19,10 @@ public class MovieApiController {
     @Autowired
     private MovieService movieService;
 
-    //	@RequestMapping(value = "", method = RequestMethod.GET)
-//	public ResponseEntity<List<Movie>> allMoviesPaginated(@RequestParam("page") int start, @RequestParam("size") int size) {
-//		return new ResponseEntity<List<Movie>>(this.movieService.getMovieListPaginated(start, size), HttpStatus.OK);
-//	}
+    // returns all movies paginated sort::desc
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public ResponseEntity<List<Movie>> latestAddedMovies(@RequestParam("page") int page, @RequestParam("size") int size) {
+    public ResponseEntity<List<Movie>> latestAddedMovies(@RequestParam("page") int page,
+                                                         @RequestParam("size") int size) {
         List<Movie> movieList = this.movieService.getMovieListPaginated(page, size);
         if (movieList == null || movieList.isEmpty()) {
             return new ResponseEntity<List<Movie>>(HttpStatus.NO_CONTENT);
@@ -32,16 +30,18 @@ public class MovieApiController {
         return new ResponseEntity<List<Movie>>(movieList, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/type/{type}",method = RequestMethod.GET)
+    // returns movie list by movie type {movie,tvseries..} sort::desc
+    @RequestMapping(value = "/type/{type}", method = RequestMethod.GET)
     public ResponseEntity<List<Movie>> movieByType(@PathVariable("type") String type,
                                                    @RequestParam("page") int page,
-                                                   @RequestParam("size") int size){
-        List<Movie> movieList = this.movieService.getMovieByType(type,page,size);
-        if (movieList==null)
+                                                   @RequestParam("size") int size) {
+        List<Movie> movieList = this.movieService.getMovieByType(type, page, size);
+        if (movieList == null)
             return new ResponseEntity<List<Movie>>(HttpStatus.NO_CONTENT);
-        return new ResponseEntity<List<Movie>>(movieList,HttpStatus.OK);
+        return new ResponseEntity<List<Movie>>(movieList, HttpStatus.OK);
     }
 
+    // returns movie by it's primary id
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Movie> movieById(@PathVariable("id") Long id) {
         Movie movie = this.movieService.getMovie(id);
@@ -50,6 +50,7 @@ public class MovieApiController {
         return new ResponseEntity<Movie>(movie, HttpStatus.OK);
     }
 
+    // returns movie list by its genere paginated sort::desc
     @RequestMapping(value = "/genere/{genere}", method = RequestMethod.GET)
     public ResponseEntity<List<Movie>> moviesByGenerePaginated(@PathVariable("genere") String genere, @RequestParam("page") int page, @RequestParam("size") int size) {
         List<Movie> movieList = this.movieService.getMovieByGenere(genere, page, size);
@@ -58,6 +59,7 @@ public class MovieApiController {
         return new ResponseEntity<List<Movie>>(movieList, HttpStatus.OK);
     }
 
+    // returns movie list by industry (ex. hollywood,bollywood..) paginated sort:desc
     @RequestMapping(value = "/industry/{industry}", method = RequestMethod.GET)
     public ResponseEntity<List<Movie>> moviesByIndustryPaginated(@PathVariable("industry") String industry, @RequestParam("page") int page, @RequestParam("size") int size) {
         List<Movie> movieList = this.movieService.getMovieByIndustry(industry, page, size);
@@ -65,6 +67,15 @@ public class MovieApiController {
             return new ResponseEntity<List<Movie>>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<List<Movie>>(movieList, HttpStatus.OK);
+    }
+
+    // search movie with a phrase
+    @RequestMapping(value = "/search/{phrase}", method = RequestMethod.GET)
+    public ResponseEntity<List<Movie>> searchMovie(@PathVariable("phrase") String phrase) {
+        List<Movie> movieList = this.movieService.getMoviBySearchPhrase(phrase);
+        if (movieList == null || movieList.isEmpty())
+            return new ResponseEntity<List<Movie>>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<List<Movie>>(movieList, HttpStatus.FOUND);
     }
 
 

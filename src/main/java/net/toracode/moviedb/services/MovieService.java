@@ -58,4 +58,9 @@ public class MovieService {
         Page<Movie> page = this.movieRepo.findByType(type, new PageRequest(pageNumber, size, Sort.Direction.DESC, FIELD_NAME));
         return page.getContent();
     }
+
+    @Transactional(readOnly = true)
+    public List<Movie> getMoviBySearchPhrase(String phrase){
+        return this.movieRepo.findByNameContaining(phrase);
+    }
 }
