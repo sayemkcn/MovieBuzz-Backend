@@ -6,7 +6,7 @@
 </head>
 <body>
 
-	<form th:action="@{/movie/create}" method="post">
+	<form th:action="@{/movie/create}" method="post" enctype="multipart/form-data">
 		<input type="text" name="name" placeholder="Movie Name"></input><br></br>
 		<select name="type">
 			<option value="movie">Movie</option>

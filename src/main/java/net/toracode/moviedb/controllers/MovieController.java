@@ -1,8 +1,10 @@
 package net.toracode.moviedb.controllers;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.toracode.moviedb.Commons.ImageValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,7 @@ import net.toracode.moviedb.entities.Person;
 import net.toracode.moviedb.entities.Review;
 import net.toracode.moviedb.services.MovieService;
 import net.toracode.moviedb.services.PersonService;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping(value = "/movie")
@@ -22,6 +25,8 @@ public class MovieController {
     private MovieService movieService;
     @Autowired
     private PersonService personService;
+    @Autowired
+    private ImageValidator imageValidator;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String allMovies(@RequestParam(value = "page", required = false) Integer page,
@@ -32,14 +37,14 @@ public class MovieController {
             size = 10;
         }
         model.addAttribute("movieList", this.movieService.getMovieListPaginated(page, size));
-        model.addAttribute("page",page);
+        model.addAttribute("page", page);
         return "movie/all";
     }
 
-    @RequestMapping(value = "/{id}",method = RequestMethod.GET)
-    public String movieDetails(@PathVariable("id") Long id,Model model){
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public String movieDetails(@PathVariable("id") Long id, Model model) {
         Movie movie = this.movieService.getMovie(id);
-        model.addAttribute("movie",movie);
+        model.addAttribute("movie", movie);
         return "movie/view";
     }
 
@@ -50,10 +55,13 @@ public class MovieController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String addMovie(@ModelAttribute("movie") Movie movie, BindingResult bindingResult,
-                           @RequestParam("personIds") Long[] personIds) {
+    public String addMovie(@ModelAttribute("movie") Movie movie, BindingResult bindingResult, @RequestParam("image") MultipartFile multipartFile,
+                           @RequestParam("personIds") Long[] personIds) throws IOException {
         if (bindingResult.hasErrors())
             System.out.print(bindingResult.toString());
+        if (this.imageValidator.isImageValid(multipartFile)) {
+            movie.setImage(multipartFile.getBytes());
+        }
         List<Person> personList = this.personService.personListByIds(personIds);
         movie.setCastAndCrewList(personList);
         movie = this.movieService.save(movie);

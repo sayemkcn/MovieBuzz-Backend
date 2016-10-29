@@ -1,5 +1,7 @@
 package net.toracode.moviedb.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -13,6 +15,7 @@ public class Movie extends BaseEntity {
     private String type;
     private String language;
     @Lob
+    @JsonIgnore
     private byte[] image;
     private String industry;
     private String genere;

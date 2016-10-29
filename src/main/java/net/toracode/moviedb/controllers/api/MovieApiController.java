@@ -2,10 +2,12 @@ package net.toracode.moviedb.controllers.api;
 
 import java.util.List;
 
+import net.toracode.moviedb.Commons.ImageValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,7 +33,7 @@ public class MovieApiController {
     }
 
     // returns movie list by movie type {movie,tvseries..} sort::desc
-    @RequestMapping(value = "/type/{type}", method = RequestMethod.GET)
+    @RequestMapping(value = "/type/{type}", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Movie>> movieByType(@PathVariable("type") String type,
                                                    @RequestParam("page") int page,
                                                    @RequestParam("size") int size) {
@@ -82,5 +84,9 @@ public class MovieApiController {
         return new ResponseEntity<List<Movie>>(movieList, HttpStatus.FOUND);
     }
 
+    @RequestMapping(value = "/image/{id}", method = RequestMethod.GET)
+    public byte[] getImage(@PathVariable("id") Long id) {
+        return this.movieService.getMovie(id).getImage();
+    }
 
 }
