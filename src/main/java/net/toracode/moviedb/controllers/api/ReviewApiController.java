@@ -28,6 +28,19 @@ public class ReviewApiController {
     @Autowired
     private MovieService movieService;
 
+
+    @RequestMapping(value = "/movie/{movieId}",method = RequestMethod.GET)
+    public ResponseEntity<List<Review>> reviewListForMovie(@PathVariable("movieId") Long movieId,
+                                                           @RequestParam("page") int page,
+                                                           @RequestParam("size") int size){
+        Movie movie = this.movieService.getMovie(movieId);
+        List<Review> reviewList = this.reviewService.getReviewListByMovie(movie,page,size);
+        if (reviewList==null || reviewList.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<Review>>(reviewList,HttpStatus.FOUND);
+    }
+
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<Review> createReview(@ModelAttribute Review review, BindingResult bindingResult,
                                                @RequestParam("accountId") String accountId,

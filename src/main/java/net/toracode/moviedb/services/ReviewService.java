@@ -17,23 +17,28 @@ import java.util.List;
  * Created by sayemkcn on 10/25/16.
  */
 @Service
-@Transactional(propagation = Propagation.SUPPORTS,readOnly = true)
+@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class ReviewService {
     @Autowired
     private ReviewRepository reviewRepo;
 
-    @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
-    public Review saveReview(Review review){
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+    public Review saveReview(Review review) {
         return this.reviewRepo.save(review);
     }
 
     @Transactional(readOnly = true)
-    public List<Review> getReviewListByMovie(Movie movie){
+    public List<Review> getReviewListByMovie(Movie movie) {
         return this.reviewRepo.findByMovie(movie);
     }
 
     @Transactional(readOnly = true)
-    public List<Review> getReviewListByUserPaginated(User user,int page,int size) {
-        return this.reviewRepo.findByUser(user,new PageRequest(page,size, Sort.Direction.DESC,"uniqueId"));
+    public List<Review> getReviewListByMovie(Movie movie, int page, int size) {
+        return this.reviewRepo.findByMovie(movie, new PageRequest(page, size, Sort.Direction.DESC, "uniqueId"));
+    }
+
+    @Transactional(readOnly = true)
+    public List<Review> getReviewListByUserPaginated(User user, int page, int size) {
+        return this.reviewRepo.findByUser(user, new PageRequest(page, size, Sort.Direction.DESC, "uniqueId"));
     }
 }
