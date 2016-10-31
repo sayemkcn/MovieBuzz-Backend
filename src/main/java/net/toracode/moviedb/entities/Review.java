@@ -9,7 +9,7 @@ import javax.persistence.OneToOne;
 public class Review extends BaseEntity {
     private String title;
     private String message;
-    private int rating;
+    private float rating;
     @OneToOne
     private User user;
     @ManyToOne(cascade = CascadeType.PERSIST)
@@ -31,11 +31,11 @@ public class Review extends BaseEntity {
         this.message = message;
     }
 
-    public int getRating() {
+    public float getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(float rating) {
         this.rating = rating;
     }
 

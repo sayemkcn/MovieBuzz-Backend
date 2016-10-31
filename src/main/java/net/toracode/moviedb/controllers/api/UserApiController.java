@@ -24,11 +24,11 @@ public class UserApiController {
             user = new User();
             user.setAccountId(accountId);
             // check if params aren't passed for first time reg
-            if (name == null)
+            if (name == null || name.isEmpty())
                 user.setName("Anonymous");
             else
                 user.setName(name);
-            if (email == null)
+            if (email == null || email.isEmpty())
                 user.setEmail("anonymous@toracode.net");
             else
                 user.setEmail(email);
