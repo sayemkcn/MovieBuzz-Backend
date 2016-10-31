@@ -16,6 +16,7 @@ public class UserApiController {
     @Autowired
     private UserService userService;
 
+    // returns user entity if already registered. if not create a new user of that is
     @RequestMapping(value = "/{accountId}", method = RequestMethod.POST)
     public ResponseEntity<User> createUser(@PathVariable("accountId") String accountId, @RequestParam(value = "name", required = false) String name, @RequestParam(value = "email", required = false) String email) {
         User user = this.userService.getUserByAccountId(accountId);
@@ -52,4 +53,6 @@ public class UserApiController {
         }
         return new ResponseEntity<User>(user, HttpStatus.ACCEPTED);
     }
+
+
 }

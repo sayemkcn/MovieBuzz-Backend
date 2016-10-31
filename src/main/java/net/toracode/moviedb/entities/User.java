@@ -12,48 +12,43 @@ import org.hibernate.validator.constraints.Email;
 
 @Entity
 public class User extends BaseEntity {
-	@Column(nullable = false)
-	private String name;
-	@Email
-	private String email;
-	@Size(min = 6, max = 50)
-	private String accountId;
+    @Column(nullable = false)
+    private String name;
+    @Email
+    private String email;
+    @Size(min = 6, max = 50)
+    private String accountId;
 
-	@OneToMany
-	private List<UserCustomList> userCustomList;
+    public String getName() {
+        return name;
+    }
 
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public List<UserCustomList> getUserCustomList() {
-		return userCustomList;
-	}
-	public void setUserCustomList(List<UserCustomList> userCustomList) {
-		this.userCustomList = userCustomList;
-	}
-	public void setAccountId(String accountId) {
-		this.accountId = accountId;
-	}
-	public String getAccountId() {
-		return accountId;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	@Override
-	public String toString() {
-		return "User{" +
-				"name='" + name + '\'' +
-				", email='" + email + '\'' +
-				", accountId='" + accountId + '\'' +
-				", userCustomList=" + userCustomList +
-				'}';
-	}
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", accountId='" + accountId + '\'' +
+                '}';
+    }
 }
