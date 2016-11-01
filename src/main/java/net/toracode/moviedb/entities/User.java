@@ -18,6 +18,7 @@ public class User extends BaseEntity {
     private String email;
     @Size(min = 6, max = 50)
     private String accountId;
+    private String phone;
 
     public String getName() {
         return name;
@@ -43,12 +44,21 @@ public class User extends BaseEntity {
         return accountId;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", accountId='" + accountId + '\'' +
+                ", phone='" + phone + '\'' +
                 '}';
     }
 }

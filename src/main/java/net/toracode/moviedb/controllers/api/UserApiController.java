@@ -18,9 +18,12 @@ public class UserApiController {
 
     // returns user entity if already registered. if not create a new user of that is
     @RequestMapping(value = "/{accountId}", method = RequestMethod.POST)
-    public ResponseEntity<User> createUser(@PathVariable("accountId") String accountId, @RequestParam(value = "name", required = false) String name, @RequestParam(value = "email", required = false) String email) {
+    public ResponseEntity<User> createUser(@PathVariable("accountId") String accountId,
+                                           @RequestParam(value = "name", required = false) String name,
+                                           @RequestParam(value = "email", required = false) String email) {
+        // check if this user already exists
         User user = this.userService.getUserByAccountId(accountId);
-        if (user == null) {
+        if (user == null) {  // if not registered then create a new user and save
             user = new User();
             user.setAccountId(accountId);
             // check if params aren't passed for first time reg
@@ -40,7 +43,9 @@ public class UserApiController {
     }
 
     @RequestMapping(value = "/update/{accountId}", method = RequestMethod.POST)
-    public ResponseEntity<User> updateUser(@PathVariable("accountId") String accountId, @RequestParam("name") String name, @RequestParam("email") String email) {
+    public ResponseEntity<User> updateUser(@PathVariable("accountId") String accountId,
+                                           @RequestParam("name") String name,
+                                           @RequestParam("email") String email) {
         if (name == null || name.length() < 3)
             return new ResponseEntity<User>(HttpStatus.NOT_ACCEPTABLE);
         User user = this.userService.getUserByAccountId(accountId);
@@ -54,5 +59,16 @@ public class UserApiController {
         return new ResponseEntity<User>(user, HttpStatus.ACCEPTED);
     }
 
+    @RequestMapping(value = "/update/{accountId}/{phone}",method = RequestMethod.POST)
+    public ResponseEntity<User> updatePhoneNumber(@PathVariable("accountId") String accountId,
+                                                  @PathVariable("phone") String phone){
+        User user = this.userService.getUserByAccountId(accountId);
+        if (user==null){
+            return new ResponseEntity<User>(HttpStatus.NOT_MODIFIED);
+        }
+        user.setPhone(phone);
+        user = this.userService.saveUser(user);
+        return new ResponseEntity<User>(user,HttpStatus.ACCEPTED);
+    }
 
 }
