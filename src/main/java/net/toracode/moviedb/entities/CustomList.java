@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -11,7 +12,7 @@ public class CustomList extends BaseEntity {
     private String title;
     private String description;
     private String type;
-    @ElementCollection
+    @ManyToMany
     private List<Movie> movieList;
     @ManyToOne
     private User user;

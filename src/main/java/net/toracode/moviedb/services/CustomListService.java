@@ -1,6 +1,7 @@
 package net.toracode.moviedb.services;
 
 import net.toracode.moviedb.entities.CustomList;
+import net.toracode.moviedb.entities.Movie;
 import net.toracode.moviedb.entities.User;
 import net.toracode.moviedb.repositories.CustomListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,14 @@ public class CustomListService {
 
     public List<CustomList> getByUser(User user) {
         return this.customListRepository.findByUser(user);
+    }
+
+    public boolean isMovieAlreadyExistsOnList(List<Movie> movieList, Movie movie) {
+        for (Movie m : movieList) {
+            if (m.getUniqueId() == movie.getUniqueId()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

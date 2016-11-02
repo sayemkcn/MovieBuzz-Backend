@@ -72,6 +72,8 @@ public class CustomListController {
         if (customList.getMovieList() == null) {
             customList.setMovieList(new ArrayList<>());
         }
+        if (this.customListService.isMovieAlreadyExistsOnList(customList.getMovieList(),movie))
+            return new ResponseEntity<List<Movie>>(HttpStatus.CONFLICT);
         customList.getMovieList().add(movie);
         customList = this.customListService.saveList(customList);
         return new ResponseEntity<List<Movie>>(customList.getMovieList(), HttpStatus.OK);
