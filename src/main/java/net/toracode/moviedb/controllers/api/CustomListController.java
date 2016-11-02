@@ -29,6 +29,7 @@ public class CustomListController {
     @Autowired
     private MovieService movieService;
 
+    // create a list for a user
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<CustomList> createList(@ModelAttribute CustomList customList, BindingResult bindingResult,
                                                  @RequestParam("accountId") String accountId) {
@@ -62,6 +63,7 @@ public class CustomListController {
 
     }
 
+    // adds movie to a list
     @RequestMapping(value = "/{listId}/add/{movieId}", method = RequestMethod.POST)
     public ResponseEntity<List<Movie>> addMovieToList(@PathVariable("movieId") Long movieId,
                                                       @PathVariable("listId") Long listId) {
@@ -72,11 +74,27 @@ public class CustomListController {
         if (customList.getMovieList() == null) {
             customList.setMovieList(new ArrayList<>());
         }
-        if (this.customListService.isMovieAlreadyExistsOnList(customList.getMovieList(),movie))
+        if (this.customListService.isMovieAlreadyExistsOnList(customList.getMovieList(), movie))
             return new ResponseEntity<List<Movie>>(HttpStatus.CONFLICT);
         customList.getMovieList().add(movie);
         customList = this.customListService.saveList(customList);
         return new ResponseEntity<List<Movie>>(customList.getMovieList(), HttpStatus.OK);
     }
+
+    // remove movie from a list
+    @RequestMapping(value = "/{listId}/remove/{movieId}", method = RequestMethod.POST)
+    public ResponseEntity<CustomList> deleteMovieFromList(@PathVariable("movieId") Long movieId,
+                                                           @PathVariable("listId") Long listId) {
+        Movie movie = this.movieService.getMovie(movieId);
+        CustomList customList = this.customListService.getOne(listId);
+        if (customList == null)
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        if (!this.customListService.isMovieAlreadyExistsOnList(customList.getMovieList(), movie))
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        customList.getMovieList().remove(movie);
+        customList = this.customListService.saveList(customList);
+        return new ResponseEntity<>(customList, HttpStatus.OK);
+    }
+
 
 }
