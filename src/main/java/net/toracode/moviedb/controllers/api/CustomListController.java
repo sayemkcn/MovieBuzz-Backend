@@ -35,13 +35,21 @@ public class CustomListController {
         if (bindingResult.hasErrors())
             return new ResponseEntity<CustomList>(HttpStatus.BAD_REQUEST);
         User user = this.userService.getUserByAccountId(accountId);
+        // if user not registered
         if (user == null)
             return new ResponseEntity<CustomList>(HttpStatus.INTERNAL_SERVER_ERROR);
+        // if list title or type is empty
+        if (customList.getTitle().isEmpty() || customList.getTitle().length() < 3)
+            return new ResponseEntity<CustomList>(HttpStatus.NOT_ACCEPTABLE);
+        if (customList.getType().isEmpty() || customList.getType().length() < 3)
+            return new ResponseEntity<CustomList>(HttpStatus.NOT_ACCEPTABLE);
+
         customList.setUser(user);
         customList = this.customListService.saveList(customList);
         return new ResponseEntity<CustomList>(customList, HttpStatus.CREATED);
     }
 
+    // returns all of the list of a user
     @RequestMapping(value = "", method = RequestMethod.GET)
     public ResponseEntity<List<CustomList>> customListListByAccountId(@RequestParam("accountId") String accountId) {
         User user = this.userService.getUserByAccountId(accountId);
@@ -66,7 +74,7 @@ public class CustomListController {
         }
         customList.getMovieList().add(movie);
         customList = this.customListService.saveList(customList);
-        return new ResponseEntity<List<Movie>>(customList.getMovieList(),HttpStatus.OK);
+        return new ResponseEntity<List<Movie>>(customList.getMovieList(), HttpStatus.OK);
     }
 
 }
