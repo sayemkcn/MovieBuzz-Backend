@@ -52,6 +52,7 @@ public class Movie extends BaseEntity {
         this.language = language;
     }
 
+    @JsonIgnore
     public byte[] getImage() {
         return image;
     }

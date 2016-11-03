@@ -63,6 +63,15 @@ public class CustomListController {
 
     }
 
+    @RequestMapping(value = "/{listId}", method = RequestMethod.GET)
+    public ResponseEntity<List<Movie>> moviesByListId(@PathVariable("listId") Long listId) {
+        CustomList list = this.customListService.getOne(listId);
+        System.out.println(list.toString());
+        if (list == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(list.getMovieList(), HttpStatus.OK);
+    }
+
     // adds movie to a list
     @RequestMapping(value = "/{listId}/add/{movieId}", method = RequestMethod.POST)
     public ResponseEntity<List<Movie>> addMovieToList(@PathVariable("movieId") Long movieId,
@@ -83,7 +92,7 @@ public class CustomListController {
 
     // remove movie from a list
     @RequestMapping(value = "/{listId}/remove/{movieId}", method = RequestMethod.POST)
-    public ResponseEntity<CustomList> deleteMovieFromList(@PathVariable("movieId") Long movieId,
+    public ResponseEntity<List<Movie>> deleteMovieFromList(@PathVariable("movieId") Long movieId,
                                                            @PathVariable("listId") Long listId) {
         Movie movie = this.movieService.getMovie(movieId);
         CustomList customList = this.customListService.getOne(listId);
@@ -91,9 +100,10 @@ public class CustomListController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         if (!this.customListService.isMovieAlreadyExistsOnList(customList.getMovieList(), movie))
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        customList.getMovieList().remove(movie);
+        List<Movie> updatedMovieList = this.customListService.removeFromList(customList.getMovieList(), movie);
+        customList.setMovieList(updatedMovieList);
         customList = this.customListService.saveList(customList);
-        return new ResponseEntity<>(customList, HttpStatus.OK);
+        return new ResponseEntity<>(customList.getMovieList(), HttpStatus.OK);
     }
 
 

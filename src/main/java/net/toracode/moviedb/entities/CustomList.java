@@ -2,17 +2,14 @@ package net.toracode.moviedb.entities;
 
 import java.util.List;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 public class CustomList extends BaseEntity {
     private String title;
     private String description;
     private String type;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Movie> movieList;
     @ManyToOne
     private User user;

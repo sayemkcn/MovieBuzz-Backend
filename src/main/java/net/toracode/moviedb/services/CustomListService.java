@@ -43,4 +43,16 @@ public class CustomListService {
         }
         return false;
     }
+
+    public List<Movie> removeFromList(List<Movie> movieList, Movie movie) {
+        try {
+            for (int i = 0; i < movieList.size(); i++) {
+                if (movieList.get(i).getUniqueId() == movie.getUniqueId())
+                    movieList.remove(i);
+            }
+        } catch (Exception e) {
+
+        }
+        return movieList;
+    }
 }
