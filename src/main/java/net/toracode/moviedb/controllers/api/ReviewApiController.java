@@ -28,24 +28,25 @@ public class ReviewApiController {
     @Autowired
     private MovieService movieService;
 
-
-    @RequestMapping(value = "/movie/{movieId}",method = RequestMethod.GET)
+    // Returns all of the reviews of a movie
+    @RequestMapping(value = "/movie/{movieId}", method = RequestMethod.GET)
     public ResponseEntity<List<Review>> reviewListForMovie(@PathVariable("movieId") Long movieId,
                                                            @RequestParam("page") int page,
-                                                           @RequestParam("size") int size){
+                                                           @RequestParam("size") int size) {
         Movie movie = this.movieService.getMovie(movieId);
-        List<Review> reviewList = this.reviewService.getReviewListByMovie(movie,page,size);
-        if (reviewList==null || reviewList.isEmpty()){
+        List<Review> reviewList = this.reviewService.getReviewListByMovie(movie, page, size);
+        if (reviewList == null || reviewList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<List<Review>>(reviewList,HttpStatus.FOUND);
+        return new ResponseEntity<List<Review>>(reviewList, HttpStatus.FOUND);
     }
 
+    //    create a review for a movie
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<Review> createReview(@ModelAttribute Review review, BindingResult bindingResult,
                                                @RequestParam("accountId") String accountId,
                                                @RequestParam("movieId") Long movieId) {
-        if (bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             return new ResponseEntity<Review>(HttpStatus.FORBIDDEN);
         }
         User user = this.userService.getUserByAccountId(accountId);
@@ -69,6 +70,7 @@ public class ReviewApiController {
         return new ResponseEntity<Review>(review, HttpStatus.CREATED);
     }
 
+    // update a review
     @RequestMapping(value = "/update/{reviewId}", method = RequestMethod.POST)
     public ResponseEntity<Review> updateReview(@ModelAttribute Review review, BindingResult bindingResult, @PathVariable("reviewId") Long reviewId, @RequestParam("accountId") String accountId, @RequestParam("movieId") Long movieId) {
         if (bindingResult.hasErrors())
@@ -88,6 +90,7 @@ public class ReviewApiController {
         return new ResponseEntity<Review>(review, HttpStatus.CREATED);
     }
 
+    // All of the reviews of a user
     // MAKE PAGINATED
     @RequestMapping(value = "/user/{accountId}", method = RequestMethod.GET)
     public ResponseEntity<List<Review>> reviewListByUserPaginated(
@@ -96,7 +99,8 @@ public class ReviewApiController {
             @RequestParam("size") int size) {
         User user = this.userService.getUserByAccountId(accountId);
         List<Review> reviewList = this.reviewService.getReviewListByUserPaginated(user, page, size);
-        return new ResponseEntity<List<Review>>(reviewList, HttpStatus.OK);
+        System.out.println(reviewList.toString());
+        return new ResponseEntity<>(reviewList, HttpStatus.OK);
     }
 
 }
