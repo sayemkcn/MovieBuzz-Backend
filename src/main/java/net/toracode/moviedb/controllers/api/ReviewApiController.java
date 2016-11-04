@@ -38,7 +38,7 @@ public class ReviewApiController {
         if (reviewList == null || reviewList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<List<Review>>(reviewList, HttpStatus.FOUND);
+        return new ResponseEntity<>(reviewList, HttpStatus.FOUND);
     }
 
     //    create a review for a movie
@@ -72,7 +72,10 @@ public class ReviewApiController {
 
     // update a review
     @RequestMapping(value = "/update/{reviewId}", method = RequestMethod.POST)
-    public ResponseEntity<Review> updateReview(@ModelAttribute Review review, BindingResult bindingResult, @PathVariable("reviewId") Long reviewId, @RequestParam("accountId") String accountId, @RequestParam("movieId") Long movieId) {
+    public ResponseEntity<Review> updateReview(@ModelAttribute Review review, BindingResult bindingResult,
+                                               @PathVariable("reviewId") Long reviewId,
+                                               @RequestParam("accountId") String accountId,
+                                               @RequestParam("movieId") Long movieId) {
         if (bindingResult.hasErrors())
             return new ResponseEntity<Review>(HttpStatus.BAD_REQUEST);
         review.setUniqueId(reviewId);
