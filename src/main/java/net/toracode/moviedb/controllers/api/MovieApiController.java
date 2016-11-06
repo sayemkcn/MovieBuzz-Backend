@@ -60,9 +60,9 @@ public class MovieApiController {
         return new ResponseEntity<>(movieList, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/running", method = RequestMethod.GET)
-    public ResponseEntity<List<Movie>> runningMovies() {
-        List<Movie> movieList = this.movieService.getRunningMovieList();
+    @RequestMapping(value = "/featured", method = RequestMethod.GET)
+    public ResponseEntity<List<Movie>> featuredMovies() {
+        List<Movie> movieList = this.movieService.getFeaturedMovieList();
         if (movieList == null)
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         return new ResponseEntity<>(movieList, HttpStatus.OK);
@@ -96,8 +96,8 @@ public class MovieApiController {
     public ResponseEntity<List<Movie>> searchMovie(@PathVariable("phrase") String phrase) {
         List<Movie> movieList = this.movieService.getMoviBySearchPhrase(phrase);
         if (movieList == null || movieList.isEmpty())
-            return new ResponseEntity<List<Movie>>(HttpStatus.NO_CONTENT);
-        return new ResponseEntity<List<Movie>>(movieList, HttpStatus.FOUND);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(movieList, HttpStatus.FOUND);
     }
 
     @RequestMapping(value = "/image/{id}", method = RequestMethod.GET)

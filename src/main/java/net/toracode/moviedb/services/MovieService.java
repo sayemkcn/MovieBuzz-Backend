@@ -70,7 +70,7 @@ public class MovieService {
     }
 
     @Transactional(readOnly = true)
-    public List<Movie> getRunningMovieList(){
-        return this.movieRepo.findByRunningTrue();
+    public List<Movie> getFeaturedMovieList(){
+        return this.movieRepo.findByFeaturedTrue();
     }
 }

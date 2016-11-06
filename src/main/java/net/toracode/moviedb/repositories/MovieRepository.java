@@ -21,5 +21,5 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
 
     List<Movie> findByUpcomingTrue();
 
-    List<Movie> findByRunningTrue();
+    List<Movie> findByFeaturedTrue();
 }

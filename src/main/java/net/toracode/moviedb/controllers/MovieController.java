@@ -41,6 +41,20 @@ public class MovieController {
         return "movie/all";
     }
 
+    @RequestMapping(value = "/upcoming", method = RequestMethod.GET)
+    public String runningMovies(Model model) {
+        List<Movie> movieList = this.movieService.getUpcomingMovieList();
+        model.addAttribute("movieList", movieList);
+        return "movie/running";
+    }
+
+    @RequestMapping(value = "/featured", method = RequestMethod.GET)
+    public String featuredMovies(Model model) {
+        List<Movie> movieList = this.movieService.getFeaturedMovieList();
+        model.addAttribute("movieList", movieList);
+        return "movie/running";
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public String movieDetails(@PathVariable("id") Long id, Model model) {
         Movie movie = this.movieService.getMovie(id);

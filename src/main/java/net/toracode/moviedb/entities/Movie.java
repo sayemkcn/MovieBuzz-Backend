@@ -27,24 +27,8 @@ public class Movie extends BaseEntity {
     private String productionHouse;
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private List<Person> castAndCrewList;
+    private boolean featured;
     private boolean upcoming;
-    private boolean running;
-
-    public boolean isUpcoming() {
-        return upcoming;
-    }
-
-    public void setUpcoming(boolean upcoming) {
-        this.upcoming = upcoming;
-    }
-
-    public boolean isRunning() {
-        return running;
-    }
-
-    public void setRunning(boolean running) {
-        this.running = running;
-    }
 
     public String getName() {
         return name;
@@ -62,6 +46,14 @@ public class Movie extends BaseEntity {
         this.storyLine = storyLine;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public String getLanguage() {
         return language;
     }
@@ -70,7 +62,6 @@ public class Movie extends BaseEntity {
         this.language = language;
     }
 
-    @JsonIgnore
     public byte[] getImage() {
         return image;
     }
@@ -151,12 +142,20 @@ public class Movie extends BaseEntity {
         this.castAndCrewList = castAndCrewList;
     }
 
-    public String getType() {
-        return type;
+    public boolean isFeatured() {
+        return featured;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setFeatured(boolean featured) {
+        this.featured = featured;
+    }
+
+    public boolean isUpcoming() {
+        return upcoming;
+    }
+
+    public void setUpcoming(boolean upcoming) {
+        this.upcoming = upcoming;
     }
 
     @Override
@@ -176,8 +175,8 @@ public class Movie extends BaseEntity {
                 ", rated=" + rated +
                 ", productionHouse='" + productionHouse + '\'' +
                 ", castAndCrewList=" + castAndCrewList +
+                ", featured=" + featured +
                 ", upcoming=" + upcoming +
-                ", running=" + running +
                 '}';
     }
 }
