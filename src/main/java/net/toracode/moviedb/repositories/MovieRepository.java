@@ -18,4 +18,8 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     Page<Movie> findByType(String type, Pageable pageable);
 
     List<Movie> findByNameContaining(String name);
+
+    List<Movie> findByUpcomingTrue();
+
+    List<Movie> findByRunningTrue();
 }

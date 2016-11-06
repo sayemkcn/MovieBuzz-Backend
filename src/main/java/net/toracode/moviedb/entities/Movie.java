@@ -25,8 +25,26 @@ public class Movie extends BaseEntity {
     private String budget;
     private char rated;
     private String productionHouse;
-    @ManyToMany(cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private List<Person> castAndCrewList;
+    private boolean upcoming;
+    private boolean running;
+
+    public boolean isUpcoming() {
+        return upcoming;
+    }
+
+    public void setUpcoming(boolean upcoming) {
+        this.upcoming = upcoming;
+    }
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
 
     public String getName() {
         return name;
@@ -158,6 +176,8 @@ public class Movie extends BaseEntity {
                 ", rated=" + rated +
                 ", productionHouse='" + productionHouse + '\'' +
                 ", castAndCrewList=" + castAndCrewList +
+                ", upcoming=" + upcoming +
+                ", running=" + running +
                 '}';
     }
 }

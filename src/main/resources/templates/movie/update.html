@@ -53,7 +53,15 @@
                 <span th:text="${person.getName()}"></span>
             </option>
         </select><a th:href="@{/person/create}">Create New Cast/Crew</a>
-    </div>
+    </div><br></br>
+    <div>
+        <label for="upcoming">Upcoming movie?</label>
+        <input type="checkbox" id="upcoming" th:checked="${movie?.isUpcoming()}" name="upcoming"></input>
+    </div><br></br>
+    <div>
+        <label for="running">Running movie?</label>
+        <input type="checkbox" id="running" th:checked="${movie?.isRunning()}" name="running"></input>
+    </div><br></br>
 
     <button type="submit">Submit</button>
 </form>

@@ -33,14 +33,14 @@ public class MovieApiController {
     }
 
     // returns movie list by movie type {movie,tvseries..} sort::desc
-    @RequestMapping(value = "/type/{type}", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/type/{type}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Movie>> movieByType(@PathVariable("type") String type,
                                                    @RequestParam("page") int page,
                                                    @RequestParam("size") int size) {
         List<Movie> movieList = this.movieService.getMovieByType(type, page, size);
         if (movieList == null)
-            return new ResponseEntity<List<Movie>>(HttpStatus.NO_CONTENT);
-        return new ResponseEntity<List<Movie>>(movieList, HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(movieList, HttpStatus.OK);
     }
 
     // returns movie by it's primary id
@@ -50,6 +50,22 @@ public class MovieApiController {
         if (movie == null)
             return new ResponseEntity<Movie>(HttpStatus.NO_CONTENT);
         return new ResponseEntity<Movie>(movie, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/upcoming", method = RequestMethod.GET)
+    public ResponseEntity<List<Movie>> upcomingMovies() {
+        List<Movie> movieList = this.movieService.getUpcomingMovieList();
+        if (movieList == null)
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(movieList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/running", method = RequestMethod.GET)
+    public ResponseEntity<List<Movie>> runningMovies() {
+        List<Movie> movieList = this.movieService.getRunningMovieList();
+        if (movieList == null)
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(movieList, HttpStatus.OK);
     }
 
     // returns movie list by its genere paginated sort::desc

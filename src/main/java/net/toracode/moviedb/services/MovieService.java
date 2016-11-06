@@ -63,4 +63,14 @@ public class MovieService {
     public List<Movie> getMoviBySearchPhrase(String phrase){
         return this.movieRepo.findByNameContaining(phrase);
     }
+
+    @Transactional(readOnly = true)
+    public List<Movie> getUpcomingMovieList(){
+        return this.movieRepo.findByUpcomingTrue();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Movie> getRunningMovieList(){
+        return this.movieRepo.findByRunningTrue();
+    }
 }
