@@ -69,7 +69,8 @@ public class MovieController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String addMovie(@ModelAttribute("movie") Movie movie, BindingResult bindingResult, @RequestParam("image") MultipartFile multipartFile,
+    public String addMovie(@ModelAttribute("movie") Movie movie, BindingResult bindingResult,
+                           @RequestParam("image") MultipartFile multipartFile,
                            @RequestParam("personIds") Long[] personIds) throws IOException {
         if (bindingResult.hasErrors())
             System.out.print(bindingResult.toString());
@@ -94,10 +95,14 @@ public class MovieController {
     @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
     public String updateMovie(@ModelAttribute("movie") Movie movie, BindingResult bindingResult,
                               @PathVariable("id") Long id,
-                              @RequestParam(value = "personIds", required = false) Long[] personIds) {
+                              @RequestParam("image") MultipartFile multipartFile,
+                              @RequestParam("personIds") Long[] personIds) throws IOException {
         if (bindingResult.hasErrors())
             System.out.print(bindingResult.toString());
         movie.setUniqueId(id);
+        if (this.imageValidator.isImageValid(multipartFile)) {
+            movie.setImage(multipartFile.getBytes());
+        }
         List<Person> personList = this.personService.personListByIds(personIds);
         movie.setCastAndCrewList(personList);
         this.movieService.save(movie);
