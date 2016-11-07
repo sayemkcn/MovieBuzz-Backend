@@ -61,7 +61,7 @@ public class MovieService {
 
     @Transactional(readOnly = true)
     public List<Movie> getMoviBySearchPhrase(String phrase){
-        return this.movieRepo.findByNameContaining(phrase);
+        return this.movieRepo.findByNameContainingOrderByUniqueIdDesc(phrase);
     }
 
     @Transactional(readOnly = true)
