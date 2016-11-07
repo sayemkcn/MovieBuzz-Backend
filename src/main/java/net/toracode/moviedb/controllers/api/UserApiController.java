@@ -16,30 +16,39 @@ public class UserApiController {
     @Autowired
     private UserService userService;
 
+
+    @RequestMapping(value = "/{accountId}", method = RequestMethod.GET)
+    public ResponseEntity<User> getUser(@PathVariable("accountId") String accountId) {
+        User user = this.userService.getUserByAccountId(accountId);
+        if (user == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(user, HttpStatus.FOUND);
+    }
+
     // returns user entity if already registered. if not create a new user of that is
-    @RequestMapping(value = "/{accountId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/create/{accountId}", method = RequestMethod.POST)
     public ResponseEntity<User> createUser(@PathVariable("accountId") String accountId,
                                            @RequestParam(value = "name", required = false) String name,
                                            @RequestParam(value = "email", required = false) String email) {
         // check if this user already exists
         User user = this.userService.getUserByAccountId(accountId);
-        if (user == null) {  // if not registered then create a new user and save
-            user = new User();
-            user.setAccountId(accountId);
-            // check if params aren't passed for first time reg
-            if (name == null || name.isEmpty())
-                user.setName("Anonymous");
-            else
-                user.setName(name);
-            if (email == null || email.isEmpty())
-                user.setEmail("anonymous@toracode.net");
-            else
-                user.setEmail(email);
-            this.userService.saveUser(user);
-            return new ResponseEntity<User>(user, HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<User>(user, HttpStatus.FOUND);
-        }
+        if (user != null)
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        // if not registered then create a new user and save
+        user = new User();
+        user.setAccountId(accountId);
+        // check if params aren't passed for first time reg
+        if (name == null || name.isEmpty())
+            user.setName("Anonymous");
+        else
+            user.setName(name);
+        if (email == null || email.isEmpty())
+            user.setEmail("anonymous@toracode.net");
+        else
+            user.setEmail(email);
+        this.userService.saveUser(user);
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
+
     }
 
     @RequestMapping(value = "/update/{accountId}", method = RequestMethod.POST)
@@ -59,16 +68,16 @@ public class UserApiController {
         return new ResponseEntity<User>(user, HttpStatus.ACCEPTED);
     }
 
-    @RequestMapping(value = "/update/{accountId}/{phone}",method = RequestMethod.POST)
+    @RequestMapping(value = "/update/{accountId}/{phone}", method = RequestMethod.POST)
     public ResponseEntity<User> updatePhoneNumber(@PathVariable("accountId") String accountId,
-                                                  @PathVariable("phone") String phone){
+                                                  @PathVariable("phone") String phone) {
         User user = this.userService.getUserByAccountId(accountId);
-        if (user==null){
+        if (user == null) {
             return new ResponseEntity<User>(HttpStatus.NOT_MODIFIED);
         }
         user.setPhone(phone);
         user = this.userService.saveUser(user);
-        return new ResponseEntity<User>(user,HttpStatus.ACCEPTED);
+        return new ResponseEntity<User>(user, HttpStatus.ACCEPTED);
     }
 
 }
