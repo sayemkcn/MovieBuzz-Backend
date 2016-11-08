@@ -2,13 +2,7 @@ package net.toracode.moviedb.entities;
 
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-
-import org.hibernate.annotations.Cascade;
 
 @Entity
 public class Person extends BaseEntity {
