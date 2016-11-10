@@ -41,4 +41,12 @@ public class ReviewService {
     public List<Review> getReviewListByUserPaginated(User user, int page, int size) {
         return this.reviewRepo.findByUser(user, new PageRequest(page, size, Sort.Direction.DESC, "uniqueId"));
     }
+
+    public Float calculateAverageRating(List<Review> reviewList) {
+        float sum = 0f;
+        for (Review review : reviewList) {
+            sum += review.getRating();
+        }
+        return sum / reviewList.size();
+    }
 }

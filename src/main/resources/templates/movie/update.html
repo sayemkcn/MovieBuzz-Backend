@@ -41,9 +41,11 @@
     <input type="text" name="budget" placeholder="Budget" th:value="${movie?.getBudget()}"></input><br></br>
     Rated:<br></br>
     <select name="rated">
-        <option value="g" th:selected="${new String().valueOf(movie?.getRated()).equals('g')}">G</option>
-        <option value="r" th:selected="${new String().valueOf(movie?.getRated()).equals('r')}">R</option>
-        <option value="a" th:selected="${new String().valueOf(movie?.getRated()).equals('a')}">A</option>
+        <option value="G – General Audiences" th:selected="${new String().valueOf(movie?.getRated()).equals('G – General Audiences')}">G – General Audiences</option>
+        <option value="PG – Parental Guidance Suggested" th:selected="${new String().valueOf(movie?.getRated()).equals('PG – Parental Guidance Suggested')}">PG – Parental Guidance Suggested</option>
+        <option value="PG-13 – Parents Strongly Cautioned" th:selected="${new String().valueOf(movie?.getRated()).equals('PG-13 – Parents Strongly Cautioned')}">PG-13 – Parents Strongly Cautioned</option>
+        <option value="R – Restricted" th:selected="${new String().valueOf(movie?.getRated()).equals('R – Restricted')}">R – Restricted</option>
+        <option value="NC-17 – Adults Only" th:selected="${new String().valueOf(movie?.getRated()).equals('NC-17 – Adults Only')}">NC-17 – Adults Only</option>
     </select><br></br>
     <input type="text" name="productionHouse" placeholder="Production House" th:value="${movie?.getProductionHouse()}"></input><br></br>
     <div>

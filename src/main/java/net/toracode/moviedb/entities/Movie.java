@@ -23,7 +23,7 @@ public class Movie extends BaseEntity {
     private Date releaseDate;
     private String duration;
     private String budget;
-    private char rated;
+    private String rated;
     private String productionHouse;
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private List<Person> castAndCrewList;
@@ -118,11 +118,11 @@ public class Movie extends BaseEntity {
         this.budget = budget;
     }
 
-    public char getRated() {
+    public String getRated() {
         return rated;
     }
 
-    public void setRated(char rated) {
+    public void setRated(String rated) {
         this.rated = rated;
     }
 
@@ -172,7 +172,7 @@ public class Movie extends BaseEntity {
                 ", releaseDate=" + releaseDate +
                 ", duration='" + duration + '\'' +
                 ", budget='" + budget + '\'' +
-                ", rated=" + rated +
+                ", rated='" + rated + '\'' +
                 ", productionHouse='" + productionHouse + '\'' +
                 ", castAndCrewList=" + castAndCrewList +
                 ", featured=" + featured +

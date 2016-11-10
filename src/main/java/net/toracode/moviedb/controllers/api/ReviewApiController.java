@@ -40,6 +40,16 @@ public class ReviewApiController {
         return new ResponseEntity<>(reviewList, HttpStatus.FOUND);
     }
 
+    @RequestMapping(value = "/averagerating/movie/{movieId}", method = RequestMethod.GET)
+    public ResponseEntity<Float> averageRating(@PathVariable("movieId") Long movieId) {
+        List<Review> reviewList = this.reviewService.getReviewListByMovie(this.movieService.getMovie(movieId));
+        if (reviewList == null || reviewList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        Float averageRating = this.reviewService.calculateAverageRating(reviewList);
+        return new ResponseEntity<Float>(averageRating, HttpStatus.OK);
+    }
+
     //    create a review for a movie
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<Review> createReview(@ModelAttribute Review review, BindingResult bindingResult,
