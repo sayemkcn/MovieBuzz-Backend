@@ -103,6 +103,7 @@ public class CustomListController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         // check if user following list is null
         if (list.getFollowerList() != null) {
+            // check if already following or not
             if (!this.customListService.isAlreadyExists(list,user))
                 return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
             List<User> updatedFolloweList = this.customListService.removeFollower(list.getFollowerList(),user);
@@ -110,6 +111,24 @@ public class CustomListController {
             this.customListService.saveList(list);
         }
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+    // Unfollows a public list // find the list and add to following list of user
+    @RequestMapping(value = "/isFollowing/{listId}", method = RequestMethod.POST)
+    public ResponseEntity checkFollowing(@PathVariable("listId") Long listId, @RequestParam("accountId") String accountId) {
+        User user = this.userService.getUserByAccountId(accountId);
+        CustomList list = this.customListService.getOne(listId);
+        if (user == null)
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        if (list == null)
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        // check if user following list is null
+        if (list.getFollowerList() != null) {
+            // check if already following or not
+            if (!this.customListService.isAlreadyExists(list,user))
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.FOUND);
     }
 
     // returns list of custom list that an user is following
