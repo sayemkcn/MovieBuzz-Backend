@@ -13,6 +13,8 @@ public class CustomList extends BaseEntity {
     private List<Movie> movieList;
     @ManyToOne
     private User user;
+    @OneToMany
+    private List<User> followerList;
 
     public String getTitle() {
         return title;
@@ -54,6 +56,14 @@ public class CustomList extends BaseEntity {
         this.user = user;
     }
 
+    public List<User> getFollowerList() {
+        return followerList;
+    }
+
+    public void setFollowerList(List<User> followerList) {
+        this.followerList = followerList;
+    }
+
     @Override
     public String toString() {
         return "CustomList{" +
@@ -62,6 +72,7 @@ public class CustomList extends BaseEntity {
                 ", type='" + type + '\'' +
                 ", movieList=" + movieList +
                 ", user=" + user +
+                ", followerList=" + followerList +
                 '}';
     }
 }

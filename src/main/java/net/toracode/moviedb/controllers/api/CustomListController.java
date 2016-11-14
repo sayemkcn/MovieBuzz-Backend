@@ -63,6 +63,46 @@ public class CustomListController {
 
     }
 
+    // returns all public list available
+    @RequestMapping(value = "/public", method = RequestMethod.GET)
+    public ResponseEntity<List<CustomList>> allPublicLists(@RequestParam("page") int page) {
+        List<CustomList> customListList = this.customListService.getPublicLists(page, 10);
+        if (customListList == null || customListList.isEmpty())
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(customListList, HttpStatus.OK);
+    }
+
+    // Follows a public list // find the list and add to following list of user
+    @RequestMapping(value = "/follow/{listId}", method = RequestMethod.POST)
+    public ResponseEntity<CustomList> followList(@PathVariable("listId") Long listId, @RequestParam("accountId") String accountId) {
+        User user = this.userService.getUserByAccountId(accountId);
+        CustomList list = this.customListService.getOne(listId);
+        if (user == null)
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        if (list == null)
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        // check if user following list is null
+        if (list.getFollowerList() != null) {
+            if (this.customListService.isAlreadyExists(list,user)) {
+                return new ResponseEntity<>(HttpStatus.MULTI_STATUS);
+            }
+            list.getFollowerList().add(user);
+            this.customListService.saveList(list);
+        }
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+//    @RequestMapping(value = "/following", method = RequestMethod.GET)
+//    public ResponseEntity<List<CustomList>> myFollowingList(@RequestParam("accountId") String accountId) {
+//        User user = this.userService.getUserByAccountId(accountId);
+//        if (user == null)
+//            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+//
+//        if (user.getFollowingList() == null || user.getFollowingList().isEmpty())
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        return new ResponseEntity<>(user.getFollowingList(), HttpStatus.OK);
+//    }
+
     @RequestMapping(value = "/{listId}", method = RequestMethod.GET)
     public ResponseEntity<List<Movie>> moviesByListId(@PathVariable("listId") Long listId) {
         CustomList list = this.customListService.getOne(listId);
