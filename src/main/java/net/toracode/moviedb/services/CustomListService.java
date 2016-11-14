@@ -84,14 +84,14 @@ public class CustomListService {
         return this.customListRepository.findByTypeIgnoreCase("public", pageRequest);
     }
 
-    public List<Long> findFollowingListIds(List<CustomList> listOfCustomList, User user) {
-        List<Long> followingListIds = new ArrayList();
+    public List<CustomList> findFollowingList(List<CustomList> listOfCustomList, User user) {
+        List<CustomList> followingList = new ArrayList();
         for (CustomList list : listOfCustomList) {
             for (User u : list.getFollowerList()) {
                 if (u.getAccountId() == user.getAccountId())
-                    followingListIds.add(list.getUniqueId());
+                    followingList.add(list);
             }
         }
-        return followingListIds;
+        return followingList;
     }
 }

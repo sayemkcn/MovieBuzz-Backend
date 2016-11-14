@@ -92,14 +92,14 @@ public class CustomListController {
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
-    // returns Ids of list that a user is following
+    // returns list of custom list that an user is following
     @RequestMapping(value = "/following", method = RequestMethod.GET)
-    public ResponseEntity<List<Long>> myFollowingList(@RequestParam("accountId") String accountId) {
+    public ResponseEntity<List<CustomList>> myFollowingList(@RequestParam("accountId") String accountId) {
         User user = this.userService.getUserByAccountId(accountId);
         if (user == null)
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         List<CustomList> listOfCustomList = this.customListService.getAll();
-        List<Long> followingListIds = this.customListService.findFollowingListIds(listOfCustomList,user);
+        List<CustomList> followingListIds = this.customListService.findFollowingList(listOfCustomList,user);
         if (followingListIds==null || followingListIds.isEmpty())
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         return new ResponseEntity<>(followingListIds,HttpStatus.OK);
