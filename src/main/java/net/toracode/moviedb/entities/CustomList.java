@@ -14,7 +14,6 @@ public class CustomList extends BaseEntity {
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Movie> movieList;
-    @JsonIgnore
     @ManyToOne
     private User user;
     @JsonIgnore

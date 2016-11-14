@@ -92,6 +92,26 @@ public class CustomListController {
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
+    // Unfollows a public list // find the list and add to following list of user
+    @RequestMapping(value = "/unfollow/{listId}", method = RequestMethod.POST)
+    public ResponseEntity<CustomList> unfollowList(@PathVariable("listId") Long listId, @RequestParam("accountId") String accountId) {
+        User user = this.userService.getUserByAccountId(accountId);
+        CustomList list = this.customListService.getOne(listId);
+        if (user == null)
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        if (list == null)
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        // check if user following list is null
+        if (list.getFollowerList() != null) {
+            if (!this.customListService.isAlreadyExists(list,user))
+                return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+            List<User> updatedFolloweList = this.customListService.removeFollower(list.getFollowerList(),user);
+            list.setFollowerList(updatedFolloweList);
+            this.customListService.saveList(list);
+        }
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
     // returns list of custom list that an user is following
     @RequestMapping(value = "/following", method = RequestMethod.GET)
     public ResponseEntity<List<CustomList>> myFollowingList(@RequestParam("accountId") String accountId) {

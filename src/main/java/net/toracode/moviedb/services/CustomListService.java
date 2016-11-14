@@ -94,4 +94,15 @@ public class CustomListService {
         }
         return followingList;
     }
+
+    public List<User> removeFollower(List<User> followerList, User user) {
+        List<User> updatedFolloweList = new ArrayList<>();
+
+        for (int i = 0; i < followerList.size(); i++) {
+            if (!followerList.get(i).getAccountId().equals(user.getAccountId()))
+                updatedFolloweList.add(followerList.get(i));
+        }
+
+        return updatedFolloweList;
+    }
 }
