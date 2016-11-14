@@ -13,7 +13,7 @@ public class CustomList extends BaseEntity {
     private List<Movie> movieList;
     @ManyToOne
     private User user;
-    @OneToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<User> followerList;
 
     public String getTitle() {

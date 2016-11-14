@@ -92,16 +92,18 @@ public class CustomListController {
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
-//    @RequestMapping(value = "/following", method = RequestMethod.GET)
-//    public ResponseEntity<List<CustomList>> myFollowingList(@RequestParam("accountId") String accountId) {
-//        User user = this.userService.getUserByAccountId(accountId);
-//        if (user == null)
-//            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-//
-//        if (user.getFollowingList() == null || user.getFollowingList().isEmpty())
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        return new ResponseEntity<>(user.getFollowingList(), HttpStatus.OK);
-//    }
+    // returns Ids of list that a user is following
+    @RequestMapping(value = "/following", method = RequestMethod.GET)
+    public ResponseEntity<List<Long>> myFollowingList(@RequestParam("accountId") String accountId) {
+        User user = this.userService.getUserByAccountId(accountId);
+        if (user == null)
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        List<CustomList> listOfCustomList = this.customListService.getAll();
+        List<Long> followingListIds = this.customListService.findFollowingListIds(listOfCustomList,user);
+        if (followingListIds==null || followingListIds.isEmpty())
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(followingListIds,HttpStatus.OK);
+    }
 
     @RequestMapping(value = "/{listId}", method = RequestMethod.GET)
     public ResponseEntity<List<Movie>> moviesByListId(@PathVariable("listId") Long listId) {

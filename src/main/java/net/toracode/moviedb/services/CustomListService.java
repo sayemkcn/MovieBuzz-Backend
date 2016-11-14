@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,6 +37,11 @@ public class CustomListService {
     }
 
     @Transactional(readOnly = true)
+    public List<CustomList> getAll() {
+        return this.customListRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
     public List<CustomList> getByUser(User user) {
         return this.customListRepository.findByUser(user);
     }
@@ -51,7 +57,7 @@ public class CustomListService {
     }
 
     // check if a List of custom list has already a list
-    public boolean isAlreadyExists(CustomList list,User user) {
+    public boolean isAlreadyExists(CustomList list, User user) {
         for (User u : list.getFollowerList()) {
             if (u.getUniqueId() == user.getUniqueId())
                 return true;
@@ -76,5 +82,16 @@ public class CustomListService {
     public List<CustomList> getPublicLists(int page, int size) {
         PageRequest pageRequest = new PageRequest(page, size, Sort.Direction.DESC, FIELD_NAME);
         return this.customListRepository.findByTypeIgnoreCase("public", pageRequest);
+    }
+
+    public List<Long> findFollowingListIds(List<CustomList> listOfCustomList, User user) {
+        List<Long> followingListIds = new ArrayList();
+        for (CustomList list : listOfCustomList) {
+            for (User u : list.getFollowerList()) {
+                if (u.getAccountId() == user.getAccountId())
+                    followingListIds.add(list.getUniqueId());
+            }
+        }
+        return followingListIds;
     }
 }
