@@ -1,6 +1,7 @@
 package net.toracode.moviedb.services;
 
 import net.toracode.moviedb.entities.Comment;
+import net.toracode.moviedb.entities.CustomList;
 import net.toracode.moviedb.entities.Movie;
 import net.toracode.moviedb.entities.User;
 import net.toracode.moviedb.repositories.CommentRepository;
@@ -35,8 +36,8 @@ public class CommentService {
     }
 
     @Transactional(readOnly = true)
-    public List<Comment> getByMovie(Movie movie, int page, int size) {
-        return this.commentRepository.findByMovie(movie, new PageRequest(page, size, Sort.Direction.DESC, FIELD_NAME));
+    public List<Comment> getByCustomList(CustomList list, int page, int size) {
+        return this.commentRepository.findByList(list, new PageRequest(page, size, Sort.Direction.DESC, FIELD_NAME));
     }
 
     @Transactional(readOnly = true)

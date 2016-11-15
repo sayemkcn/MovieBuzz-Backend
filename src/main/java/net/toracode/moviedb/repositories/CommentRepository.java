@@ -1,6 +1,7 @@
 package net.toracode.moviedb.repositories;
 
 import net.toracode.moviedb.entities.Comment;
+import net.toracode.moviedb.entities.CustomList;
 import net.toracode.moviedb.entities.Movie;
 import net.toracode.moviedb.entities.User;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +15,7 @@ import java.util.List;
  */
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    List<Comment> findByMovie(Movie movie, Pageable pageable);
+    List<Comment> findByList(CustomList list, Pageable pageable);
 
     List<Comment> findByUser(User user, Pageable pageable);
 }

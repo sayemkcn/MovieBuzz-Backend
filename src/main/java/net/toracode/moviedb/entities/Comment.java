@@ -15,7 +15,7 @@ public class Comment extends BaseEntity {
     private String commentBody;
     @JsonIgnore
     @ManyToOne
-    private Movie movie;
+    private CustomList list;
     @ManyToOne
     private User user;
 
@@ -29,12 +29,12 @@ public class Comment extends BaseEntity {
     }
 
 
-    public Movie getMovie() {
-        return movie;
+    public CustomList getList() {
+        return list;
     }
 
-    public void setMovie(Movie movie) {
-        this.movie = movie;
+    public void setList(CustomList list) {
+        this.list = list;
     }
 
     public String getCommentBody() {
@@ -49,7 +49,7 @@ public class Comment extends BaseEntity {
     public String toString() {
         return "Comment{" +
                 "commentBody='" + commentBody + '\'' +
-                ", movie=" + movie +
+                ", list=" + list +
                 ", user=" + user +
                 '}';
     }

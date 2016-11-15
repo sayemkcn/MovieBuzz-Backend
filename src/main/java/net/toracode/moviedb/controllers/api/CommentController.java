@@ -1,9 +1,11 @@
 package net.toracode.moviedb.controllers.api;
 
 import net.toracode.moviedb.entities.Comment;
+import net.toracode.moviedb.entities.CustomList;
 import net.toracode.moviedb.entities.Movie;
 import net.toracode.moviedb.entities.User;
 import net.toracode.moviedb.services.CommentService;
+import net.toracode.moviedb.services.CustomListService;
 import net.toracode.moviedb.services.MovieService;
 import net.toracode.moviedb.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,7 @@ public class CommentController {
     @Autowired
     private UserService userService;
     @Autowired
-    private MovieService movieService;
+    private CustomListService customListService;
 
     // returns a specific comment
     @RequestMapping(value = "/{commentId}", method = RequestMethod.GET)
@@ -39,18 +41,18 @@ public class CommentController {
     // create a comment
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<Comment> saveComment(@ModelAttribute Comment comment, BindingResult bindingResult,
-                                               @RequestParam("movieId") Long movieId,
+                                               @RequestParam("listId") Long listId,
                                                @RequestParam("accountId") String accountId) {
         User user = this.userService.getUserByAccountId(accountId);
         if (user == null) // if user not registered // not found
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        Movie movie = this.movieService.getMovie(movieId);
-        if (movie == null)
+        CustomList list = this.customListService.getOne(listId);
+        if (list == null)
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         comment.setUser(user);
-        comment.setMovie(movie);
+        comment.setList(list);
         comment = this.commentService.save(comment);
-        return new ResponseEntity<Comment>(comment, HttpStatus.CREATED);
+        return new ResponseEntity<>(comment, HttpStatus.CREATED);
     }
 
     // edit a comment
@@ -84,10 +86,10 @@ public class CommentController {
 
     // all comments of a specific movie paginated
     @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public ResponseEntity<List<Comment>> allCommentsOfAMovie(@RequestParam("movieId") Long movieId,
+    public ResponseEntity<List<Comment>> allCommentsOfAMovie(@RequestParam("listId") Long listId,
                                                              @RequestParam("page") int page) {
-        Movie movie = this.movieService.getMovie(movieId);
-        List<Comment> commentList = this.commentService.getByMovie(movie, page, 10);
+        CustomList list = this.customListService.getOne(listId);
+        List<Comment> commentList = this.commentService.getByCustomList(list, page, 10);
         return new ResponseEntity<>(commentList, HttpStatus.OK);
     }
 
