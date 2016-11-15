@@ -36,8 +36,8 @@ public class CommentService {
     }
 
     @Transactional(readOnly = true)
-    public List<Comment> getByCustomList(CustomList list, int page, int size) {
-        return this.commentRepository.findByList(list, new PageRequest(page, size, Sort.Direction.DESC, FIELD_NAME));
+    public List<Comment> getByCustomList(CustomList list) {
+        return this.commentRepository.findByList(list);
     }
 
     @Transactional(readOnly = true)

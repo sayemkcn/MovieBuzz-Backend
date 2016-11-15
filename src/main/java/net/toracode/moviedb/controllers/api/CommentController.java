@@ -84,12 +84,11 @@ public class CommentController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    // all comments of a specific movie paginated
+    // all comments of a specific list paginated
     @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public ResponseEntity<List<Comment>> allCommentsOfAMovie(@RequestParam("listId") Long listId,
-                                                             @RequestParam("page") int page) {
+    public ResponseEntity<List<Comment>> allCommentsOfACustomList(@RequestParam("listId") Long listId) {
         CustomList list = this.customListService.getOne(listId);
-        List<Comment> commentList = this.commentService.getByCustomList(list, page, 10);
+        List<Comment> commentList = this.commentService.getByCustomList(list);
         return new ResponseEntity<>(commentList, HttpStatus.OK);
     }
 
