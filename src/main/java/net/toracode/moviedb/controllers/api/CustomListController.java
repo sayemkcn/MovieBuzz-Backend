@@ -34,20 +34,47 @@ public class CustomListController {
     public ResponseEntity<CustomList> createList(@ModelAttribute CustomList customList, BindingResult bindingResult,
                                                  @RequestParam("accountId") String accountId) {
         if (bindingResult.hasErrors())
-            return new ResponseEntity<CustomList>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         User user = this.userService.getUserByAccountId(accountId);
         // if user not registered
         if (user == null)
-            return new ResponseEntity<CustomList>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         // if list title or type is empty
         if (customList.getTitle().isEmpty() || customList.getTitle().length() < 3)
-            return new ResponseEntity<CustomList>(HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         if (customList.getType().isEmpty() || customList.getType().length() < 3)
-            return new ResponseEntity<CustomList>(HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
 
         customList.setUser(user);
         customList = this.customListService.saveList(customList);
-        return new ResponseEntity<CustomList>(customList, HttpStatus.CREATED);
+        return new ResponseEntity<>(customList, HttpStatus.CREATED);
+    }
+
+    // create a list for a user
+    @RequestMapping(value = "/edit/{listId}", method = RequestMethod.POST)
+    public ResponseEntity<CustomList> editList(@ModelAttribute CustomList customList, BindingResult bindingResult,
+                                               @PathVariable("listId") Long listId,
+                                               @RequestParam("accountId") String accountId) {
+        if (bindingResult.hasErrors())
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        User user = this.userService.getUserByAccountId(accountId);
+        CustomList existingList = this.customListService.getOne(listId);
+        // if user not registered
+        if (user == null)
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        // if list title or type is empty
+        if (customList.getTitle().isEmpty() || customList.getTitle().length() < 3)
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        if (customList.getType().isEmpty() || customList.getType().length() < 3)
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+
+        existingList.setUniqueId(listId);
+        existingList.setUser(user);
+        existingList.setTitle(customList.getTitle());
+        existingList.setDescription(customList.getDescription());
+        existingList.setType(customList.getType());
+        customList = this.customListService.saveList(existingList);
+        return new ResponseEntity<>(customList, HttpStatus.CREATED);
     }
 
     // returns all of the list of a user
@@ -61,6 +88,87 @@ public class CustomListController {
             return new ResponseEntity<List<CustomList>>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<List<CustomList>>(customListList, HttpStatus.FOUND);
 
+    }
+
+    // returns all public list available
+    @RequestMapping(value = "/public", method = RequestMethod.GET)
+    public ResponseEntity<List<CustomList>> allPublicLists(@RequestParam("page") int page) {
+        List<CustomList> customListList = this.customListService.getPublicLists(page, 10);
+        if (customListList == null || customListList.isEmpty())
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(customListList, HttpStatus.OK);
+    }
+
+    // Follows a public list // find the list and add to following list of user
+    @RequestMapping(value = "/follow/{listId}", method = RequestMethod.POST)
+    public ResponseEntity<CustomList> followList(@PathVariable("listId") Long listId, @RequestParam("accountId") String accountId) {
+        User user = this.userService.getUserByAccountId(accountId);
+        CustomList list = this.customListService.getOne(listId);
+        if (user == null)
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        if (list == null)
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        // check if user following list is null
+        if (list.getFollowerList() != null) {
+            if (this.customListService.isAlreadyExists(list, user)) {
+                return new ResponseEntity<>(HttpStatus.MULTI_STATUS);
+            }
+            list.getFollowerList().add(user);
+            this.customListService.saveList(list);
+        }
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+    // Unfollows a public list // find the list and add to following list of user
+    @RequestMapping(value = "/unfollow/{listId}", method = RequestMethod.POST)
+    public ResponseEntity<CustomList> unfollowList(@PathVariable("listId") Long listId, @RequestParam("accountId") String accountId) {
+        User user = this.userService.getUserByAccountId(accountId);
+        CustomList list = this.customListService.getOne(listId);
+        if (user == null)
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        if (list == null)
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        // check if user following list is null
+        if (list.getFollowerList() != null) {
+            // check if already following or not
+            if (!this.customListService.isAlreadyExists(list, user))
+                return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+            List<User> updatedFolloweList = this.customListService.removeFollower(list.getFollowerList(), user);
+            list.setFollowerList(updatedFolloweList);
+            this.customListService.saveList(list);
+        }
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+    // Unfollows a public list // find the list and add to following list of user
+    @RequestMapping(value = "/isFollowing/{listId}", method = RequestMethod.POST)
+    public ResponseEntity checkFollowing(@PathVariable("listId") Long listId, @RequestParam("accountId") String accountId) {
+        User user = this.userService.getUserByAccountId(accountId);
+        CustomList list = this.customListService.getOne(listId);
+        if (user == null)
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        if (list == null)
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        // check if user following list is null
+        if (list.getFollowerList() != null) {
+            // check if already following or not
+            if (!this.customListService.isAlreadyExists(list, user))
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.FOUND);
+    }
+
+    // returns list of custom list that an user is following
+    @RequestMapping(value = "/following", method = RequestMethod.GET)
+    public ResponseEntity<List<CustomList>> myFollowingList(@RequestParam("accountId") String accountId) {
+        User user = this.userService.getUserByAccountId(accountId);
+        if (user == null)
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        List<CustomList> listOfCustomList = this.customListService.getAll();
+        List<CustomList> followingListIds = this.customListService.findFollowingList(listOfCustomList, user);
+        if (followingListIds == null || followingListIds.isEmpty())
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(followingListIds, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{listId}", method = RequestMethod.GET)

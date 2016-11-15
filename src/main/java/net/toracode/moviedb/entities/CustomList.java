@@ -1,5 +1,7 @@
 package net.toracode.moviedb.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 import javax.persistence.*;
@@ -9,10 +11,14 @@ public class CustomList extends BaseEntity {
     private String title;
     private String description;
     private String type;
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Movie> movieList;
     @ManyToOne
     private User user;
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<User> followerList;
 
     public String getTitle() {
         return title;
@@ -54,6 +60,14 @@ public class CustomList extends BaseEntity {
         this.user = user;
     }
 
+    public List<User> getFollowerList() {
+        return followerList;
+    }
+
+    public void setFollowerList(List<User> followerList) {
+        this.followerList = followerList;
+    }
+
     @Override
     public String toString() {
         return "CustomList{" +
@@ -62,6 +76,7 @@ public class CustomList extends BaseEntity {
                 ", type='" + type + '\'' +
                 ", movieList=" + movieList +
                 ", user=" + user +
+                ", followerList=" + followerList +
                 '}';
     }
 }
