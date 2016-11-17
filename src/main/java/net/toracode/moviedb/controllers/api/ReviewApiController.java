@@ -111,8 +111,9 @@ public class ReviewApiController {
             @RequestParam("size") int size) {
         User user = this.userService.getUserByAccountId(accountId);
         List<Review> reviewList = this.reviewService.getReviewListByUserPaginated(user, page, size);
-        System.out.println(reviewList.toString());
-        return new ResponseEntity<>(reviewList, HttpStatus.OK);
+        if (reviewList == null || reviewList.isEmpty())
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(reviewList, HttpStatus.FOUND);
     }
 
 }
