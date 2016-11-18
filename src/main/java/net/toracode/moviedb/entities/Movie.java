@@ -14,8 +14,8 @@ public class Movie extends BaseEntity {
     private String storyLine;
     private String type;
     private String language;
-    @Lob
     @JsonIgnore
+    @Basic(fetch = FetchType.LAZY, optional = true)
     private byte[] image;
     private String industry;
     private String genere;
@@ -25,6 +25,7 @@ public class Movie extends BaseEntity {
     private String budget;
     private String rated;
     private String productionHouse;
+    @JsonIgnore
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private List<Person> castAndCrewList;
     private boolean featured;

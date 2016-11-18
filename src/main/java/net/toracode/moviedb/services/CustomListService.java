@@ -24,26 +24,26 @@ public class CustomListService {
     private static final String FIELD_NAME = "uniqueId";
 
     @Autowired
-    private CustomListRepository customListRepository;
+    private CustomListRepository customListRepo;
 
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     public CustomList saveList(CustomList customList) {
-        return this.customListRepository.save(customList);
+        return this.customListRepo.save(customList);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
     public CustomList getOne(Long id) {
-        return this.customListRepository.getOne(id);
+        return this.customListRepo.getOne(id);
     }
 
     @Transactional(readOnly = true)
     public List<CustomList> getAll() {
-        return this.customListRepository.findAll();
+        return this.customListRepo.findAll();
     }
 
     @Transactional(readOnly = true)
     public List<CustomList> getByUser(User user) {
-        return this.customListRepository.findByUser(user);
+        return this.customListRepo.findByUser(user);
     }
 
     // check if a list already cotains a movie
@@ -81,14 +81,14 @@ public class CustomListService {
     // find public lists
     public List<CustomList> getPublicLists(int page, int size) {
         PageRequest pageRequest = new PageRequest(page, size, Sort.Direction.DESC, FIELD_NAME);
-        return this.customListRepository.findByTypeIgnoreCase("public", pageRequest);
+        return this.customListRepo.findByTypeIgnoreCase("public", pageRequest).getContent();
     }
 
     public List<CustomList> findFollowingList(List<CustomList> listOfCustomList, User user) {
         List<CustomList> followingList = new ArrayList();
         for (CustomList list : listOfCustomList) {
             for (User u : list.getFollowerList()) {
-                if (u.getAccountId() == user.getAccountId())
+                if (u.getAccountId().equals(user.getAccountId()))
                     followingList.add(list);
             }
         }

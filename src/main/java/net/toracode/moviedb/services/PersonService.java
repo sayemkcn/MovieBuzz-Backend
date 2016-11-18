@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import net.toracode.moviedb.entities.Movie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,10 +22,20 @@ public class PersonService {
 
     @Autowired
     private PersonRepository personRepo;
+    @Autowired
+    private MovieService movieService;
 
     @Transactional(readOnly = true)
     public List<Person> getAllPersons() {
         return this.personRepo.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Person> getPersonListByMovie(Long movieId) {
+        Movie movie = this.movieService.getMovie(movieId);
+        if (movie != null)
+            return movie.getCastAndCrewList();
+        return null;
     }
 
     @Transactional(readOnly = true)
