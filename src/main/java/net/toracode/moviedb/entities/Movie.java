@@ -25,6 +25,7 @@ public class Movie extends BaseEntity {
     private String budget;
     private String rated;
     private String productionHouse;
+    @JsonIgnore
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private List<Person> castAndCrewList;
     private boolean featured;
