@@ -89,6 +89,8 @@ public class CommentController {
     public ResponseEntity<List<Comment>> allCommentsOfACustomList(@RequestParam("listId") Long listId) {
         CustomList list = this.customListService.getOne(listId);
         List<Comment> commentList = this.commentService.getByCustomList(list);
+        if (commentList == null || commentList.isEmpty())
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         return new ResponseEntity<>(commentList, HttpStatus.OK);
     }
 
