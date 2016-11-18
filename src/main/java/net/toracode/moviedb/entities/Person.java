@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.Arrays;
 import java.util.Date;
+import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Lob;
 
 @Entity
@@ -17,6 +19,7 @@ public class Person extends BaseEntity {
     private String[] socialLinks;
     @Lob
     @JsonIgnore
+    @Basic(fetch = FetchType.LAZY,optional = true)
     private byte[] image;
 
     public String getName() {
