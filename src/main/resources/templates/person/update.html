@@ -6,9 +6,9 @@
 </head>
 <body>
 	<div>
-		<span th:if="${message != null}" th:text="${message}"></span>
+		<span th:if="${param.message != null}" th:text="${param.message[0]}"></span>
 	</div>
-	<form th:action="@{/person/update/}+${person.getUniqueId()}" method="post">
+	<form th:action="@{/person/update/}+${person.getUniqueId()}" method="post" enctype="multipart/form-data">
 		<input type="text" name="name" placeholder="Name" th:value="${person?.getName()}"></input><br></br>
 		Designation:<br></br>
 		<input type="text" name="designations" th:value="${person?.commaSeperatedArrayElements((person?.getDesignations()))}" placeholder="Designations(Seperated by commas)"></input><br></br>
@@ -17,7 +17,7 @@
 		<textarea rows="20" cols="50" name="bio" placeholder="Bio" th:text="${person?.getBio()}"></textarea><br></br>
 		<input type="text" name="awards" placeholder="Awards (Seperated by commas)" th:value="${person?.commaSeperatedArrayElements(person?.getAwards())}"></input><br></br>
 		<input type="text" name="socialLinks" placeholder="Social Links(Seperated by commas)" th:value="${person?.commaSeperatedArrayElements(person?.getSocialLinks())}"></input><br></br>
-		
+		<input type="file" name="image"></input><br></br>
 		<button type="submit">Create</button>
 	</form>
 

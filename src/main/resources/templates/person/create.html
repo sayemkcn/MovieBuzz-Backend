@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8"></meta>
-<title>Create cast and crews</title>
+    <meta charset="UTF-8"></meta>
+    <title>Create cast and crews</title>
 </head>
 <body>
-	<div>
-		<span th:if="${message != null}" th:text="${message}"></span>
-	</div>
-	<form th:action="@{/person/create}" method="post">
-		<input type="text" name="name" placeholder="Name"></input><br></br>
-		Designation:<br></br>
-		<input type="text" name="designations" placeholder="Designations(Seperated by commas)"></input><br></br>
-		Birth Date:<br></br>
-		<input type="date" name="birthDate" placeholder="Birth Date"></input><br></br>
-		<textarea rows="20" cols="50" name="bio" placeholder="Bio"></textarea><br></br>
-		<input type="text" name="awards" placeholder="Awards (Seperated by commas)"></input><br></br>
-		<input type="text" name="socialLinks" placeholder="Social Links(Seperated by commas)"></input><br></br>
-		
-		<button type="submit">Create</button>
-	</form>
-		
-		<span th:if="${person != null}" th:text="${person.toString()}"></span>
+<div>
+    <span th:if="${param.message != null}" th:text="${param.message[0]}"></span>
+</div>
+<form th:action="@{/person/create}" method="post" enctype="multipart/form-data">
+    <input type="text" name="name" placeholder="Name"></input><br></br>
+    Designation:<br></br>
+    <input type="text" name="designations" placeholder="Designations(Seperated by commas)"></input><br></br>
+    Birth Date:<br></br>
+    <input type="date" name="birthDate" placeholder="Birth Date"></input><br></br>
+    <textarea rows="20" cols="50" name="bio" placeholder="Bio"></textarea><br></br>
+    <input type="text" name="awards" placeholder="Awards (Seperated by commas)"></input><br></br>
+    <input type="text" name="socialLinks" placeholder="Social Links(Seperated by commas)"></input><br></br>
+    <input type="file" name="image"></input><br></br>
+    <button type="submit">Create</button>
+</form>
+
+<span th:if="${person != null}" th:text="${person.toString()}"></span>
 </body>
 </html>

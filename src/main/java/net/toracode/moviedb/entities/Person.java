@@ -1,71 +1,85 @@
 package net.toracode.moviedb.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Arrays;
 import java.util.Date;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 
 @Entity
 public class Person extends BaseEntity {
-	private String name;
-	private String[] designations;
-	private Date birthDate;
-	private String bio;
-	private String[] awards;
-	private String[] socialLinks;
+    private String name;
+    private String[] designations;
+    private Date birthDate;
+    private String bio;
+    private String[] awards;
+    private String[] socialLinks;
+    @Lob
+    @JsonIgnore
+    private byte[] image;
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String[] getDesignations() {
-		return designations;
-	}
+    public String[] getDesignations() {
+        return designations;
+    }
 
-	public void setDesignations(String[] designations) {
-		this.designations = designations;
-	}
+    public void setDesignations(String[] designations) {
+        this.designations = designations;
+    }
 
-	public Date getBirthDate() {
-		return birthDate;
-	}
+    public Date getBirthDate() {
+        return birthDate;
+    }
 
-	public void setBirthDate(Date birthDate) {
-		this.birthDate = birthDate;
-	}
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
 
-	public String getBio() {
-		return bio;
-	}
+    public String getBio() {
+        return bio;
+    }
 
-	public void setBio(String bio) {
-		this.bio = bio;
-	}
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
 
-	public String[] getAwards() {
-		return awards;
-	}
+    public String[] getAwards() {
+        return awards;
+    }
 
-	public void setAwards(String[] awards) {
-		this.awards = awards;
-	}
+    public void setAwards(String[] awards) {
+        this.awards = awards;
+    }
 
 
+    public String[] getSocialLinks() {
+        return socialLinks;
+    }
 
-	public String[] getSocialLinks() {
-		return socialLinks;
-	}
+    public void setSocialLinks(String[] socialLinks) {
+        this.socialLinks = socialLinks;
+    }
 
-	public void setSocialLinks(String[] socialLinks) {
-		this.socialLinks = socialLinks;
-	}
+    public String commaSeperatedArrayElements(String[] array) {
+        return String.join(",", array);
+    }
 
-	public String commaSeperatedArrayElements(String[] array){
-		return String.join(",",array);
-	}
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
 
     @Override
     public String toString() {
@@ -78,4 +92,5 @@ public class Person extends BaseEntity {
                 ", socialLinks=" + Arrays.toString(socialLinks) +
                 '}';
     }
+
 }

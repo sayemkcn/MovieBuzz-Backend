@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -27,6 +28,12 @@ public class PersonApiController {
         if (castAndCrewList == null || castAndCrewList.isEmpty())
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         return new ResponseEntity<>(castAndCrewList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/image/{id}", method = RequestMethod.GET)
+    public byte[] getImage(@PathVariable("id") Long id) {
+        Person person = this.personService.getPersonById(id);
+        return person.getImage();
     }
 
 }
