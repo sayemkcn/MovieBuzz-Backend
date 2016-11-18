@@ -31,7 +31,7 @@ public class CustomListService {
         return this.customListRepo.save(customList);
     }
 
-    @Transactional(readOnly = true,propagation = Propagation.REQUIRES_NEW)
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
     public CustomList getOne(Long id) {
         return this.customListRepo.getOne(id);
     }
@@ -88,7 +88,7 @@ public class CustomListService {
         List<CustomList> followingList = new ArrayList();
         for (CustomList list : listOfCustomList) {
             for (User u : list.getFollowerList()) {
-                if (u.getAccountId() == user.getAccountId())
+                if (u.getAccountId().equals(user.getAccountId()))
                     followingList.add(list);
             }
         }
