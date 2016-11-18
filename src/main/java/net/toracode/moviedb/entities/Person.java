@@ -17,9 +17,8 @@ public class Person extends BaseEntity {
     private String bio;
     private String[] awards;
     private String[] socialLinks;
-    @Lob
     @JsonIgnore
-    @Basic(fetch = FetchType.LAZY,optional = true)
+    @Basic(fetch = FetchType.LAZY, optional = true)
     private byte[] image;
 
     public String getName() {
