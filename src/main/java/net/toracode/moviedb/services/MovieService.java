@@ -73,4 +73,9 @@ public class MovieService {
     public List<Movie> getFeaturedMovieList(){
         return this.movieRepo.findByFeaturedTrue();
     }
+
+    @Transactional(readOnly = true)
+    public List<Movie> getFeaturedMovieListPaginated(int page,int size){
+        return this.movieRepo.findByFeaturedTrue(new PageRequest(page,size,Sort.Direction.DESC,FIELD_NAME)).getContent();
+    }
 }

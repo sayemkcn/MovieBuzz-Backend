@@ -49,14 +49,6 @@
     </select><br></br>
     <input type="text" name="productionHouse" placeholder="Production House" th:value="${movie?.getProductionHouse()}"></input><br></br>
     <div>
-        Cast and Crew list:<br></br>
-        <select name="personIds" th:if="${personList != null}" multiple="multiple">
-            <option th:each="person : ${personList}" th:value="${person.getUniqueId()}">
-                <span th:text="${person.getName()}"></span>
-            </option>
-        </select><a th:href="@{/person/create}">Create New Cast/Crew</a>
-    </div><br></br>
-    <div>
         <label for="upcoming">Upcoming/Running movie?</label>
         <input type="checkbox" id="upcoming" th:checked="${movie?.isUpcoming()}" name="upcoming"></input>
     </div><br></br>

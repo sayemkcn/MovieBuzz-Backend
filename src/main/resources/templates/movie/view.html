@@ -9,8 +9,48 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-
-<div class="container-fluid">
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="col-sm-10 col-sm-offset-1">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" th:href="@{/admin/movie}">SMDB Admin Panel</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li><a th:href="@{/admin/movie}">Home</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">All Items
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a th:href="@{/admin/movie/type/movie}">Movies</a></li>
+                            <li><a th:href="@{/admin/movie/type/tvseries}">Tv Series</a></li>
+                        </ul>
+                    </li>
+                    <li><a th:href="@{/admin/movie/featured}">Featured</a></li>
+                    <li><a th:href="@{/admin/movie/upcoming}">Upcoming</a></li>
+                    <li><a th:href="@{/admin/person}">Cast and Crews</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Create New
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a th:href="@{/admin/movie/create}">Create New Movie</a></li>
+                            <li><a th:href="@{/admin/person/create}">Create New Cast/Crew</a></li>
+                        </ul>
+                    </li>
+                    <li><a th:href="@{/login}"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+<div class="container-fluid" style="margin-top: 50px;">
     <div class="row">
         <div th:if="${param.message != null}" class="col-sm-12 alert alert-warning">
             <span th:text="${param.message[0]}" style="padding-left: 150px;"></span>
@@ -19,10 +59,11 @@
     <div class="row jumbotron">
         <div th:if="${movie != null}" class="col-sm-3 col-sm-offset-1">
             <div>
-                <h3><span id="name" th:text="${movie.getName()}"></span></h3>
+                <img class="img-thumbnail img-responsive" height="200" width="150"
+                     th:src="@{/api/movie/image/}+${movie.getUniqueId()}"></img>
             </div>
             <div>
-                <img height="200" width="150" th:src="@{/api/movie/image/}+${movie.getUniqueId()}"></img>
+                <h3><span id="name" th:text="${movie.getName()}"></span></h3>
             </div>
             <div>
                 <label for="storyLine" class="label label-default">Story:</label>
@@ -80,7 +121,7 @@
                         <td>
                             <form th:action="@{/admin/movie/}+${movie.getUniqueId()}+@{/remove/}+${person.getUniqueId()}"
                                   method="post">
-                                <button type="submit">remove</button>
+                                <button class="btn btn-warning" type="submit">remove</button>
                             </form>
                         </td>
                     </tr>
@@ -111,13 +152,13 @@
                         <td>
                             <form th:action="@{/admin/movie/}+${movie.getUniqueId()}+@{/inject/}+${person.getUniqueId()}"
                                   method="post">
-                                <button type="submit">Inject</button>
+                                <button class="btn btn-success" type="submit">Inject</button>
                             </form>
                         </td>
                     </tr>
                     </tbody>
                     <tfoot>
-                    <tr>
+                    <tr class="pager">
                         <td><a th:hidden="${page==0}"
                                th:href="@{/admin/movie/{movieId}(page=${page-1},movieId=${movie.getUniqueId()})}">Previous</a>
                         </td>

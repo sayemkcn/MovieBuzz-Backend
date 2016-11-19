@@ -9,64 +9,108 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-
+<nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-10">
-                <span th:if="${param.message != null}" th:text="${param.message[0]}"></span>
+        <div class="col-sm-10 col-sm-offset-1">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" th:href="@{/admin/movie}">SMDB Admin Panel</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li><a th:href="@{/admin/movie}">Home</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">All Items
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a th:href="@{/admin/movie/type/movie}">Movies</a></li>
+                            <li><a th:href="@{/admin/movie/type/tvseries}">Tv Series</a></li>
+                        </ul>
+                    </li>
+                    <li><a th:href="@{/admin/movie/featured}">Featured</a></li>
+                    <li><a th:href="@{/admin/movie/upcoming}">Upcoming</a></li>
+                    <li><a th:href="@{/admin/person}">Cast and Crews</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Create New
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a th:href="@{/admin/movie/create}">Create New Movie</a></li>
+                            <li><a th:href="@{/admin/person/create}">Create New Cast/Crew</a></li>
+                        </ul>
+                    </li>
+                    <li><a th:href="@{/login}"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
+                </ul>
             </div>
         </div>
-
-        <div class="row">
-            <div class="col-sm-8 col-sm-offset-2">
-                <table class="table table-hover" th:if="${movieList != null}">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Genere</th>
-                            <th>Rated</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="movie : ${movieList}">
-                            <td th:text="${movie.getUniqueId()}"></td>
-                            <td>
-                                <a th:href="@{/admin/movie/}+${movie.getUniqueId()}">
-                                    <span th:text="${movie.getName()}"></span>
-                                </a>
-                            </td>
-                            <td th:text="${movie.getGenere()}"></td>
-                            <td th:text="${movie.getRated()}"></td>
-                            <td>
-                                <a th:href="@{/admin/movie/update/}+${movie.getUniqueId()}">Edit</a>
-                            </td>
-                            <td>
-                                <form th:action="@{/admin/movie/delete/}+${movie.getUniqueId()}" method="post">
-                                    <button type="submit">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td><a th:hidden="${page==0}" th:href="@{/admin/movie(page=${page-1},size=10)}">Previous</a></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td><a th:hidden="${movieList == null || movieList.isEmpty()}"
-                                   th:href="@{/admin/movie(page=${page+1},size=10)}">Next</a></td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
-
-
     </div>
+</nav>
+<div class="container-fluid" style="margin-top: 50px;">
+    <div th:if="${param.message != null}" class="row alert alert-success">
+        <div class="col-sm-10 col-sm-offset-2">
+            <span th:text="${param.message[0]}"></span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-2">
+            <table class="table table-hover" th:if="${movieList != null}">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Genere</th>
+                    <th>Rated</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="movie : ${movieList}">
+                    <td th:text="${movie.getUniqueId()}"></td>
+                    <td><img class="img img-thumbnail" height="75" width="50"
+                             th:src="@{/api/movie/image/}+${movie.getUniqueId()}"></img></td>
+                    <td>
+                        <a th:href="@{/admin/movie/}+${movie.getUniqueId()}">
+                            <span th:text="${movie.getName()}"></span>
+                        </a>
+                    </td>
+                    <td th:text="${movie.getGenere()}"></td>
+                    <td th:text="${movie.getRated()}"></td>
+                    <td>
+                        <a class="btn btn-warning" th:href="@{/admin/movie/update/}+${movie.getUniqueId()}">Edit</a>
+                    </td>
+                    <td>
+                        <form th:action="@{/admin/movie/delete/}+${movie.getUniqueId()}" method="post">
+                            <button class="btn btn-danger" type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+                <tfoot class="pager">
+                <tr>
+                    <td><a th:hidden="${page==0}" th:href="@{/admin/movie(page=${page-1},size=10)}">Previous</a></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><a th:hidden="${movieList == null || movieList.isEmpty()}"
+                           th:href="@{/admin/movie(page=${page+1},size=10)}">Next</a></td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+
+</div>
 
 </body>
 </html>
