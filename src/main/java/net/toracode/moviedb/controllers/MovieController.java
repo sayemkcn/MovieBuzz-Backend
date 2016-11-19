@@ -19,7 +19,7 @@ import net.toracode.moviedb.services.PersonService;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
-@RequestMapping(value = "/movie")
+@RequestMapping(value = "/admin/movie")
 public class MovieController {
     @Autowired
     private MovieService movieService;
@@ -59,7 +59,44 @@ public class MovieController {
     public String movieDetails(@PathVariable("id") Long id, Model model) {
         Movie movie = this.movieService.getMovie(id);
         model.addAttribute("movie", movie);
+        model.addAttribute("personList", this.personService.getAllPersons());
         return "movie/view";
+    }
+
+    @RequestMapping(value = "/{movieId}/inject/{personId}")
+    public String injectPerson(@PathVariable("movieId") Long movieId,
+                               @PathVariable("personId") Long personId) {
+        Movie movie = this.movieService.getMovie(movieId);
+        if (movie == null)
+            return "redirect:/admin/movie?message=Movie not found!";
+        Person person = this.personService.getPersonById(personId);
+        if (person == null)
+            return "redirect:/admin/movie/" + movieId + "?message=Cast or Crew not found!";
+        List<Person> personList = movie.getCastAndCrewList();
+        if (personList != null) {
+            personList.add(person);
+        } else {
+            personList = new ArrayList<>();
+            personList.add(person);
+        }
+        movie.setCastAndCrewList(personList);
+        this.movieService.save(movie);
+        return "redirect:/admin/movie/" + movieId;
+    }
+
+    @RequestMapping(value = "/{movieId}/remove/{personId}")
+    public String removePerson(@PathVariable("movieId") Long movieId,
+                               @PathVariable("personId") Long personId) {
+        Movie movie = this.movieService.getMovie(movieId);
+        if (movie == null)
+            return "redirect:/admin/movie?message=Movie not found!";
+        List<Person> personList = movie.getCastAndCrewList();
+        if (personList == null)
+            return "redirect:/admin/movie/" + movieId + "?messsage=Cast and crew list is already empty!";
+        personList = this.personService.removePerson(personList, personId);
+        movie.setCastAndCrewList(personList);
+        this.movieService.save(movie);
+        return "redirect:/admin/movie/" + movieId;
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
@@ -70,15 +107,12 @@ public class MovieController {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String addMovie(@ModelAttribute("movie") Movie movie, BindingResult bindingResult,
-                           @RequestParam("image") MultipartFile multipartFile,
-                           @RequestParam("personIds") Long[] personIds) throws IOException {
+                           @RequestParam("image") MultipartFile multipartFile) throws IOException {
         if (bindingResult.hasErrors())
             System.out.print(bindingResult.toString());
         if (this.imageValidator.isImageValid(multipartFile)) {
             movie.setImage(multipartFile.getBytes());
         }
-        List<Person> personList = this.personService.personListByIds(personIds);
-        movie.setCastAndCrewList(personList);
         movie = this.movieService.save(movie);
         System.out.println(movie.toString());
         return "redirect:/movie?message=Successfully created movie!";

@@ -33,10 +33,10 @@
             <td th:text="${person.getBirthDate()}"></td>
             <td th:text="${person.commaSeperatedArrayElements(person.getDesignations())}"></td>
             <td>
-                <a th:href="@{/person/update/}+${person.getUniqueId()}">Edit</a>
+                <a th:href="@{/admin/person/update/}+${person.getUniqueId()}">Edit</a>
             </td>
             <td>
-                <form th:action="@{/person/delete/}+${person.getUniqueId()}" method="post">
+                <form th:action="@{/admin/person/delete/}+${person.getUniqueId()}" method="post">
                     <button type="submit">Delete</button>
                 </form>
             </td>
