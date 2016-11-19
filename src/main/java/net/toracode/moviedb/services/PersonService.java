@@ -86,4 +86,8 @@ public class PersonService {
         PageRequest pageRequest = new PageRequest(page, size, Sort.Direction.ASC, "name");
         return this.personRepo.findByNameContaining(phrase, pageRequest).getContent();
     }
+
+    public void deletePerson(Long id) {
+        this.personRepo.delete(id);
+    }
 }

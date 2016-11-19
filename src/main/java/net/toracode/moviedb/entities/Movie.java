@@ -16,6 +16,7 @@ public class Movie extends BaseEntity {
     private String language;
     @JsonIgnore
     @Basic(fetch = FetchType.LAZY, optional = true)
+    @Column(length = 2007215)
     private byte[] image;
     private String industry;
     private String genere;

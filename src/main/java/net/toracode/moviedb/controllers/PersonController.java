@@ -94,4 +94,9 @@ public class PersonController {
         return "redirect:/admin/person?message=" + person.getName() + " updated!";
     }
 
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
+    public String deletePerson(@PathVariable("id") Long id) {
+        this.personService.deletePerson(id);
+        return "redirect:/admin/person?message=Deleted!";
+    }
 }
