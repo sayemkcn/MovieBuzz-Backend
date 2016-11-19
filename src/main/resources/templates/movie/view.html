@@ -105,6 +105,17 @@
                         </td>
                     </tr>
                     </tbody>
+                    <tfoot>
+                    <tr>
+                        <td></td>
+                        <td><a th:hidden="${page==0}" th:href="@{/admin/movie/{movieId}(page=${page-1},movieId=${movie.getUniqueId()})}">Previous</a></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><a th:hidden="${personList == null || personList.isEmpty()}"
+                               th:href="@{/admin/movie/{movieId}(page=${page+1},movieId=${movie.getUniqueId()})}">Next</a></td>
+                    </tr>
+                    </tfoot>
                 </table>
             </div>
 

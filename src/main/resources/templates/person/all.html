@@ -45,11 +45,12 @@
         <tfoot>
         <tr th:if="${page!=null}">
             <td></td>
-            <td><a th:hidden="${page==0}" th:href="@{/person(page=${page-1},size=10)}">Previous</a></td>
+            <td><a th:hidden="${page==0}" th:href="@{/admin/person(page=${page-1},size=10)}">Previous</a></td>
             <td></td>
             <td></td>
             <td></td>
-            <td><a th:hidden="${personList == null || personList?.isEmpty()}" th:href="@{/person(page=${page+1},size=10)}">Next</a>
+            <td><a th:hidden="${personList == null || personList?.isEmpty()}"
+                   th:href="@{/admin/person(page=${page+1},size=10)}">Next</a>
             </td>
         </tr>
         </tfoot>

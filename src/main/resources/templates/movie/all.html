@@ -45,11 +45,11 @@
         <tfoot>
             <tr>
                 <td></td>
-                <td><a th:hidden="${page==0}" th:href="@{/movie(page=${page-1},size=10)}">Previous</a></td>
+                <td><a th:hidden="${page==0}" th:href="@{/admin/movie(page=${page-1},size=10)}">Previous</a></td>
                 <td></td>
                 <td></td>
                 <td></td>
-                <td><a th:hidden="${movieList == null || movieList.isEmpty()}" th:href="@{/movie(page=${page+1},size=10)}">Next</a></td>
+                <td><a th:hidden="${movieList == null || movieList.isEmpty()}" th:href="@{/admin/movie(page=${page+1},size=10)}">Next</a></td>
             </tr>
         </tfoot>
     </table>

@@ -62,6 +62,7 @@ public class MovieController {
         Movie movie = this.movieService.getMovie(id);
         model.addAttribute("movie", movie);
         model.addAttribute("personList", this.personService.getAllPersonsPaginated(page, 10));
+        model.addAttribute("page",page);
         return "movie/view";
     }
 
