@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<p>ডিটেইলস দেখানোর এত টাইম নাই। নিচের toString() দেইখাই খুশি থাকেন।</p>
+<h3><span th:if="${param.message != null}" th:text="${param.message[0]}"></span></h3>
 
 <div th:if="${movie != null}">
     <div>

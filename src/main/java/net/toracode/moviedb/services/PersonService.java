@@ -73,4 +73,11 @@ public class PersonService {
         }
         return pList;
     }
+
+    public boolean isAlreadyExists(List<Person> personList, Long personId) {
+        for (Person person : personList) {
+            if (person.getUniqueId().equals(personId)) return true;
+        }
+        return false;
+    }
 }

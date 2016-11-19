@@ -56,13 +56,16 @@ public class MovieController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public String movieDetails(@PathVariable("id") Long id, Model model) {
+    public String movieDetails(@PathVariable("id") Long id, Model model,
+                               @RequestParam(value = "page", required = false) Integer page) {
+        if (page == null) page = 0;
         Movie movie = this.movieService.getMovie(id);
         model.addAttribute("movie", movie);
-        model.addAttribute("personList", this.personService.getAllPersons());
+        model.addAttribute("personList", this.personService.getAllPersonsPaginated(page, 10));
         return "movie/view";
     }
 
+    // Inject a cast or crew to a movie
     @RequestMapping(value = "/{movieId}/inject/{personId}")
     public String injectPerson(@PathVariable("movieId") Long movieId,
                                @PathVariable("personId") Long personId) {
@@ -74,6 +77,8 @@ public class MovieController {
             return "redirect:/admin/movie/" + movieId + "?message=Cast or Crew not found!";
         List<Person> personList = movie.getCastAndCrewList();
         if (personList != null) {
+            if(this.personService.isAlreadyExists(personList,personId))
+                return "redirect:/admin/movie/" + movieId + "?message=Cast or Crew already exists!";
             personList.add(person);
         } else {
             personList = new ArrayList<>();
@@ -84,6 +89,7 @@ public class MovieController {
         return "redirect:/admin/movie/" + movieId;
     }
 
+    // remove a cast or crew from movie
     @RequestMapping(value = "/{movieId}/remove/{personId}")
     public String removePerson(@PathVariable("movieId") Long movieId,
                                @PathVariable("personId") Long personId) {
@@ -115,7 +121,7 @@ public class MovieController {
         }
         movie = this.movieService.save(movie);
         System.out.println(movie.toString());
-        return "redirect:/movie?message=Successfully created movie!";
+        return "redirect:/admin/movie?message=Successfully created movie!";
     }
 
     @RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
