@@ -2,6 +2,8 @@ package net.toracode.moviedb.repositories;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,5 +15,6 @@ import net.toracode.moviedb.entities.Person;
 public interface PersonRepository extends JpaRepository<Person, Long> {
 	@Query("FROM Person P WHERE P.uniqueId IN :ids")
 	List<Person> findByIdIn(@Param("ids") Long[] ids);
+	Page<Person> findByNameContaining(String phrase, Pageable pageable);
 
 }

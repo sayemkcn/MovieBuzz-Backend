@@ -80,4 +80,9 @@ public class PersonService {
         }
         return false;
     }
+
+    public List<Person> searchPersonByNamePaginated(String phrase, Integer page, Integer size) {
+        PageRequest pageRequest = new PageRequest(page, size, Sort.Direction.ASC, "name");
+        return this.personRepo.findByNameContaining(phrase, pageRequest).getContent();
+    }
 }
