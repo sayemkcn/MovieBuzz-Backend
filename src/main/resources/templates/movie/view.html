@@ -135,12 +135,14 @@
         </div>
         <!--All Cast And crews-->
         <div class="col-sm-3 col-sm-offset-1 ">
-            <div>
-                <form class="form" th:action="@{/admin/movie/}+${movie.getUniqueId()}+@{/person/search(page=0,size=20)}" method="post">
+            <!-- SEARCH BOX -->
+            <div class="form form-inline">
+                <form  th:action="@{/admin/movie/}+${movie.getUniqueId()}+@{/person/search(page=0,size=20)}" method="post">
                     <input type="text" name="phrase" class="form-control"></input>
                     <button class="btn btn-primary" type="submit">Search</button>
                 </form>
-            </div>
+            </div> <!--END SEARCH BOX-->
+
             <label for="allCastAndCrewList" class="label label-primary">All of the Casts and crews:</label>
             <div id="allCastAndCrewList">
                 <table th:if="${personList != null}" class="table table-hover">

@@ -20,6 +20,7 @@ import net.toracode.moviedb.repositories.PersonRepository;
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class PersonService {
 
+    private static final String FIELD_NAME = "uniqueId";
     @Autowired
     private PersonRepository personRepo;
     @Autowired
@@ -40,7 +41,7 @@ public class PersonService {
 
     @Transactional(readOnly = true)
     public List<Person> getAllPersonsPaginated(Integer page, Integer size) {
-        Page<Person> personList = this.personRepo.findAll(new PageRequest(page, size));
+        Page<Person> personList = this.personRepo.findAll(new PageRequest(page, size, Sort.Direction.DESC,FIELD_NAME));
         return personList.getContent();
     }
 

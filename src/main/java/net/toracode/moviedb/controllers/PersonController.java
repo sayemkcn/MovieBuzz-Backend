@@ -51,8 +51,7 @@ public class PersonController {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String createPerson(@ModelAttribute("person") Person person, BindingResult bindingResult,
-                               @RequestParam("image") MultipartFile multipartFile,
-                               Model model) throws IOException {
+                               @RequestParam("image") MultipartFile multipartFile) throws IOException {
         if (bindingResult.hasErrors()) {
             System.out.println(bindingResult.toString());
         }
@@ -60,8 +59,7 @@ public class PersonController {
             if (imageValidator.isImageValid(multipartFile))
                 person.setImage(multipartFile.getBytes());
         personService.save(person);
-        model.addAttribute("message", "Successfully saved " + person.getName());
-        return "person/create";
+        return "redirect:/admin/person?message=Successfully saved " + person.getName() + "!";
     }
 
     @RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
@@ -77,6 +75,7 @@ public class PersonController {
                                @RequestParam("image") MultipartFile multipartFile) throws IOException {
         if (bindingResult.hasErrors())
             System.out.println(bindingResult.toString());
+        Person existingPerson = this.personService.getPersonById(id);
         // chack if image is choosen
         if (!multipartFile.isEmpty()) {
             if (this.imageValidator.isImageValid(multipartFile)) {
@@ -84,10 +83,12 @@ public class PersonController {
             }
         } else {
             // else fetch previous image if existed and set it;
-            byte[] image = this.personService.getPersonById(id).getImage();
+            byte[] image = existingPerson.getImage();
             if (image != null)
                 person.setImage(image);
         }
+        // if birthdate date is not set then set date from the existing entities date
+        person.setBirthDate(existingPerson.getBirthDate());
         person.setUniqueId(id);
         person = this.personService.save(person);
         return "redirect:/admin/person?message=" + person.getName() + " updated!";
