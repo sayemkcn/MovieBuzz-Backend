@@ -2,7 +2,7 @@ package net.toracode.moviedb.entities;
 
 import javax.persistence.Entity;
 
-@Entity
+@Entity(name = "t_user")
 public class User extends BaseEntity {
     private String name;
     private String email;
