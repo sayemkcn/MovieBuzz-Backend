@@ -99,7 +99,10 @@ public class MovieApiController {
 
     @RequestMapping(value = "/image/{id}", method = RequestMethod.GET)
     public byte[] getImage(@PathVariable("id") Long id) {
-        return this.movieService.getMovie(id).getImage();
+        Movie movie = this.movieService.getMovie(id);
+        if (movie != null)
+            return movie.getImage();
+        return null;
     }
 
 }

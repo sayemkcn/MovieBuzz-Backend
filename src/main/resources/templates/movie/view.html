@@ -1,88 +1,139 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8"></meta>
     <title>Details</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-
-<h3><span th:if="${param.message != null}" th:text="${param.message[0]}"></span></h3>
-
-<div th:if="${movie != null}">
-    <div>
-        <label for="name">Name</label>
-        <span id="name" th:text="${movie.getName()}"></span>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="col-sm-10 col-sm-offset-1">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" th:href="@{/admin/movie}">SMDB Admin Panel</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li><a th:href="@{/admin/movie}">Home</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">All Items
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a th:href="@{/admin/movie/type/movie}">Movies</a></li>
+                            <li><a th:href="@{/admin/movie/type/tvseries}">Tv Series</a></li>
+                        </ul>
+                    </li>
+                    <li><a th:href="@{/admin/movie/featured}">Featured</a></li>
+                    <li><a th:href="@{/admin/movie/upcoming}">Upcoming</a></li>
+                    <li><a th:href="@{/admin/person}">Cast and Crews</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Create New
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a th:href="@{/admin/movie/create}">Create New Movie</a></li>
+                            <li><a th:href="@{/admin/person/create}">Create New Cast/Crew</a></li>
+                        </ul>
+                    </li>
+                    <li><a th:href="@{/login}"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
-    <div>
-        <label for="language">Language:</label>
-        <span id="language" th:text="${movie.getLanguage()}"></span>
+</nav>
+<div class="container-fluid" style="margin-top: 50px;">
+    <div class="row">
+        <div th:if="${param.message != null}" class="col-sm-12 alert alert-warning">
+            <span th:text="${param.message[0]}" style="padding-left: 150px;"></span>
+        </div>
     </div>
-    <div>
-        <label for="industry">Movie Industry:</label>
-        <span id="industry" th:text="${movie.getLanguage()}"></span>
-    </div>
-    <div>
-        <label for="genere">Genere:</label>
-        <span id="genere" th:text="${movie.getGenere()}"></span>
-    </div>
-    <div>
-        <img height="200" width="150" th:src="@{/api/movie/image/}+${movie.getUniqueId()}"></img>
-    </div>
-    <div>
-        <label for="storyLine">Story:</label>
-        <span id="storyLine" th:text="${movie.getStoryLine()}"></span>
-    </div>
-    <div>
-        <label for="rated">Rated:</label>
-        <span id="rated" th:text="${movie.getRated()}"></span>
-    </div>
-    <div>
-        <label for="duration">Duration:</label>
-        <span id="duration" th:text="${movie.getDuration()}"></span>
-    </div>
-    <div>
-        <label for="budget">Budget:</label>
-        <span id="budget" th:text="${movie.getBudget()}"></span>
-    </div>
-    <div>
-        <label for="productionHouse">Production House:</label>
-        <span id="productionHouse" th:text="${movie.getProductionHouse()}"></span>
-    </div>
-    <!--Cast and Crews of the movie-->
-    <div th:if="${movie.getCastAndCrewList() != null}">
-        <label for="castAndCrewList">Cast And Crew List:</label>
-        <div id="castAndCrewList">
-            <table>
-                <thead>
-                <tr>
-                    <th>Image</th>
-                    <th>Name</th>
-                    <th>Designations</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="person : ${movie.getCastAndCrewList()}">
-                    <td><img height="100" width="100" th:src="@{/api/person/image/}+${person.getUniqueId()}"></img></td>
-                    <td th:text="${person.getName()}"></td>
-                    <td th:text="${person.getCommaSeperatedDesignations()}"></td>
-                    <td>
-                        <form th:action="@{/admin/movie/}+${movie.getUniqueId()}+@{/remove/}+${person.getUniqueId()}"
-                              method="post">
-                            <button type="submit">remove</button>
-                        </form>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+    <div class="row jumbotron">
+        <div th:if="${movie != null}" class="col-sm-3 col-sm-offset-1">
+            <div>
+                <img class="img-thumbnail img-responsive" height="200" width="150"
+                     th:src="@{/api/movie/image/}+${movie.getUniqueId()}"></img>
+            </div>
+            <div>
+                <h3><span id="name" th:text="${movie.getName()}"></span></h3>
+            </div>
+            <div>
+                <label for="storyLine" class="label label-default">Story:</label>
+                <span id="storyLine" th:text="${movie.getStoryLine()}"></span>
+            </div>
+            <div>
+                <label for="language" class="label label-default">Language:</label>
+                <span id="language" th:text="${movie.getLanguage()}"></span>
+            </div>
+            <div>
+                <label for="industry" class="label label-default">Movie Industry:</label>
+                <span id="industry" th:text="${movie.getIndustry()}"></span>
+            </div>
+            <div>
+                <label for="genere" class="label label-default">Genere:</label>
+                <span id="genere" th:text="${movie.getGenere()}"></span>
+            </div>
+            <div>
+                <label for="rated" class="label label-default">Rated:</label>
+                <span id="rated" th:text="${movie.getRated()}"></span>
+            </div>
+            <div>
+                <label for="duration" class="label label-default">Duration:</label>
+                <span id="duration" th:text="${movie.getDuration()}"></span>
+            </div>
+            <div>
+                <label for="budget" class="label label-default">Budget:</label>
+                <span id="budget" th:text="${movie.getBudget()}"></span>
+            </div>
+            <div>
+                <label for="productionHouse" class="label label-default">Production House:</label>
+                <span id="productionHouse" th:text="${movie.getProductionHouse()}"></span>
+            </div>
         </div>
 
+        <!--Cast and Crews of the movie-->
+        <div class="col-sm-3">
+            <label for="castAndCrewList" class="label label-success">Cast And Crew List of the movie:</label>
+            <div id="castAndCrewList">
+                <table th:if="${movie.getCastAndCrewList() != null}" class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Designations</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="person : ${movie.getCastAndCrewList()}">
+                        <td><img height="50" width="50"
+                                 th:src="@{/api/person/image/}+${person.getUniqueId()}"></img></td>
+                        <td th:text="${person.getName()}"></td>
+                        <td th:text="${person.getCommaSeperatedDesignations()}"></td>
+                        <td>
+                            <form th:action="@{/admin/movie/}+${movie.getUniqueId()}+@{/remove/}+${person.getUniqueId()}"
+                                  method="post">
+                                <button class="btn btn-warning" type="submit">remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <!--All Cast And crews-->
-        <hr></hr>
-        <div th:if="${personList != null}">
-            <label for="allCastAndCrewList">All of the Casts and crews paginated:</label>
+        <div class="col-sm-3 col-sm-offset-1 ">
+            <label for="allCastAndCrewList" class="label label-primary">All of the Casts and crews:</label>
             <div id="allCastAndCrewList">
-                <table>
+                <table th:if="${personList != null}" class="table table-hover">
                     <thead>
                     <tr>
                         <th>Image</th>
@@ -93,36 +144,37 @@
                     </thead>
                     <tbody>
                     <tr th:each="person : ${personList}">
-                        <td><img height="100" width="100" th:src="@{/api/person/image/}+${person.getUniqueId()}"></img>
+                        <td><img height="50" width="50"
+                                 th:src="@{/api/person/image/}+${person.getUniqueId()}"></img>
                         </td>
                         <td th:text="${person.getName()}"></td>
                         <td th:text="${person.getCommaSeperatedDesignations()}"></td>
                         <td>
                             <form th:action="@{/admin/movie/}+${movie.getUniqueId()}+@{/inject/}+${person.getUniqueId()}"
                                   method="post">
-                                <button type="submit">Inject</button>
+                                <button class="btn btn-success" type="submit">Inject</button>
                             </form>
                         </td>
                     </tr>
                     </tbody>
                     <tfoot>
-                    <tr>
-                        <td></td>
-                        <td><a th:hidden="${page==0}" th:href="@{/admin/movie/{movieId}(page=${page-1},movieId=${movie.getUniqueId()})}">Previous</a></td>
-                        <td></td>
+                    <tr class="pager">
+                        <td><a th:hidden="${page==0}"
+                               th:href="@{/admin/movie/{movieId}(page=${page-1},movieId=${movie.getUniqueId()})}">Previous</a>
+                        </td>
                         <td></td>
                         <td></td>
                         <td><a th:hidden="${personList == null || personList.isEmpty()}"
-                               th:href="@{/admin/movie/{movieId}(page=${page+1},movieId=${movie.getUniqueId()})}">Next</a></td>
+                               th:href="@{/admin/movie/{movieId}(page=${page+1},movieId=${movie.getUniqueId()})}">Next</a>
+                        </td>
                     </tr>
                     </tfoot>
                 </table>
             </div>
-
         </div>
-
     </div>
 </div>
+
 
 </body>
 </html>

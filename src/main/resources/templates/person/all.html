@@ -2,60 +2,107 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"></meta>
-    <title>All Movies</title>
+    <title>All Persons</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="col-sm-10 col-sm-offset-1">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" th:href="@{/admin/movie}">SMDB Admin Panel</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li><a th:href="@{/admin/movie}">Home</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">All Items
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a th:href="@{/admin/movie/type/movie}">Movies</a></li>
+                            <li><a th:href="@{/admin/movie/type/tvseries}">Tv Series</a></li>
+                        </ul>
+                    </li>
+                    <li><a th:href="@{/admin/movie/featured}">Featured</a></li>
+                    <li><a th:href="@{/admin/movie/upcoming}">Upcoming</a></li>
+                    <li><a th:href="@{/admin/person}">Cast and Crews</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Create New
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a th:href="@{/admin/movie/create}">Create New Movie</a></li>
+                            <li><a th:href="@{/admin/person/create}">Create New Cast/Crew</a></li>
+                        </ul>
+                    </li>
+                    <li><a th:href="@{/login}"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
 
-<span th:if="${param.message != null}" th:text="${param.message[0]}"></span>
+<div class="container-fluid" style="margin-top: 50px;">
+    <span th:if="${param.message != null}" th:text="${param.message[0]}"></span>
 
-<div th:if="${personList != null}">
+    <div th:if="${personList != null}">
 
-    <table>
-        <thead>
-        <th>
-        <td>ID</td>
-        <td>Name</td>
-        <td>Birth Date</td>
-        <td>Desigations</td>
-        <td>Edit</td>
-        <td>Delete</td>
-        </th>
-        </thead>
-        <tbody>
-        <tr th:each="person : ${personList}">
-            <td></td>
-            <td th:text="${person.getUniqueId()}"></td>
-            <td>
-                <a th:href="@{/person/}+${person.getUniqueId()}">
-                    <span th:text="${person.getName()}"></span>
-                </a>
-            </td>
-            <td th:text="${person.getBirthDate()}"></td>
-            <td th:text="${person.commaSeperatedArrayElements(person.getDesignations())}"></td>
-            <td>
-                <a th:href="@{/admin/person/update/}+${person.getUniqueId()}">Edit</a>
-            </td>
-            <td>
-                <form th:action="@{/admin/person/delete/}+${person.getUniqueId()}" method="post">
-                    <button type="submit">Delete</button>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-        <tfoot>
-        <tr th:if="${page!=null}">
-            <td></td>
-            <td><a th:hidden="${page==0}" th:href="@{/admin/person(page=${page-1},size=10)}">Previous</a></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td><a th:hidden="${personList == null || personList?.isEmpty()}"
-                   th:href="@{/admin/person(page=${page+1},size=10)}">Next</a>
-            </td>
-        </tr>
-        </tfoot>
-    </table>
+        <table>
+            <thead>
+            <th>
+            <td>ID</td>
+            <td>Name</td>
+            <td>Birth Date</td>
+            <td>Desigations</td>
+            <td>Edit</td>
+            <td>Delete</td>
+            </th>
+            </thead>
+            <tbody>
+            <tr th:each="person : ${personList}">
+                <td></td>
+                <td th:text="${person.getUniqueId()}"></td>
+                <td>
+                    <a th:href="@{/person/}+${person.getUniqueId()}">
+                        <span th:text="${person.getName()}"></span>
+                    </a>
+                </td>
+                <td th:text="${person.getBirthDate()}"></td>
+                <td th:text="${person.commaSeperatedArrayElements(person.getDesignations())}"></td>
+                <td>
+                    <a th:href="@{/admin/person/update/}+${person.getUniqueId()}">Edit</a>
+                </td>
+                <td>
+                    <form th:action="@{/admin/person/delete/}+${person.getUniqueId()}" method="post">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr th:if="${page!=null}">
+                <td></td>
+                <td><a th:hidden="${page==0}" th:href="@{/admin/person(page=${page-1},size=10)}">Previous</a></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><a th:hidden="${personList == null || personList?.isEmpty()}"
+                       th:href="@{/admin/person(page=${page+1},size=10)}">Next</a>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
 
+    </div>
 </div>
 
 </body>
