@@ -33,7 +33,9 @@ public class PersonApiController {
     @RequestMapping(value = "/image/{id}", method = RequestMethod.GET)
     public byte[] getImage(@PathVariable("id") Long id) {
         Person person = this.personService.getPersonById(id);
-        return person.getImage();
+        if (person != null)
+            return person.getImage();
+        return null;
     }
 
 }
