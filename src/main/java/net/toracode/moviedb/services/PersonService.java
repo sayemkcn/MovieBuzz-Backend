@@ -64,4 +64,20 @@ public class PersonService {
         return this.personRepo.findOne(id);
     }
 
+    public List<Person> removePerson(List<Person> personList, Long personId) {
+        List<Person> pList = new ArrayList<>();
+        for (Person person : personList) {
+            if (!person.getUniqueId().equals(personId)) {
+                pList.add(person);
+            }
+        }
+        return pList;
+    }
+
+    public boolean isAlreadyExists(List<Person> personList, Long personId) {
+        for (Person person : personList) {
+            if (person.getUniqueId().equals(personId)) return true;
+        }
+        return false;
+    }
 }

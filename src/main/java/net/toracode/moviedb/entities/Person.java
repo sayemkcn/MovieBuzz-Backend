@@ -1,6 +1,7 @@
 package net.toracode.moviedb.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -93,6 +94,10 @@ public class Person extends BaseEntity {
                 ", awards=" + Arrays.toString(awards) +
                 ", socialLinks=" + Arrays.toString(socialLinks) +
                 '}';
+    }
+
+    public String getCommaSeperatedDesignations() {
+        return StringUtils.join(this.designations, ", ");
     }
 
 }

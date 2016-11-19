@@ -6,11 +6,123 @@
 </head>
 <body>
 
-    <p>ডিটেইলস দেখানোর এত টাইম নাই। নিচের toString() দেইখাই খুশি থাকেন।</p>
+<h3><span th:if="${param.message != null}" th:text="${param.message[0]}"></span></h3>
 
-    <div th:if="${movie != null}">
-        <span th:text="${movie.toString()}"></span>
+<div th:if="${movie != null}">
+    <div>
+        <label for="name">Name</label>
+        <span id="name" th:text="${movie.getName()}"></span>
     </div>
+    <div>
+        <label for="language">Language:</label>
+        <span id="language" th:text="${movie.getLanguage()}"></span>
+    </div>
+    <div>
+        <label for="industry">Movie Industry:</label>
+        <span id="industry" th:text="${movie.getLanguage()}"></span>
+    </div>
+    <div>
+        <label for="genere">Genere:</label>
+        <span id="genere" th:text="${movie.getGenere()}"></span>
+    </div>
+    <div>
+        <img height="200" width="150" th:src="@{/api/movie/image/}+${movie.getUniqueId()}"></img>
+    </div>
+    <div>
+        <label for="storyLine">Story:</label>
+        <span id="storyLine" th:text="${movie.getStoryLine()}"></span>
+    </div>
+    <div>
+        <label for="rated">Rated:</label>
+        <span id="rated" th:text="${movie.getRated()}"></span>
+    </div>
+    <div>
+        <label for="duration">Duration:</label>
+        <span id="duration" th:text="${movie.getDuration()}"></span>
+    </div>
+    <div>
+        <label for="budget">Budget:</label>
+        <span id="budget" th:text="${movie.getBudget()}"></span>
+    </div>
+    <div>
+        <label for="productionHouse">Production House:</label>
+        <span id="productionHouse" th:text="${movie.getProductionHouse()}"></span>
+    </div>
+    <!--Cast and Crews of the movie-->
+    <div th:if="${movie.getCastAndCrewList() != null}">
+        <label for="castAndCrewList">Cast And Crew List:</label>
+        <div id="castAndCrewList">
+            <table>
+                <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Designations</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="person : ${movie.getCastAndCrewList()}">
+                    <td><img height="100" width="100" th:src="@{/api/person/image/}+${person.getUniqueId()}"></img></td>
+                    <td th:text="${person.getName()}"></td>
+                    <td th:text="${person.getCommaSeperatedDesignations()}"></td>
+                    <td>
+                        <form th:action="@{/admin/movie/}+${movie.getUniqueId()}+@{/remove/}+${person.getUniqueId()}"
+                              method="post">
+                            <button type="submit">remove</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!--All Cast And crews-->
+        <hr></hr>
+        <div th:if="${personList != null}">
+            <label for="allCastAndCrewList">All of the Casts and crews paginated:</label>
+            <div id="allCastAndCrewList">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Designations</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="person : ${personList}">
+                        <td><img height="100" width="100" th:src="@{/api/person/image/}+${person.getUniqueId()}"></img>
+                        </td>
+                        <td th:text="${person.getName()}"></td>
+                        <td th:text="${person.getCommaSeperatedDesignations()}"></td>
+                        <td>
+                            <form th:action="@{/admin/movie/}+${movie.getUniqueId()}+@{/inject/}+${person.getUniqueId()}"
+                                  method="post">
+                                <button type="submit">Inject</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td></td>
+                        <td><a th:hidden="${page==0}" th:href="@{/admin/movie/{movieId}(page=${page-1},movieId=${movie.getUniqueId()})}">Previous</a></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><a th:hidden="${personList == null || personList.isEmpty()}"
+                               th:href="@{/admin/movie/{movieId}(page=${page+1},movieId=${movie.getUniqueId()})}">Next</a></td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+</div>
 
 </body>
 </html>

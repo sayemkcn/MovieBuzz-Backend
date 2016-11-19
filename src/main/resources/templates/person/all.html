@@ -33,10 +33,10 @@
             <td th:text="${person.getBirthDate()}"></td>
             <td th:text="${person.commaSeperatedArrayElements(person.getDesignations())}"></td>
             <td>
-                <a th:href="@{/person/update/}+${person.getUniqueId()}">Edit</a>
+                <a th:href="@{/admin/person/update/}+${person.getUniqueId()}">Edit</a>
             </td>
             <td>
-                <form th:action="@{/person/delete/}+${person.getUniqueId()}" method="post">
+                <form th:action="@{/admin/person/delete/}+${person.getUniqueId()}" method="post">
                     <button type="submit">Delete</button>
                 </form>
             </td>
@@ -45,11 +45,12 @@
         <tfoot>
         <tr th:if="${page!=null}">
             <td></td>
-            <td><a th:hidden="${page==0}" th:href="@{/person(page=${page-1},size=10)}">Previous</a></td>
+            <td><a th:hidden="${page==0}" th:href="@{/admin/person(page=${page-1},size=10)}">Previous</a></td>
             <td></td>
             <td></td>
             <td></td>
-            <td><a th:hidden="${personList == null || personList?.isEmpty()}" th:href="@{/person(page=${page+1},size=10)}">Next</a>
+            <td><a th:hidden="${personList == null || personList?.isEmpty()}"
+                   th:href="@{/admin/person(page=${page+1},size=10)}">Next</a>
             </td>
         </tr>
         </tfoot>

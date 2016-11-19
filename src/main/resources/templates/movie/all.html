@@ -26,17 +26,17 @@
                 <td></td>
                 <td th:text="${movie.getUniqueId()}"></td>
                 <td>
-                    <a th:href="@{/movie/}+${movie.getUniqueId()}">
+                    <a th:href="@{/admin/movie/}+${movie.getUniqueId()}">
                         <span th:text="${movie.getName()}"></span>
                     </a>
                 </td>
                 <td th:text="${movie.getGenere()}"></td>
                 <td th:text="${movie.getRated()}"></td>
                 <td>
-                    <a th:href="@{/movie/update/}+${movie.getUniqueId()}">Edit</a>
+                    <a th:href="@{/admin/movie/update/}+${movie.getUniqueId()}">Edit</a>
                 </td>
                 <td>
-                    <form th:action="@{/movie/delete/}+${movie.getUniqueId()}" method="post">
+                    <form th:action="@{/admin/movie/delete/}+${movie.getUniqueId()}" method="post">
                         <button type="submit">Delete</button>
                     </form>
                 </td>
@@ -45,11 +45,11 @@
         <tfoot>
             <tr>
                 <td></td>
-                <td><a th:hidden="${page==0}" th:href="@{/movie(page=${page-1},size=10)}">Previous</a></td>
+                <td><a th:hidden="${page==0}" th:href="@{/admin/movie(page=${page-1},size=10)}">Previous</a></td>
                 <td></td>
                 <td></td>
                 <td></td>
-                <td><a th:hidden="${movieList == null || movieList.isEmpty()}" th:href="@{/movie(page=${page+1},size=10)}">Next</a></td>
+                <td><a th:hidden="${movieList == null || movieList.isEmpty()}" th:href="@{/admin/movie(page=${page+1},size=10)}">Next</a></td>
             </tr>
         </tfoot>
     </table>

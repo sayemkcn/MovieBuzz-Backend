@@ -8,7 +8,7 @@
 	<div>
 		<span th:if="${param.message != null}" th:text="${param.message[0]}"></span>
 	</div>
-	<form th:action="@{/person/update/}+${person.getUniqueId()}" method="post" enctype="multipart/form-data">
+	<form th:action="@{/admin/person/update/}+${person.getUniqueId()}" method="post" enctype="multipart/form-data">
 		<input type="text" name="name" placeholder="Name" th:value="${person?.getName()}"></input><br></br>
 		Designation:<br></br>
 		<input type="text" name="designations" th:value="${person?.commaSeperatedArrayElements((person?.getDesignations()))}" placeholder="Designations(Seperated by commas)"></input><br></br>

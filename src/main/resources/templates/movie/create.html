@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<form th:action="@{/movie/create}" method="post" enctype="multipart/form-data">
+<form th:action="@{/admin/movie/create}" method="post" enctype="multipart/form-data">
     <input type="text" name="name" placeholder="Movie Name"></input><br></br>
     <select name="type">
         <option value="movie">Movie</option>
@@ -46,15 +46,15 @@
         <option value="NC-17 – Adults Only">NC-17 – Adults Only</option>
     </select><br></br>
     <input type="text" name="productionHouse" placeholder="Production House"></input><br></br>
-    <div>
-        Cast and Crew list:<br></br>
-        <select name="personIds" th:if="${personList != null}" multiple="multiple">
-            <option th:each="person : ${personList}" th:value="${person.getUniqueId()}">
-                <span th:text="${person.getName()}"></span>
-            </option>
-        </select><a th:href="@{/person/create}">Create New Cast/Crew</a>
-    </div>
-    <br></br>
+    <!--<div>-->
+        <!--Cast and Crew list:<br></br>-->
+        <!--<select name="personIds" th:if="${personList != null}" multiple="multiple">-->
+            <!--<option th:each="person : ${personList}" th:value="${person.getUniqueId()}">-->
+                <!--<span th:text="${person.getName()}"></span>-->
+            <!--</option>-->
+        <!--</select><a th:href="@{/person/create}">Create New Cast/Crew</a>-->
+    <!--</div>-->
+    <!--<br></br>-->
     <div>
         <label for="upcoming">Upcoming/Running movie?</label>
         <input type="checkbox" id="upcoming" name="upcoming"></input>

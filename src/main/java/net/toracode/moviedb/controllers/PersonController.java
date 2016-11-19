@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/person")
+@RequestMapping(value = "/admin/person")
 public class PersonController {
     @Autowired
     private PersonService personService;
@@ -80,7 +80,7 @@ public class PersonController {
                 person.setImage(multipartFile.getBytes());
         person.setUniqueId(id);
         person = this.personService.save(person);
-        return "redirect:/person?message=" + person.getName() + " updated!";
+        return "redirect:/admin/person?message=" + person.getName() + " updated!";
     }
 
 }

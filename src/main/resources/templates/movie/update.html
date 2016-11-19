@@ -8,7 +8,7 @@
 
 <span th:if="${param.message != null}" th:text="${param.message[0]}"></span>
 
-<form th:action="@{/movie/update/}+${movie.getUniqueId()}" method="post" enctype="multipart/form-data">
+<form th:action="@{/admin/movie/update/}+${movie.getUniqueId()}" method="post" enctype="multipart/form-data">
     <input type="text" name="name" placeholder="Movie Name" th:value="${movie?.getName()}"></input><br></br>
     <select name="type">
         <option th:selected="${movie?.getType()?.equals('movie')}" value="movie">Movie</option>
