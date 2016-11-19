@@ -52,25 +52,27 @@
 </nav>
 
 <div class="container-fluid" style="margin-top: 50px;">
-    <span th:if="${param.message != null}" th:text="${param.message[0]}"></span>
+    <div th:if="${param.message != null}" class="col-sm-10 col-sm-offset-1 alert alert-warning">
+        <span th:text="${param.message[0]}"></span>
+    </div>
 
-    <div th:if="${personList != null}">
-
-        <table>
+    <div class="col-sm-8 col-sm-offset-2">
+        <table th:if="${personList != null}" class="table table-hover">
             <thead>
-            <th>
-            <td>ID</td>
-            <td>Name</td>
-            <td>Birth Date</td>
-            <td>Desigations</td>
-            <td>Edit</td>
-            <td>Delete</td>
-            </th>
+            <tr>
+                <th>ID</th>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Birth Date</th>
+                <th>Desigations</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
             </thead>
             <tbody>
             <tr th:each="person : ${personList}">
-                <td></td>
                 <td th:text="${person.getUniqueId()}"></td>
+                <td><img class="img img-thumbnail" height="50" width="50" th:src="@{/api/person/image/}+${person.getUniqueId()}"></img></td>
                 <td>
                     <a th:href="@{/person/}+${person.getUniqueId()}">
                         <span th:text="${person.getName()}"></span>
@@ -79,19 +81,19 @@
                 <td th:text="${person.getBirthDate()}"></td>
                 <td th:text="${person.commaSeperatedArrayElements(person.getDesignations())}"></td>
                 <td>
-                    <a th:href="@{/admin/person/update/}+${person.getUniqueId()}">Edit</a>
+                    <a class="btn btn-warning" th:href="@{/admin/person/update/}+${person.getUniqueId()}">Edit</a>
                 </td>
                 <td>
                     <form th:action="@{/admin/person/delete/}+${person.getUniqueId()}" method="post">
-                        <button type="submit">Delete</button>
+                        <button class="btn btn-danger" type="submit">Delete</button>
                     </form>
                 </td>
             </tr>
             </tbody>
             <tfoot>
-            <tr th:if="${page!=null}">
-                <td></td>
+            <tr class="pager">
                 <td><a th:hidden="${page==0}" th:href="@{/admin/person(page=${page-1},size=10)}">Previous</a></td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -101,8 +103,8 @@
             </tr>
             </tfoot>
         </table>
-
     </div>
+
 </div>
 
 </body>

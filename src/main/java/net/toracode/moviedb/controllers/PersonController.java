@@ -23,13 +23,15 @@ public class PersonController {
     private ImageValidator imageValidator;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public String personListPaginated(@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model model) {
-        List<Person> personList;
+    public String personListPaginated(@RequestParam(value = "page", required = false) Integer page,
+                                      @RequestParam(value = "size", required = false) Integer size, Model model) {
+
         // if params aren't present return all items
-        if (page == null || size == null)
-            personList = this.personService.getAllPersons();
-        else  // else return paginated items
-            personList = this.personService.getAllPersonsPaginated(page, size);
+        if (page == null || size == null) {
+            page = 0;
+            size = 10;
+        }
+        List<Person> personList = this.personService.getAllPersonsPaginated(page, size);
         model.addAttribute("personList", personList);
         model.addAttribute("page", page);
         return "person/all";
