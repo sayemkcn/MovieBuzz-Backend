@@ -66,6 +66,10 @@
                 <h3><span id="name" th:text="${movie.getName()}"></span></h3>
             </div>
             <div>
+                <label for="releaseDate" class="label label-default">Release Date:</label>
+                <span id="releaseDate" th:text="${movie.getReleaseDate()}"></span>
+            </div>
+            <div>
                 <label for="storyLine" class="label label-default">Story:</label>
                 <span id="storyLine" th:text="${movie.getStoryLine()}"></span>
             </div>

@@ -77,9 +77,17 @@ public class PersonController {
                                @RequestParam("image") MultipartFile multipartFile) throws IOException {
         if (bindingResult.hasErrors())
             System.out.println(bindingResult.toString());
-        if (multipartFile != null)
-            if (this.imageValidator.isImageValid(multipartFile))
+        // chack if image is choosen
+        if (!multipartFile.isEmpty()) {
+            if (this.imageValidator.isImageValid(multipartFile)) {
                 person.setImage(multipartFile.getBytes());
+            }
+        } else {
+            // else fetch previous image if existed and set it;
+            byte[] image = this.personService.getPersonById(id).getImage();
+            if (image != null)
+                person.setImage(image);
+        }
         person.setUniqueId(id);
         person = this.personService.save(person);
         return "redirect:/admin/person?message=" + person.getName() + " updated!";

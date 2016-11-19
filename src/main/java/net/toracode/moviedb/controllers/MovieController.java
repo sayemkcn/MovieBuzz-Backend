@@ -1,7 +1,9 @@
 package net.toracode.moviedb.controllers;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import net.toracode.moviedb.Commons.ImageValidator;
@@ -63,10 +65,10 @@ public class MovieController {
                                 @RequestParam(value = "page", required = false) Integer page) {
         if (page == null) page = 0;
         List<Movie> movieList = this.movieService.getUpcomingMovieList();
-        if (movieList==null)
-            return "redirect:/admin/movie?message="+"No Items found!";
+        if (movieList == null)
+            return "redirect:/admin/movie?message=" + "No Items found!";
         model.addAttribute("movieList", movieList);
-        model.addAttribute("page",page);
+        model.addAttribute("page", page);
         return "movie/all";
     }
 
@@ -164,10 +166,25 @@ public class MovieController {
                               @PathVariable("id") Long id,
                               @RequestParam("image") MultipartFile multipartFile) throws IOException {
         if (bindingResult.hasErrors())
-            System.out.print(bindingResult.toString());
+            System.out.println(bindingResult.toString());
+        Movie existingMovie = this.movieService.getMovie(id);
+        // set movie id
         movie.setUniqueId(id);
-        if (this.imageValidator.isImageValid(multipartFile)) {
-            movie.setImage(multipartFile.getBytes());
+        // set cast and crew list from previous entity.
+        movie.setCastAndCrewList(existingMovie.getCastAndCrewList());
+        // set date from previous entity if null
+        if (movie.getReleaseDate() == null)
+            movie.setReleaseDate(existingMovie.getReleaseDate());
+        // chack if image is choosen
+        if (!multipartFile.isEmpty()) {
+            if (this.imageValidator.isImageValid(multipartFile)) {
+                movie.setImage(multipartFile.getBytes());
+            }
+        } else {
+            // else fetch previous image if existed and set it;
+            byte[] image = existingMovie.getImage();
+            if (image != null)
+                movie.setImage(image);
         }
         this.movieService.save(movie);
         return "redirect:/admin/movie?message=Successfully updated " + movie.getName();
