@@ -8,7 +8,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "movie")
 public class Movie extends BaseEntity {
     private String name;
     private String storyLine;
@@ -29,6 +29,9 @@ public class Movie extends BaseEntity {
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private List<Person> castAndCrewList;
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<CustomList> listOfCustomList;
     private boolean featured;
     private boolean upcoming;
 
@@ -180,5 +183,13 @@ public class Movie extends BaseEntity {
                 ", featured=" + featured +
                 ", upcoming=" + upcoming +
                 '}';
+    }
+
+    public List<CustomList> getListOfCustomList() {
+        return listOfCustomList;
+    }
+
+    public void setListOfCustomList(List<CustomList> listOfCustomList) {
+        this.listOfCustomList = listOfCustomList;
     }
 }
