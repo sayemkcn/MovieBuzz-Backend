@@ -169,7 +169,8 @@ public class MovieController {
             movie.setImage(multipartFile.getBytes());
         }
         movie = this.movieService.save(movie);
-        System.out.println(movie.toString());
+        if (movie==null)
+            return "redirect:/admin/movie?message=Can not create movie!";
         return "redirect:/admin/movie?message=Successfully created movie!";
     }
 
