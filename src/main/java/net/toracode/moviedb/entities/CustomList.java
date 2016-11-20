@@ -6,18 +6,18 @@ import java.util.List;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "custom_list")
 public class CustomList extends BaseEntity {
     private String title;
     private String description;
     private String type;
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "listOfCustomList")
     private List<Movie> movieList;
     @ManyToOne
     private User user;
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<User> followerList;
 
     public String getTitle() {
