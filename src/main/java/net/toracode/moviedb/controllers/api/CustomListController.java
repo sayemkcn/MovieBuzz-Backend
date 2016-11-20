@@ -188,13 +188,21 @@ public class CustomListController {
         CustomList customList = this.customListService.getOne(listId);
         if (customList == null)
             return new ResponseEntity<List<Movie>>(HttpStatus.INTERNAL_SERVER_ERROR);
-        if (customList.getMovieList() == null) {
-            customList.setMovieList(new ArrayList<>());
-        }
-        if (this.customListService.isMovieAlreadyExistsOnList(customList.getMovieList(), movie))
-            return new ResponseEntity<List<Movie>>(HttpStatus.CONFLICT);
-        customList.getMovieList().add(movie);
-        customList = this.customListService.saveList(customList);
+        // instead of updating customlist entity who is the child of movie entity,
+        // Parent entity should be updated to take effect
+        if (movie.getListOfCustomList() == null)
+            movie.setListOfCustomList(new ArrayList<>());
+        movie.getListOfCustomList().add(customList);
+        this.movieService.save(movie);
+        // end saving parent entity
+
+//        if (customList.getMovieList() == null) {
+//            customList.setMovieList(new ArrayList<>());
+//        }
+////        if (this.customListService.isMovieAlreadyExistsOnList(customList.getMovieList(), movie))
+////            return new ResponseEntity<List<Movie>>(HttpStatus.CONFLICT);
+////        customList.getMovieList().add(movie);
+////        customList = this.customListService.saveList(customList);
         return new ResponseEntity<List<Movie>>(customList.getMovieList(), HttpStatus.OK);
     }
 

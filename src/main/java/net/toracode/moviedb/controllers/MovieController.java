@@ -212,6 +212,9 @@ public class MovieController {
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
     public String deleteMovie(@PathVariable("id") Long id) {
+        // before deleting the parent object, clear childlist because movielists I don't want to delete
+        this.movieService.getMovie(id).getListOfCustomList().clear();
+        // now delete this fucking entity
         this.movieService.deleteMovie(id);
         return "redirect:/admin/movie?message=" + "Deleted!";
     }
