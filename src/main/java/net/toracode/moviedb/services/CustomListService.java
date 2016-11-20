@@ -49,7 +49,7 @@ public class CustomListService {
     // check if a list already cotains a movie
     public boolean isMovieAlreadyExistsOnList(List<Movie> movieList, Movie movie) {
         for (Movie m : movieList) {
-            if (m.getUniqueId() == movie.getUniqueId()) {
+            if (m.getUniqueId().equals(movie.getUniqueId())) {
                 return true;
             }
         }
