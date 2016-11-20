@@ -192,6 +192,8 @@ public class CustomListController {
         // Parent entity should be updated to take effect
         if (movie.getListOfCustomList() == null)
             movie.setListOfCustomList(new ArrayList<>());
+        if (this.movieService.isListAlreadyAssociatedWithThisMovie(movie, customList))
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         movie.getListOfCustomList().add(customList);
         this.movieService.save(movie);
         // end saving parent entity
