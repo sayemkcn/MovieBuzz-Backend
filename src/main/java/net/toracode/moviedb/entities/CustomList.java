@@ -20,6 +20,13 @@ public class CustomList extends BaseEntity {
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<User> followerList;
 
+//    @PreRemove
+//    private void removeGroupsFromUsers() {
+//        for (Movie m : movieList) {
+//            m.getListOfCustomList().remove(this);
+//        }
+//    }
+
     public String getTitle() {
         return title;
     }
