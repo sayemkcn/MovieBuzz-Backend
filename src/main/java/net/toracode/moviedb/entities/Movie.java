@@ -35,6 +35,12 @@ public class Movie extends BaseEntity {
     private boolean featured;
     private boolean upcoming;
 
+    // before deleting the parent object, clear childlist because movielists I don't want to delete
+    @PreRemove
+    private void removeListsFromMovie() {
+        getListOfCustomList().clear();
+    }
+
     public String getName() {
         return name;
     }

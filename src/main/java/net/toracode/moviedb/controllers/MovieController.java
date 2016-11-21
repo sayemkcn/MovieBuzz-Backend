@@ -164,12 +164,12 @@ public class MovieController {
     public String addMovie(@ModelAttribute("movie") Movie movie, BindingResult bindingResult,
                            @RequestParam("image") MultipartFile multipartFile) throws IOException {
         if (bindingResult.hasErrors())
-            System.out.print(bindingResult.toString());
+            System.out.println(bindingResult.toString());
         if (this.imageValidator.isImageValid(multipartFile)) {
             movie.setImage(multipartFile.getBytes());
         }
         movie = this.movieService.save(movie);
-        if (movie==null)
+        if (movie == null)
             return "redirect:/admin/movie?message=Can not create movie!";
         return "redirect:/admin/movie?message=Successfully created movie!";
     }
@@ -213,9 +213,6 @@ public class MovieController {
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
     public String deleteMovie(@PathVariable("id") Long id) {
-        // before deleting the parent object, clear childlist because movielists I don't want to delete
-        this.movieService.getMovie(id).getListOfCustomList().clear();
-        // now delete this fucking entity
         this.movieService.deleteMovie(id);
         return "redirect:/admin/movie?message=" + "Deleted!";
     }

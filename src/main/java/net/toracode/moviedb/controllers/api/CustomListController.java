@@ -174,7 +174,6 @@ public class CustomListController {
     @RequestMapping(value = "/{listId}", method = RequestMethod.GET)
     public ResponseEntity<List<Movie>> moviesByListId(@PathVariable("listId") Long listId) {
         CustomList list = this.customListService.getOne(listId);
-        System.out.println(list.toString());
         if (list == null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(list.getMovieList(), HttpStatus.OK);
