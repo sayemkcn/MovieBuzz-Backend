@@ -23,13 +23,15 @@ public class PersonController {
     private ImageValidator imageValidator;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public String personListPaginated(@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model model) {
-        List<Person> personList;
+    public String personListPaginated(@RequestParam(value = "page", required = false) Integer page,
+                                      @RequestParam(value = "size", required = false) Integer size, Model model) {
+
         // if params aren't present return all items
-        if (page == null || size == null)
-            personList = this.personService.getAllPersons();
-        else  // else return paginated items
-            personList = this.personService.getAllPersonsPaginated(page, size);
+        if (page == null || size == null) {
+            page = 0;
+            size = 10;
+        }
+        List<Person> personList = this.personService.getAllPersonsPaginated(page, size);
         model.addAttribute("personList", personList);
         model.addAttribute("page", page);
         return "person/all";
@@ -49,8 +51,7 @@ public class PersonController {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String createPerson(@ModelAttribute("person") Person person, BindingResult bindingResult,
-                               @RequestParam("image") MultipartFile multipartFile,
-                               Model model) throws IOException {
+                               @RequestParam("image") MultipartFile multipartFile) throws IOException {
         if (bindingResult.hasErrors()) {
             System.out.println(bindingResult.toString());
         }
@@ -58,8 +59,7 @@ public class PersonController {
             if (imageValidator.isImageValid(multipartFile))
                 person.setImage(multipartFile.getBytes());
         personService.save(person);
-        model.addAttribute("message", "Successfully saved " + person.getName());
-        return "person/create";
+        return "redirect:/admin/person?message=Successfully saved " + person.getName() + "!";
     }
 
     @RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
@@ -75,12 +75,28 @@ public class PersonController {
                                @RequestParam("image") MultipartFile multipartFile) throws IOException {
         if (bindingResult.hasErrors())
             System.out.println(bindingResult.toString());
-        if (multipartFile != null)
-            if (this.imageValidator.isImageValid(multipartFile))
+        Person existingPerson = this.personService.getPersonById(id);
+        // chack if image is choosen
+        if (!multipartFile.isEmpty()) {
+            if (this.imageValidator.isImageValid(multipartFile)) {
                 person.setImage(multipartFile.getBytes());
+            }
+        } else {
+            // else fetch previous image if existed and set it;
+            byte[] image = existingPerson.getImage();
+            if (image != null)
+                person.setImage(image);
+        }
+        // if birthdate date is not set then set date from the existing entities date
+        person.setBirthDate(existingPerson.getBirthDate());
         person.setUniqueId(id);
         person = this.personService.save(person);
         return "redirect:/admin/person?message=" + person.getName() + " updated!";
     }
 
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
+    public String deletePerson(@PathVariable("id") Long id) {
+        this.personService.deletePerson(id);
+        return "redirect:/admin/person?message=Deleted!";
+    }
 }

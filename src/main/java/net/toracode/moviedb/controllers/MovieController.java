@@ -1,7 +1,9 @@
 package net.toracode.moviedb.controllers;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import net.toracode.moviedb.Commons.ImageValidator;
@@ -63,13 +65,14 @@ public class MovieController {
                                 @RequestParam(value = "page", required = false) Integer page) {
         if (page == null) page = 0;
         List<Movie> movieList = this.movieService.getUpcomingMovieList();
-        if (movieList==null)
-            return "redirect:/admin/movie?message="+"No Items found!";
+        if (movieList == null)
+            return "redirect:/admin/movie?message=" + "No Items found!";
         model.addAttribute("movieList", movieList);
-        model.addAttribute("page",page);
+        model.addAttribute("page", page);
         return "movie/all";
     }
 
+    // returns all of the featured movies paginated.
     @RequestMapping(value = "/featured", method = RequestMethod.GET)
     public String featuredMovies(Model model,
                                  @RequestParam(value = "page", required = false) Integer page) {
@@ -80,6 +83,7 @@ public class MovieController {
         return "movie/all";
     }
 
+    // movie details page // get a movie by id
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public String movieDetails(@PathVariable("id") Long id, Model model,
                                @RequestParam(value = "page", required = false) Integer page) {
@@ -92,7 +96,7 @@ public class MovieController {
     }
 
     // Inject a cast or crew to a movie
-    @RequestMapping(value = "/{movieId}/inject/{personId}")
+    @RequestMapping(value = "/{movieId}/inject/{personId}", method = RequestMethod.POST)
     public String injectPerson(@PathVariable("movieId") Long movieId,
                                @PathVariable("personId") Long personId) {
         Movie movie = this.movieService.getMovie(movieId);
@@ -114,6 +118,24 @@ public class MovieController {
         movie.setCastAndCrewList(personList);
         this.movieService.save(movie);
         return "redirect:/admin/movie/" + movieId;
+    }
+
+    // search by person name
+    @RequestMapping(value = "/{movieId}/person/search", method = RequestMethod.POST)
+    public String searchCastAndCrew(@PathVariable("movieId") Long movieId,
+                                    @RequestParam("phrase") String phrase,
+                                    @RequestParam("page") Integer page,
+                                    @RequestParam("size") Integer size, Model model) {
+        if (page == null || size == null) {
+            page = 0;
+            size = 0;
+        }
+        Movie movie = this.movieService.getMovie(movieId);
+        List<Person> personList = this.personService.searchPersonByNamePaginated(phrase, page, size);
+        model.addAttribute("movie", movie);
+        model.addAttribute("personList", personList);
+        model.addAttribute("page", page);
+        return "movie/view";
     }
 
     // remove a cast or crew from movie
@@ -142,12 +164,13 @@ public class MovieController {
     public String addMovie(@ModelAttribute("movie") Movie movie, BindingResult bindingResult,
                            @RequestParam("image") MultipartFile multipartFile) throws IOException {
         if (bindingResult.hasErrors())
-            System.out.print(bindingResult.toString());
+            System.out.println(bindingResult.toString());
         if (this.imageValidator.isImageValid(multipartFile)) {
             movie.setImage(multipartFile.getBytes());
         }
         movie = this.movieService.save(movie);
-        System.out.println(movie.toString());
+        if (movie == null)
+            return "redirect:/admin/movie?message=Can not create movie!";
         return "redirect:/admin/movie?message=Successfully created movie!";
     }
 
@@ -164,10 +187,25 @@ public class MovieController {
                               @PathVariable("id") Long id,
                               @RequestParam("image") MultipartFile multipartFile) throws IOException {
         if (bindingResult.hasErrors())
-            System.out.print(bindingResult.toString());
+            System.out.println(bindingResult.toString());
+        Movie existingMovie = this.movieService.getMovie(id);
+        // set movie id
         movie.setUniqueId(id);
-        if (this.imageValidator.isImageValid(multipartFile)) {
-            movie.setImage(multipartFile.getBytes());
+        // set cast and crew list from previous entity.
+        movie.setCastAndCrewList(existingMovie.getCastAndCrewList());
+        // set date from previous entity if null
+        if (movie.getReleaseDate() == null)
+            movie.setReleaseDate(existingMovie.getReleaseDate());
+        // chack if image is choosen
+        if (!multipartFile.isEmpty()) {
+            if (this.imageValidator.isImageValid(multipartFile)) {
+                movie.setImage(multipartFile.getBytes());
+            }
+        } else {
+            // else fetch previous image if existed and set it;
+            byte[] image = existingMovie.getImage();
+            if (image != null)
+                movie.setImage(image);
         }
         this.movieService.save(movie);
         return "redirect:/admin/movie?message=Successfully updated " + movie.getName();

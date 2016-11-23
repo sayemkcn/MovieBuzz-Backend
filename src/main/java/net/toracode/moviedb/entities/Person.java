@@ -5,10 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Lob;
+import javax.persistence.*;
 
 @Entity
 public class Person extends BaseEntity {
@@ -20,6 +17,7 @@ public class Person extends BaseEntity {
     private String[] socialLinks;
     @JsonIgnore
     @Basic(fetch = FetchType.LAZY, optional = true)
+    @Column(length = 2007215)
     private byte[] image;
 
     public String getName() {

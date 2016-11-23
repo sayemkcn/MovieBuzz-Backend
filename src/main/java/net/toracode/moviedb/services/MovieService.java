@@ -2,6 +2,7 @@ package net.toracode.moviedb.services;
 
 import java.util.List;
 
+import net.toracode.moviedb.entities.CustomList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -60,22 +61,30 @@ public class MovieService {
     }
 
     @Transactional(readOnly = true)
-    public List<Movie> getMoviBySearchPhrase(String phrase){
-        return this.movieRepo.findByNameContainingOrderByUniqueIdDesc(phrase);
+    public List<Movie> getMoviBySearchPhrase(String phrase) {
+        return this.movieRepo.findByNameContaining(phrase);
     }
 
     @Transactional(readOnly = true)
-    public List<Movie> getUpcomingMovieList(){
+    public List<Movie> getUpcomingMovieList() {
         return this.movieRepo.findByUpcomingTrue();
     }
 
     @Transactional(readOnly = true)
-    public List<Movie> getFeaturedMovieList(){
+    public List<Movie> getFeaturedMovieList() {
         return this.movieRepo.findByFeaturedTrue();
     }
 
     @Transactional(readOnly = true)
-    public List<Movie> getFeaturedMovieListPaginated(int page,int size){
-        return this.movieRepo.findByFeaturedTrue(new PageRequest(page,size,Sort.Direction.DESC,FIELD_NAME)).getContent();
+    public List<Movie> getFeaturedMovieListPaginated(int page, int size) {
+        return this.movieRepo.findByFeaturedTrue(new PageRequest(page, size, Sort.Direction.DESC, FIELD_NAME)).getContent();
+    }
+
+    public boolean isListAlreadyAssociatedWithThisMovie(Movie movie, CustomList customList) {
+        for (CustomList list : movie.getListOfCustomList()) {
+            if (list.getUniqueId().equals(customList.getUniqueId()))
+                return true;
+        }
+        return false;
     }
 }

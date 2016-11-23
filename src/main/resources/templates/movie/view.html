@@ -66,6 +66,10 @@
                 <h3><span id="name" th:text="${movie.getName()}"></span></h3>
             </div>
             <div>
+                <label for="releaseDate" class="label label-default">Release Date:</label>
+                <span id="releaseDate" th:text="${movie.getReleaseDate()}"></span>
+            </div>
+            <div>
                 <label for="storyLine" class="label label-default">Story:</label>
                 <span id="storyLine" th:text="${movie.getStoryLine()}"></span>
             </div>
@@ -131,6 +135,14 @@
         </div>
         <!--All Cast And crews-->
         <div class="col-sm-3 col-sm-offset-1 ">
+            <!-- SEARCH BOX -->
+            <div class="form form-inline">
+                <form  th:action="@{/admin/movie/}+${movie.getUniqueId()}+@{/person/search(page=0,size=20)}" method="post">
+                    <input type="text" name="phrase" class="form-control"></input>
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </form>
+            </div> <!--END SEARCH BOX-->
+
             <label for="allCastAndCrewList" class="label label-primary">All of the Casts and crews:</label>
             <div id="allCastAndCrewList">
                 <table th:if="${personList != null}" class="table table-hover">

@@ -174,7 +174,6 @@ public class CustomListController {
     @RequestMapping(value = "/{listId}", method = RequestMethod.GET)
     public ResponseEntity<List<Movie>> moviesByListId(@PathVariable("listId") Long listId) {
         CustomList list = this.customListService.getOne(listId);
-        System.out.println(list.toString());
         if (list == null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(list.getMovieList(), HttpStatus.OK);
@@ -188,13 +187,23 @@ public class CustomListController {
         CustomList customList = this.customListService.getOne(listId);
         if (customList == null)
             return new ResponseEntity<List<Movie>>(HttpStatus.INTERNAL_SERVER_ERROR);
-        if (customList.getMovieList() == null) {
-            customList.setMovieList(new ArrayList<>());
-        }
-        if (this.customListService.isMovieAlreadyExistsOnList(customList.getMovieList(), movie))
-            return new ResponseEntity<List<Movie>>(HttpStatus.CONFLICT);
-        customList.getMovieList().add(movie);
-        customList = this.customListService.saveList(customList);
+        // instead of updating customlist entity who is the child of movie entity,
+        // Parent entity should be updated to take effect
+        if (movie.getListOfCustomList() == null)
+            movie.setListOfCustomList(new ArrayList<>());
+        if (this.movieService.isListAlreadyAssociatedWithThisMovie(movie, customList))
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        movie.getListOfCustomList().add(customList);
+        this.movieService.save(movie);
+        // end saving parent entity
+
+//        if (customList.getMovieList() == null) {
+//            customList.setMovieList(new ArrayList<>());
+//        }
+////        if (this.customListService.isMovieAlreadyExistsOnList(customList.getMovieList(), movie))
+////            return new ResponseEntity<List<Movie>>(HttpStatus.CONFLICT);
+////        customList.getMovieList().add(movie);
+////        customList = this.customListService.saveList(customList);
         return new ResponseEntity<List<Movie>>(customList.getMovieList(), HttpStatus.OK);
     }
 
