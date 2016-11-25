@@ -1,6 +1,7 @@
 package net.toracode.moviedb.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -32,5 +33,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .loginProcessingUrl("/login")
 //                .failureUrl("/login?error")
 //                .permitAll();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+                .inMemoryAuthentication()
+                .withUser("admin").password("smdb@dm!nl0l").roles("ADMIN").and()
+                .withUser("admin2").password("smdbp@ssw0rdy0ukn0w").roles("ADMIN");
     }
 }
