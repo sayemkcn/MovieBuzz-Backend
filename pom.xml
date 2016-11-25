@@ -79,6 +79,16 @@
             <version>0.30</version>
         </dependency>
 
+        <!--SPRING SECURITY-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-springsecurity4</artifactId>
+        </dependency>
+
         <!--DEV TOOLS-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
