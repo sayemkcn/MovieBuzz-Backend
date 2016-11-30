@@ -23,6 +23,8 @@ import net.toracode.moviedb.services.MovieService;
 import net.toracode.moviedb.services.PersonService;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
+
 @Controller
 @RequestMapping(value = "/admin/movie")
 public class MovieController {
@@ -161,7 +163,7 @@ public class MovieController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String addMovie(@ModelAttribute("movie") Movie movie, BindingResult bindingResult,
+    public String addMovie(@Valid @ModelAttribute("movie") Movie movie, BindingResult bindingResult,
                            @RequestParam("image") MultipartFile multipartFile) throws IOException {
         if (bindingResult.hasErrors())
             System.out.println(bindingResult.toString());

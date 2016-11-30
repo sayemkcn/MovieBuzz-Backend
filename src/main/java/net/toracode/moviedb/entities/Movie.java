@@ -1,16 +1,24 @@
 package net.toracode.moviedb.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.validator.constraints.URL;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity(name = "movie")
 public class Movie extends BaseEntity {
+    @NotNull(message = "Name can not be null or empty.")
     private String name;
+    @NotNull(message = "Storyline shouldn\'t be null")
+    @Size(min = 10)
+    @Column(columnDefinition = "TEXT")
     private String storyLine;
     private String type;
     private String language;
@@ -19,11 +27,15 @@ public class Movie extends BaseEntity {
     @Column(length = 2007215)
     private byte[] image;
     private String industry;
+    @NotNull
     private String genere;
+    @URL
     private String trailerUrl;
+    @NotNull(message = "Release date can not be null")
     private Date releaseDate;
     private String duration;
     private String budget;
+    @NotNull
     private String rated;
     private String productionHouse;
     @JsonIgnore
