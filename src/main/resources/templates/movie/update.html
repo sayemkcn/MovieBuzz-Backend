@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8"></meta>
     <title>Update Movie</title>
@@ -45,7 +45,8 @@
                             <li><a th:href="@{/admin/person/create}">Create New Cast/Crew</a></li>
                         </ul>
                     </li>
-                    <li><a th:href="@{/login}"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
+                    <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
+                    <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}"><span class="glyphicon glyphicon-log-in"></span>Logout</a></li>
                 </ul>
             </div>
         </div>
