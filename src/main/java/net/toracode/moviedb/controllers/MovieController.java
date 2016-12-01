@@ -37,7 +37,7 @@ public class MovieController {
     private ImageValidator imageValidator;
 
     @InitBinder
-    public void initBinder(WebDataBinder binder){
+    public void initBinder(WebDataBinder binder) {
         binder.setDisallowedFields("image");
     }
 
@@ -170,9 +170,10 @@ public class MovieController {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String addMovie(@Valid @ModelAttribute("movie") Movie movie, BindingResult bindingResult,
-                           @RequestParam("image") MultipartFile multipartFile) throws IOException {
+                           @RequestParam("image") MultipartFile multipartFile, Model model) throws IOException {
         if (bindingResult.hasErrors()) {
             System.out.println(bindingResult.toString());
+            model.addAttribute("bindingResult", bindingResult);
             return "movie/create";
         }
         if (this.imageValidator.isImageValid(multipartFile)) {
@@ -193,11 +194,16 @@ public class MovieController {
     }
 
     @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
-    public String updateMovie(@ModelAttribute("movie") Movie movie, BindingResult bindingResult,
+    public String updateMovie(@Valid @ModelAttribute("movie") Movie movie, BindingResult bindingResult,
                               @PathVariable("id") Long id,
-                              @RequestParam("image") MultipartFile multipartFile) throws IOException {
-        if (bindingResult.hasErrors())
+                              @RequestParam("image") MultipartFile multipartFile, Model model) throws IOException {
+        if (bindingResult.hasErrors()) {
             System.out.println(bindingResult.toString());
+            movie.setUniqueId(id);
+            model.addAttribute("bindingResult", bindingResult);
+            return "movie/update";
+        }
+
         Movie existingMovie = this.movieService.getMovie(id);
         // set movie id
         movie.setUniqueId(id);

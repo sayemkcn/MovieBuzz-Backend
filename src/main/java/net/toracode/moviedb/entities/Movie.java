@@ -14,10 +14,11 @@ import javax.validation.constraints.Size;
 
 @Entity(name = "movie")
 public class Movie extends BaseEntity {
-    @NotNull(message = "Name can not be null or empty.")
+    @NotNull
+    @Size(min = 2, message = "Name can not be null or empty.")
     private String name;
-    @NotNull(message = "Storyline shouldn\'t be null")
-    @Size(min = 10)
+    @NotNull
+    @Size(min = 10, message = "Storyline should be at least 10 characters long.")
     @Column(columnDefinition = "TEXT")
     private String storyLine;
     private String type;
@@ -31,7 +32,6 @@ public class Movie extends BaseEntity {
     private String genere;
     @URL
     private String trailerUrl;
-    @NotNull(message = "Release date can not be null")
     private Date releaseDate;
     private String duration;
     private String budget;

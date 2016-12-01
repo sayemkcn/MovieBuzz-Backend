@@ -52,10 +52,19 @@
     </div>
 </nav><!--END NAV BAR-->
 
-<div class="container-fuild">
+<div class="container-fuild" style="margin-top: 50px;">
+
+    <div th:if="${bindingResult != null}" class="row alert alert-warning">
+        <div class="col-sm-8 col-sm-offset-2" style="padding-top: 20px;">
+            <div th:each="err : ${bindingResult.getFieldErrors()}">
+                <span th:text="${err.getDefaultMessage()}"></span><br></br>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <!--UPDATE MOVIE FORM-->
-        <div class="col-sm-6 col-sm-offset-3" style="margin-top: 50px;">
+        <div class="col-sm-6 col-sm-offset-3">
             <h3 class="lead">Update movie</h3>
 
             <form class="form-horizontal" th:action="@{/admin/movie/update/}+${movie.getUniqueId()}" method="post"
