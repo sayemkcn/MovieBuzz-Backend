@@ -24,7 +24,7 @@ public class Person extends BaseEntity {
     private String[] socialLinks;
     @JsonIgnore
     @Basic(fetch = FetchType.LAZY, optional = true)
-    @Column(length = 2007215)
+    @Column(length = 20000000)
     private byte[] image;
 
 
