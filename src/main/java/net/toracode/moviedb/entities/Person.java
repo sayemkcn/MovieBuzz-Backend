@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -16,6 +17,7 @@ public class Person extends BaseEntity {
     private String name;
     @Size(min = 1,message = "Please enter designations separated by comma\'s")
     private String[] designations;
+    @Past(message = "You\'re kidding right? Time machine hasn\'t been discovered yet. Date of Birth should be in the past.")
     private Date birthDate;
     @Size(min = 30,message = "Please describe a little more about this person. Bio can not be less than 30 characters.")
     @Column(columnDefinition = "TEXT")

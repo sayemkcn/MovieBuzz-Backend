@@ -91,10 +91,10 @@
                 <div class="form-group">
                     <label class="label label-primary" for="language">Language</label>
                     <select class="form-control" id="language" name="language">
-                        <option value="english" th:selected="${movie?.getLanguage()?.equals('english')}">English
+                        <option value="English" th:selected="${movie?.getLanguage()?.equals('English')}">English
                         </option>
-                        <option value="bangla" th:selected="${movie?.getLanguage()?.equals('bangla')}">Bangla</option>
-                        <option value="hindi" th:selected="${movie?.getLanguage()?.equals('hindi')}">Hindi</option>
+                        <option value="Bangla" th:selected="${movie?.getLanguage()?.equals('Bangla')}">Bangla</option>
+                        <option value="Hindi" th:selected="${movie?.getLanguage()?.equals('Hindi')}">Hindi</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -104,15 +104,10 @@
                 <div class="form-group">
                     <label class="label label-primary" for="industry">Movie Industry</label>
                     <select class="form-control" id="industry" name="industry">
-                        <option th:selected="${movie?.getIndustry()?.equals('hollywood')}" value="hollywood">Hollywood
-                        </option>
-                        <option th:selected="${movie?.getIndustry()?.equals('bollywood')}" value="bollywood">Bollywood
-                        </option>
-                        <option th:selected="${movie?.getIndustry()?.equals('dhallywood')}" value="dhallywood">
-                            Dhallywood
-                        </option>
-                        <option th:selected="${movie?.getIndustry()?.equals('tallywood')}" value="tallywood">Tallywood
-                        </option>
+                        <option th:selected="${movie?.getIndustry()?.equals('Hollywood')}" value="Hollywood">Hollywood</option>
+                        <option th:selected="${movie?.getIndustry()?.equals('Bollywood')}" value="Bollywood">Bollywood</option>
+                        <option th:selected="${movie?.getIndustry()?.equals('Dhallywood')}" value="Dhallywood">Dhallywood</option>
+                        <option th:selected="${movie?.getIndustry()?.equals('Tallywood')}" value="Tallywood">Tallywood</option>
                     </select>
                 </div>
                 <div class="form-group">
