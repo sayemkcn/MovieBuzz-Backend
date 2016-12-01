@@ -118,10 +118,28 @@
                 <div class="form-group">
                     <label class="label label-primary" for="genere">Genere</label>
                     <select class="form-control" id="genere" name="genere">
-                        <option value="action" th:selected="${movie?.getGenere()?.equals('action')}">Action</option>
-                        <option value="romantic" th:selected="${movie?.getGenere()?.equals('romantic')}">Romantic
-                        </option>
-                        <option value="drama" th:selected="${movie?.getGenere()?.equals('drama')}">Drama</option>
+                        <option value="Action" th:selected="${movie?.getGenere()?.equals('Action')}">Action</option>
+                        <option value="Adventure" th:selected="${movie?.getGenere()?.equals('Adventure')}">Adventure</option>
+                        <option value="Animation" th:selected="${movie?.getGenere()?.equals('Animation')}">Animation</option>
+                        <option value="Biography" th:selected="${movie?.getGenere()?.equals('Biography')}">Biography</option>
+                        <option value="Comedy" th:selected="${movie?.getGenere()?.equals('Comedy')}">Comedy</option>
+                        <option value="Crime" th:selected="${movie?.getGenere()?.equals('Crime')}">Crime</option>
+                        <option value="Documentary" th:selected="${movie?.getGenere()?.equals('Documentary')}">Documentary</option>
+                        <option value="Drama" th:selected="${movie?.getGenere()?.equals('Drama')}">Drama</option>
+                        <option value="Family" th:selected="${movie?.getGenere()?.equals('Family')}">Family</option>
+                        <option value="Fantasy" th:selected="${movie?.getGenere()?.equals('Fantasy')}">Fantasy</option>
+                        <option value="Film-Noir" th:selected="${movie?.getGenere()?.equals('Film-Noir')}">Film-Noir</option>
+                        <option value="History" th:selected="${movie?.getGenere()?.equals('History')}">History</option>
+                        <option value="Horror" th:selected="${movie?.getGenere()?.equals('Horror')}">Horror</option>
+                        <option value="Music" th:selected="${movie?.getGenere()?.equals('Music')}">Music</option>
+                        <option value="Musical" th:selected="${movie?.getGenere()?.equals('Musical')}">Musical</option>
+                        <option value="Mystery" th:selected="${movie?.getGenere()?.equals('Mystery')}">Mystery</option>
+                        <option value="Romance" th:selected="${movie?.getGenere()?.equals('Romance')}">Romance</option>
+                        <option value="Sci-Fi" th:selected="${movie?.getGenere()?.equals('Sci-Fi')}">Sci-Fi</option>
+                        <option value="Sport" th:selected="${movie?.getGenere()?.equals('Sport')}">Sport</option>
+                        <option value="Thriller" th:selected="${movie?.getGenere()?.equals('Thriller')}">Thriller</option>
+                        <option value="War" th:selected="${movie?.getGenere()?.equals('War')}">War</option>
+                        <option value="Western" th:selected="${movie?.getGenere()?.equals('Western')}">Western</option>
                     </select>
                 </div>
                 <div class="form-group">
