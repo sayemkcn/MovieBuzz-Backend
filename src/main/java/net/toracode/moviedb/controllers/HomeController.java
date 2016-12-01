@@ -10,14 +10,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class HomeController {
 
-    @RequestMapping(value = "/login",method = RequestMethod.GET)
-    public String loginPage(){
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String loginPage() {
         return "login";
-    }
-
-    @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public String login(){
-        return "redirect:/admin/movie/create";
     }
 
 }
