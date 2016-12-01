@@ -52,7 +52,7 @@
     </div>
 </nav><!--END NAV BAR-->
 
-<div class="container-fuild" style="margin-top: 50px;">
+<div class="container-fuild" style="margin-top: 50px; padding-bottom: 50px;">
 
     <div th:if="${bindingResult != null}" class="row alert alert-warning">
         <div class="col-sm-8 col-sm-offset-2" style="padding-top: 20px;">
@@ -186,15 +186,12 @@
                     <input class="checkbox" type="checkbox" th:checked="${movie?.isUpcoming()}" id="upcoming"
                            name="upcoming"></input>
                 </div>
-                <br></br>
                 <div class="form-group">
                     <label for="featured">Featured movie?</label>
                     <input class="checkbox" type="checkbox" id="featured" name="featured"
                            th:checked="${movie?.isFeatured()}"></input>
                 </div>
-                <br></br>
-
-                <button class="btn brn-primary" type="submit">Submit</button>
+                <button class="btn btn-primary" type="submit">Update Movie</button>
             </form>
         </div><!--END CREATE UPDATE MOVIE FORM-->
     </div>
