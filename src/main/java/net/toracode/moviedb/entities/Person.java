@@ -6,19 +6,29 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.Arrays;
 import java.util.Date;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Person extends BaseEntity {
+    @NotNull
+    @Size(min = 3,message = "Name can not be less than 3 character.")
     private String name;
+    @Size(min = 1,message = "Please enter designations separated by comma\'s")
     private String[] designations;
+    @Past(message = "You\'re kidding right? Time machine hasn\'t been discovered yet. Date of Birth should be in the past.")
     private Date birthDate;
+    @Size(min = 30,message = "Please describe a little more about this person. Bio can not be less than 30 characters.")
+    @Column(columnDefinition = "TEXT")
     private String bio;
     private String[] awards;
     private String[] socialLinks;
     @JsonIgnore
     @Basic(fetch = FetchType.LAZY, optional = true)
-    @Column(length = 2007215)
+    @Column(length = 20000000)
     private byte[] image;
+
 
     public String getName() {
         return name;

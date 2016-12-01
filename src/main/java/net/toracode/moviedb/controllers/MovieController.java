@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import net.toracode.moviedb.entities.Movie;
@@ -22,6 +23,8 @@ import net.toracode.moviedb.entities.Review;
 import net.toracode.moviedb.services.MovieService;
 import net.toracode.moviedb.services.PersonService;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping(value = "/admin/movie")
@@ -32,6 +35,11 @@ public class MovieController {
     private PersonService personService;
     @Autowired
     private ImageValidator imageValidator;
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.setDisallowedFields("image");
+    }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String allMovies(@RequestParam(value = "page", required = false) Integer page,
@@ -161,10 +169,13 @@ public class MovieController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String addMovie(@ModelAttribute("movie") Movie movie, BindingResult bindingResult,
-                           @RequestParam("image") MultipartFile multipartFile) throws IOException {
-        if (bindingResult.hasErrors())
+    public String addMovie(@Valid @ModelAttribute("movie") Movie movie, BindingResult bindingResult,
+                           @RequestParam("image") MultipartFile multipartFile, Model model) throws IOException {
+        if (bindingResult.hasErrors()) {
             System.out.println(bindingResult.toString());
+            model.addAttribute("bindingResult", bindingResult);
+            return "movie/create";
+        }
         if (this.imageValidator.isImageValid(multipartFile)) {
             movie.setImage(multipartFile.getBytes());
         }
@@ -183,11 +194,16 @@ public class MovieController {
     }
 
     @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
-    public String updateMovie(@ModelAttribute("movie") Movie movie, BindingResult bindingResult,
+    public String updateMovie(@Valid @ModelAttribute("movie") Movie movie, BindingResult bindingResult,
                               @PathVariable("id") Long id,
-                              @RequestParam("image") MultipartFile multipartFile) throws IOException {
-        if (bindingResult.hasErrors())
+                              @RequestParam("image") MultipartFile multipartFile, Model model) throws IOException {
+        if (bindingResult.hasErrors()) {
             System.out.println(bindingResult.toString());
+            movie.setUniqueId(id);
+            model.addAttribute("bindingResult", bindingResult);
+            return "movie/update";
+        }
+
         Movie existingMovie = this.movieService.getMovie(id);
         // set movie id
         movie.setUniqueId(id);

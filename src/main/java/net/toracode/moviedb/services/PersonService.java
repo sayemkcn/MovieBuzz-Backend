@@ -84,7 +84,7 @@ public class PersonService {
 
     public List<Person> searchPersonByNamePaginated(String phrase, Integer page, Integer size) {
         PageRequest pageRequest = new PageRequest(page, size, Sort.Direction.ASC, "name");
-        return this.personRepo.findByNameContaining(phrase, pageRequest).getContent();
+        return this.personRepo.findByNameContainingIgnoreCase(phrase, pageRequest).getContent();
     }
 
     public void deletePerson(Long id) {

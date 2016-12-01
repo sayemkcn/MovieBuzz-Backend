@@ -5,12 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import net.toracode.moviedb.entities.Person;
 import net.toracode.moviedb.services.PersonService;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
@@ -21,6 +23,11 @@ public class PersonController {
     private PersonService personService;
     @Autowired
     private ImageValidator imageValidator;
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.setDisallowedFields("image");
+    }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String personListPaginated(@RequestParam(value = "page", required = false) Integer page,
@@ -50,10 +57,12 @@ public class PersonController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String createPerson(@ModelAttribute("person") Person person, BindingResult bindingResult,
-                               @RequestParam("image") MultipartFile multipartFile) throws IOException {
+    public String createPerson(@Valid @ModelAttribute("person") Person person, BindingResult bindingResult,
+                               @RequestParam("image") MultipartFile multipartFile, Model model) throws IOException {
         if (bindingResult.hasErrors()) {
             System.out.println(bindingResult.toString());
+            model.addAttribute("bindingResult", bindingResult);
+            return "person/create";
         }
         if (multipartFile != null)
             if (imageValidator.isImageValid(multipartFile))
@@ -70,11 +79,16 @@ public class PersonController {
     }
 
     @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
-    public String updatePerson(@ModelAttribute Person person, BindingResult bindingResult,
+    public String updatePerson(@Valid @ModelAttribute("person") Person person, BindingResult bindingResult,
                                @PathVariable("id") Long id,
-                               @RequestParam("image") MultipartFile multipartFile) throws IOException {
-        if (bindingResult.hasErrors())
+                               @RequestParam("image") MultipartFile multipartFile, Model model) throws IOException {
+        if (bindingResult.hasErrors()) {
             System.out.println(bindingResult.toString());
+            person.setUniqueId(id);
+            model.addAttribute("bindingResult", bindingResult);
+            return "person/update";
+        }
+
         Person existingPerson = this.personService.getPersonById(id);
         // chack if image is choosen
         if (!multipartFile.isEmpty()) {

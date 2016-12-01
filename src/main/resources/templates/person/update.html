@@ -52,54 +52,61 @@
         </div>
     </div>
 </nav><!--END NAV BAR-->
+<div class="container-fluid" style="padding-top: 50px; padding-bottom: 50px;">
+    <div th:if="${bindingResult != null}" class="row alert alert-warning">
+        <div class="col-sm-8 col-sm-offset-2" style="padding-top: 20px;">
+            <div th:each="err : ${bindingResult.getFieldErrors()}">
+                * <span th:text="${err.getDefaultMessage()}"></span><br></br>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-2">
+            <h3>Update Cast and Crew:</h3>
 
-<div class="row" style="margin-top: 50px;">
-    <span th:if="${param.message != null}" th:text="${param.message[0]}"></span>
-</div>
-<div class="row">
-    <div class="col-sm-8 col-sm-offset-2">
-        <form th:action="@{/admin/person/update/}+${person.getUniqueId()}" method="post" enctype="multipart/form-data">
-            <div class="form-group">
-                <label class="label label-primary" for="name">Name:</label>
-                <input class="form-control" type="text" id="name" name="name" th:value="${person?.getName()}"
-                       placeholder="Name"></input>
-            </div>
-            <div class="form-group">
-                <label class="label label-primary" for="designations">Designations:</label>
-                <input class="form-control" type="text" id="designations" name="designations"
-                       th:value="${person?.commaSeperatedArrayElements((person?.getDesignations()))}"
-                       placeholder="Designations(Seperated by commas)"></input>
-            </div>
-            <div class="form-group">
-                <label class="label label-primary" for="birthDate">Birth Date:</label>
-                <input class="form-control" type="date" id="birthDate" name="birthDate"
-                       placeholder="Birth Date"></input>
-            </div>
-            <div class="form-group">
-                <label class="label label-primary" for="bio">Bio:</label>
-                <textarea class="form-control" rows="5" id="bio" name="bio" th:text="${person?.getBio()}"
-                          placeholder="Bio"></textarea>
-            </div>
-            <div class="form-group">
-                <label class="label label-primary" for="awards">Awards (Seperated by commas):</label>
-                <input class="form-control" type="text" id="awards" name="awards"
-                       th:value="${person?.commaSeperatedArrayElements(person?.getAwards())}"
-                       placeholder="Awards (Seperated by commas)"></input>
-            </div>
-            <div class="form-group">
-                <label class="label label-primary" for="socialLinks">Social Links (Seperated by commas):</label>
-                <input class="form-control" type="text" id="sociallinks" name="socialLinks"
-                       th:value="${person?.commaSeperatedArrayElements(person?.getSocialLinks())}"
-                       placeholder="Social Links (Seperated by commas)"></input>
-            </div>
-            <div class="form-group">
-                <label class="label label-primary" for="image">Image</label>
-                <input class="form-control" type="file" id="image" name="image"></input><br></br>
-            </div>
-            <button class="btn btn-primary" type="submit">Create</button>
-        </form>
+            <form th:action="@{/admin/person/update/}+${person.getUniqueId()}" method="post"
+                  enctype="multipart/form-data">
+                <div class="form-group">
+                    <label class="label label-primary" for="name">Name:</label>
+                    <input class="form-control" type="text" id="name" name="name" th:value="${person?.getName()}"
+                           placeholder="Name"></input>
+                </div>
+                <div class="form-group">
+                    <label class="label label-primary" for="designations">Designations:</label>
+                    <input class="form-control" type="text" id="designations" name="designations"
+                           th:value="${person?.commaSeperatedArrayElements((person?.getDesignations()))}"
+                           placeholder="Designations(Seperated by commas)"></input>
+                </div>
+                <div class="form-group">
+                    <label class="label label-primary" for="birthDate">Birth Date:</label>
+                    <input class="form-control" type="date" id="birthDate" name="birthDate"
+                           placeholder="Birth Date"></input>
+                </div>
+                <div class="form-group">
+                    <label class="label label-primary" for="bio">Bio:</label>
+                    <textarea class="form-control" rows="5" id="bio" name="bio" th:text="${person?.getBio()}"
+                              placeholder="Bio"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="label label-primary" for="awards">Awards (Seperated by commas):</label>
+                    <input class="form-control" type="text" id="awards" name="awards"
+                           th:value="${person?.commaSeperatedArrayElements(person?.getAwards())}"
+                           placeholder="Awards (Seperated by commas)"></input>
+                </div>
+                <div class="form-group">
+                    <label class="label label-primary" for="socialLinks">Social Links (Seperated by commas):</label>
+                    <input class="form-control" type="text" id="sociallinks" name="socialLinks"
+                           th:value="${person?.commaSeperatedArrayElements(person?.getSocialLinks())}"
+                           placeholder="Social Links (Seperated by commas)"></input>
+                </div>
+                <div class="form-group">
+                    <label class="label label-primary" for="image">Image</label>
+                    <input class="form-control" type="file" id="image" name="image"></input><br></br>
+                </div>
+                <button class="btn btn-primary" type="submit">Create</button>
+            </form>
+        </div>
     </div>
 </div>
-
 </body>
 </html>

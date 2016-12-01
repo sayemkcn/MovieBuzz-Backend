@@ -62,7 +62,7 @@ public class MovieService {
 
     @Transactional(readOnly = true)
     public List<Movie> getMoviBySearchPhrase(String phrase) {
-        return this.movieRepo.findByNameContaining(phrase);
+        return this.movieRepo.findByNameContainingIgnoreCase(phrase);
     }
 
     @Transactional(readOnly = true)

@@ -52,35 +52,49 @@
     </div>
 </nav><!--END NAV BAR-->
 
-<div class="container-fluid">
+<div class="container-fluid" style="margin-top: 50px; padding-bottom: 50px;">
+
+    <div th:if="${bindingResult != null}" class="row alert alert-warning">
+        <div class="col-sm-8 col-sm-offset-2" style="padding-top: 20px;">
+            <div th:each="err : ${bindingResult.getFieldErrors()}">
+                * <span th:text="${err.getDefaultMessage()}"></span><br></br>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <!--CREATE NEW MOVIE FORM-->
-        <div class="col-sm-6 col-sm-offset-3" style="margin-top: 50px;">
+        <div class="col-sm-6 col-sm-offset-3">
             <h3 class="lead">Create a movie</h3>
+
             <form class="form-horizontal" th:action="@{/admin/movie/create}" method="post"
                   enctype="multipart/form-data">
                 <div class="form-group">
                     <label class="label label-primary control-label" for="name">Movie Name</label>
-                    <input id="name" class="form-control" type="text" name="name" placeholder="Movie Name"></input>
+                    <input id="name" class="form-control" type="text" name="name" th:value="${movie?.getName()}"
+                           placeholder="Movie Name"></input>
                 </div>
                 <div class="form-group">
                     <label class="label label-primary" for="type">Type</label>
                     <select class="form-control" name="type" id="type">
-                        <option value="movie">Movie</option>
-                        <option value="tvseries">Tv Series</option>
+                        <option th:selected="${movie?.getType()?.equals('movie')}" value="movie">Movie</option>
+                        <option th:selected="${movie?.getType()?.equals('tvseries')}" value="tvseries">Tv Series
+                        </option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="label label-primary" for="storyLine">Storyline</label>
-                    <textarea class="form-control" rows="5" id="storyLine" name="storyLine"
+                    <textarea th:text="${movie?.getStoryLine()}" class="form-control" rows="5" id="storyLine"
+                              name="storyLine"
                               placeholder="Storyline"></textarea><br></br>
                 </div>
                 <div class="form-group">
                     <label class="label label-primary" for="language">Language</label>
                     <select class="form-control" id="language" name="language">
-                        <option value="english">English</option>
-                        <option value="bangla">Bangla</option>
-                        <option value="hindi">Hindi</option>
+                        <option value="English" th:selected="${movie?.getLanguage()?.equals('English')}">English
+                        </option>
+                        <option value="Bangla" th:selected="${movie?.getLanguage()?.equals('Bangla')}">Bangla</option>
+                        <option value="Hindi" th:selected="${movie?.getLanguage()?.equals('Hindi')}">Hindi</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -90,24 +104,43 @@
                 <div class="form-group">
                     <label class="label label-primary" for="industry">Movie Industry</label>
                     <select class="form-control" id="industry" name="industry">
-                        <option value="hollywood">Hollywood</option>
-                        <option value="bollywood">Bollywood</option>
-                        <option value="dhallywood">Dhallywood</option>
-                        <option value="tallywood">Tallywood</option>
+                        <option th:selected="${movie?.getIndustry()?.equals('Hollywood')}" value="Hollywood">Hollywood</option>
+                        <option th:selected="${movie?.getIndustry()?.equals('Bollywood')}" value="Bollywood">Bollywood</option>
+                        <option th:selected="${movie?.getIndustry()?.equals('Dhallywood')}" value="Dhallywood">Dhallywood</option>
+                        <option th:selected="${movie?.getIndustry()?.equals('Tallywood')}" value="Tallywood">Tallywood</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="label label-primary" for="genere">Genere</label>
                     <select class="form-control" id="genere" name="genere">
-                        <option value="action">Action</option>
-                        <option value="romantic">Romantic</option>
-                        <option value="drama">Drama</option>
+                        <option value="Action" th:selected="${movie?.getGenere()?.equals('Action')}">Action</option>
+                        <option value="Adventure" th:selected="${movie?.getGenere()?.equals('Adventure')}">Adventure</option>
+                        <option value="Animation" th:selected="${movie?.getGenere()?.equals('Animation')}">Animation</option>
+                        <option value="Biography" th:selected="${movie?.getGenere()?.equals('Biography')}">Biography</option>
+                        <option value="Comedy" th:selected="${movie?.getGenere()?.equals('Comedy')}">Comedy</option>
+                        <option value="Crime" th:selected="${movie?.getGenere()?.equals('Crime')}">Crime</option>
+                        <option value="Documentary" th:selected="${movie?.getGenere()?.equals('Documentary')}">Documentary</option>
+                        <option value="Drama" th:selected="${movie?.getGenere()?.equals('Drama')}">Drama</option>
+                        <option value="Family" th:selected="${movie?.getGenere()?.equals('Family')}">Family</option>
+                        <option value="Fantasy" th:selected="${movie?.getGenere()?.equals('Fantasy')}">Fantasy</option>
+                        <option value="Film-Noir" th:selected="${movie?.getGenere()?.equals('Film-Noir')}">Film-Noir</option>
+                        <option value="History" th:selected="${movie?.getGenere()?.equals('History')}">History</option>
+                        <option value="Horror" th:selected="${movie?.getGenere()?.equals('Horror')}">Horror</option>
+                        <option value="Music" th:selected="${movie?.getGenere()?.equals('Music')}">Music</option>
+                        <option value="Musical" th:selected="${movie?.getGenere()?.equals('Musical')}">Musical</option>
+                        <option value="Mystery" th:selected="${movie?.getGenere()?.equals('Mystery')}">Mystery</option>
+                        <option value="Romance" th:selected="${movie?.getGenere()?.equals('Romance')}">Romance</option>
+                        <option value="Sci-Fi" th:selected="${movie?.getGenere()?.equals('Sci-Fi')}">Sci-Fi</option>
+                        <option value="Sport" th:selected="${movie?.getGenere()?.equals('Sport')}">Sport</option>
+                        <option value="Thriller" th:selected="${movie?.getGenere()?.equals('Thriller')}">Thriller</option>
+                        <option value="War" th:selected="${movie?.getGenere()?.equals('War')}">War</option>
+                        <option value="Western" th:selected="${movie?.getGenere()?.equals('Western')}">Western</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="label label-primary" for="trailerUrl">Trailer Url</label>
-                    <input class="form-control" type="text" id="trailerUrl" name="trailerUrl"
-                           placeholder="Trailer Url"></input>
+                    <input th:value="${movie?.getTrailerUrl()}" class="form-control" type="text" id="trailerUrl"
+                           name="trailerUrl" placeholder="Trailer Url"></input>
                 </div>
                 <div class="form-group">
                     <label class="label label-primary" for="date">Release Date</label>
@@ -115,40 +148,63 @@
                 </div>
                 <div class="form-group">
                     <label class="label label-primary" for="duration">Movie Duration</label>
-                    <input class="form-control" type="text" name="duration" id="duration"
+                    <input class="form-control" type="text" name="duration" th:value="${movie?.getDuration()}"
+                           id="duration"
                            placeholder="Movie Duration"></input>
                 </div>
                 <div class="form-group">
                     <label class="label label-primary" for="budget">Budget</label>
-                    <input class="form-control" type="text" id="budget" name="budget" placeholder="Budget"></input>
+                    <input class="form-control" type="text" id="budget" name="budget" th:value="${movie?.getBudget()}"
+                           placeholder="Budget"></input>
                 </div>
                 <div class="form-group">
                     <label class="label label-primary" for="rated">Movie Rating</label>
                     <select class="form-control" id="rated" name="rated">
-                        <option value="G – General Audiences">G – General Audiences</option>
-                        <option value="PG – Parental Guidance Suggested">PG – Parental Guidance Suggested</option>
-                        <option value="PG-13 – Parents Strongly Cautioned">PG-13 – Parents Strongly Cautioned</option>
-                        <option value="R – Restricted">R – Restricted</option>
-                        <option value="NC-17 – Adults Only">NC-17 – Adults Only</option>
+                        <option value="G – General Audiences"
+                                th:selected="${new String().valueOf(movie?.getRated()).equals('G – General Audiences')}">
+                            G –
+                            General
+                            Audiences
+                        </option>
+                        <option value="PG – Parental Guidance Suggested"
+                                th:selected="${new String().valueOf(movie?.getRated()).equals('PG – Parental Guidance Suggested')}">
+                            PG –
+                            Parental Guidance Suggested
+                        </option>
+                        <option value="PG-13 – Parents Strongly Cautioned"
+                                th:selected="${new String().valueOf(movie?.getRated()).equals('PG-13 – Parents Strongly Cautioned')}">
+                            PG-13 – Parents Strongly Cautioned
+                        </option>
+                        <option value="R – Restricted"
+                                th:selected="${new String().valueOf(movie?.getRated()).equals('R – Restricted')}">R –
+                            Restricted
+                        </option>
+                        <option value="NC-17 – Adults Only"
+                                th:selected="${new String().valueOf(movie?.getRated()).equals('NC-17 – Adults Only')}">
+                            NC-17 –
+                            Adults
+                            Only
+                        </option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="label label-primary" for="productionHouse">Production House</label>
-                    <input class="form-control" type="text" name="productionHouse" id="productionHouse"
+                    <input class="form-control" type="text" name="productionHouse"
+                           th:value="${movie?.getProductionHouse()}"
+                           id="productionHouse"
                            placeholder="Production House"></input>
                 </div>
                 <div class="form-group">
                     <label for="upcoming">Upcoming/Running movie?</label>
-                    <input class="checkbox" type="checkbox" id="upcoming" name="upcoming"></input>
+                    <input class="checkbox" type="checkbox" th:checked="${movie?.isUpcoming()}" id="upcoming"
+                           name="upcoming"></input>
                 </div>
-                <br></br>
                 <div class="form-group">
                     <label for="featured">Featured movie?</label>
-                    <input class="checkbox" type="checkbox" id="featured" name="featured"></input>
+                    <input class="checkbox" type="checkbox" id="featured" name="featured"
+                           th:checked="${movie?.isFeatured()}"></input>
                 </div>
-                <br></br>
-
-                <button class="btn brn-primary" type="submit">Submit</button>
+                <button class="btn btn-primary" type="submit">Create Movie</button>
             </form>
         </div><!--END CREATE NEW MOVIE FORM-->
     </div>
