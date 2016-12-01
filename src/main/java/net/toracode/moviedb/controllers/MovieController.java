@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import net.toracode.moviedb.entities.Movie;
@@ -34,6 +35,11 @@ public class MovieController {
     private PersonService personService;
     @Autowired
     private ImageValidator imageValidator;
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder){
+        binder.setDisallowedFields("image");
+    }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String allMovies(@RequestParam(value = "page", required = false) Integer page,
@@ -165,8 +171,10 @@ public class MovieController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String addMovie(@Valid @ModelAttribute("movie") Movie movie, BindingResult bindingResult,
                            @RequestParam("image") MultipartFile multipartFile) throws IOException {
-        if (bindingResult.hasErrors())
+        if (bindingResult.hasErrors()) {
             System.out.println(bindingResult.toString());
+            return "movie/create";
+        }
         if (this.imageValidator.isImageValid(multipartFile)) {
             movie.setImage(multipartFile.getBytes());
         }

@@ -53,6 +53,9 @@
 </nav><!--END NAV BAR-->
 
 <div class="container-fluid">
+
+    <span th:if="${movie != null}" th:text="${movie.getName()}"></span>
+
     <div class="row">
         <!--CREATE NEW MOVIE FORM-->
         <div class="col-sm-6 col-sm-offset-3" style="margin-top: 50px;">
@@ -148,7 +151,7 @@
                 </div>
                 <br></br>
 
-                <button class="btn brn-primary" type="submit">Submit</button>
+                <button class="btn brn-primary" onclick="onSubmit()" id="submitButton" type="submit">Submit</button>
             </form>
         </div><!--END CREATE NEW MOVIE FORM-->
     </div>

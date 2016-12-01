@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import net.toracode.moviedb.entities.Person;
@@ -21,6 +22,11 @@ public class PersonController {
     private PersonService personService;
     @Autowired
     private ImageValidator imageValidator;
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder){
+        binder.setDisallowedFields("image");
+    }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String personListPaginated(@RequestParam(value = "page", required = false) Integer page,
