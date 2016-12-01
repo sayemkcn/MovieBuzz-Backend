@@ -57,7 +57,7 @@
     <div th:if="${bindingResult != null}" class="row alert alert-warning">
         <div class="col-sm-8 col-sm-offset-2" style="padding-top: 20px;">
             <div th:each="err : ${bindingResult.getFieldErrors()}">
-                <span th:text="${err.getDefaultMessage()}"></span><br></br>
+                * <span th:text="${err.getDefaultMessage()}"></span><br></br>
             </div>
         </div>
     </div>
