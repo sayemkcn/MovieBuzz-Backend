@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8"></meta>
     <title>Create cast and crews</title>
@@ -45,15 +45,23 @@
                             <li><a th:href="@{/admin/person/create}">Create New Cast/Crew</a></li>
                         </ul>
                     </li>
-                    <li><a th:href="@{/login}"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
+                    <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}"><span
+                            class="glyphicon glyphicon-log-in"></span>Login</a></li>
+                    <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}"><span
+                            class="glyphicon glyphicon-log-in"></span>Logout</a></li>
                 </ul>
             </div>
         </div>
     </div>
 </nav><!--END NAV BAR-->
 
-<div class="row" style="margin-top: 50px;">
-    <span th:if="${param.message != null}" th:text="${param.message[0]}"></span>
+<div class="row alert alert-warning" style="margin-top: 50px;">
+    <div class="col-cm-8 col-sm-offset-2">
+        <span th:if="${param.error != null}">Username or password doesn't match!</span>
+        <span th:if="${param.message != null}" th:text="${param.message[0]}"></span>
+        <span th:if="${param.logout != null}">You're logged out!</span>
+    </div>
+
 </div>
 <div class="row">
     <div class="col-sm-6 col-sm-offset-3">
@@ -61,11 +69,12 @@
         <form th:action="@{/login}" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label class="label label-primary" for="email">Email:</label>
-                <input class="form-control" type="text" id="email" name="email" placeholder="Email"></input>
+                <input class="form-control" type="text" id="email" name="username" placeholder="Email"></input>
             </div>
             <div class="form-group">
                 <label class="label label-primary" for="password">Password:</label>
-                <input class="form-control" type="password" id="password" name="password" placeholder="Password"></input>
+                <input class="form-control" type="password" id="password" name="password"
+                       placeholder="Password"></input>
             </div>
             <button class="btn btn-primary" type="submit">Login</button>
         </form>
