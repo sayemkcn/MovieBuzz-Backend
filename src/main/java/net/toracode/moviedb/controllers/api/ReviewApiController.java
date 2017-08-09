@@ -69,10 +69,9 @@ public class ReviewApiController {
                     return new ResponseEntity<>(HttpStatus.LOCKED);
             }
         }
-
         // end
         if (user == null || movie == null)
-            return new ResponseEntity<Review>(HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         review.setUser(user);
         review.setMovie(movie);
         review = this.reviewService.saveReview(review);

@@ -44,6 +44,9 @@ public class Movie extends BaseEntity {
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CustomList> listOfCustomList;
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "movie")
+    private List<Review> reviewList;
     private boolean featured;
     private boolean upcoming;
 
@@ -209,5 +212,13 @@ public class Movie extends BaseEntity {
 
     public void setListOfCustomList(List<CustomList> listOfCustomList) {
         this.listOfCustomList = listOfCustomList;
+    }
+
+    public List<Review> getReviewList() {
+        return reviewList;
+    }
+
+    public void setReviewList(List<Review> reviewList) {
+        this.reviewList = reviewList;
     }
 }

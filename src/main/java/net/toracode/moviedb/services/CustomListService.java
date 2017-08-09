@@ -59,7 +59,7 @@ public class CustomListService {
     // check if a List of custom list has already a list
     public boolean isAlreadyExists(CustomList list, User user) {
         for (User u : list.getFollowerList()) {
-            if (u.getUniqueId() == user.getUniqueId())
+            if (u.getUniqueId().equals(user.getUniqueId()))
                 return true;
         }
         return false;
@@ -69,7 +69,7 @@ public class CustomListService {
     public List<Movie> removeFromList(List<Movie> movieList, Movie movie) {
         try {
             for (int i = 0; i < movieList.size(); i++) {
-                if (movieList.get(i).getUniqueId() == movie.getUniqueId())
+                if (movieList.get(i).getUniqueId().equals(movie.getUniqueId()))
                     movieList.remove(i);
             }
         } catch (Exception e) {
@@ -85,7 +85,7 @@ public class CustomListService {
     }
 
     public List<CustomList> findFollowingList(List<CustomList> listOfCustomList, User user) {
-        List<CustomList> followingList = new ArrayList();
+        List<CustomList> followingList = new ArrayList<>();
         for (CustomList list : listOfCustomList) {
             for (User u : list.getFollowerList()) {
                 if (u.getAccountId().equals(user.getAccountId()))
